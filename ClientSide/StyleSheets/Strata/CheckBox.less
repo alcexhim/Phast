@@ -1,0 +1,52 @@
+div.CheckBox
+{
+	cursor: pointer;
+	font-weight: 400;
+	margin-bottom: 0;
+	min-height: 21px;
+	
+	width: 20px;
+	height: 20px;
+	
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	vertical-align: top;
+	
+	text-indent: 0px;
+	margin-right: 8px;
+	
+	transition: border-color linear 0.3s, background-color linear 0.1s, color linear 0.3s;
+	
+	&:hover
+	{
+		border-color: @ThemeColor;
+	}
+	
+	i.fa.fa-check
+	{
+		visibility: hidden;
+		opacity: 0;
+		transition: visibility linear 0.3s, opacity linear 0.3s;
+	}
+	&.Checked
+	{
+		background-color: @ThemeColor;
+		border-color: @ThemeColor;
+		color: #FFFFFF;
+		
+		i.fa.fa-check
+		{
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}
+table.ListView div.CheckBox
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}

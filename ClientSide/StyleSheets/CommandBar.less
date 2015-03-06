@@ -1,0 +1,36 @@
+div.CommandBar:not(.Spring)
+{
+	display: inline-block;
+}
+div.CommandBar
+{
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+div.CommandBar > div.CommandBarItem
+{
+	display: inline-block;
+}
+div.CommandBar > div.CommandBarItem > span.Text
+{
+	text-decoration: none;
+	
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+	
+	cursor: default;
+}
+div.CommandBar > div.CommandBarItem > div.Menu
+{
+	display: none;
+	position: absolute;
+}
+div.CommandBar > div.CommandBarItem.Selected > div.Menu
+{
+	display: block;
+	padding: 2px;
+	
+	margin-top: 4px;
+}

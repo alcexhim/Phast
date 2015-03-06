@@ -1,0 +1,36 @@
+div.Disclosure
+{
+	div.Title
+	{
+		border-bottom: solid 1px #CCCCCC;
+		padding: 5px 0px 8px;
+		font-size: 16px;
+		font-weight: bold;
+		span.DisclosureButton
+		{
+			background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2IDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGZpbGw9IiM3NTc1NzUiIGQ9Ik03Ljk5OCwwLjM2MmMtNC4yMDUsMC03LjYyNSwzLjQyMi03LjYyNSw3LjYyN2MwLDQuMjA1LDMuNDIsNy42MjUsNy42MjUsNy42MjUNCgkJYzQuMjAzLDAsNy42MjUtMy40Miw3LjYyNy03LjYyNUMxNS42MjMsMy43ODQsMTIuMjAxLDAuMzYzLDcuOTk4LDAuMzYyeiBNNy45OTgsMTQuNjE1Yy0zLjY1MywwLTYuNjI1LTIuOTczLTYuNjI1LTYuNjI1DQoJCWMwLTMuNjU0LDIuOTcyLTYuNjI3LDYuNjI1LTYuNjI2YzMuNjUxLDAsNi42MjUsMi45NzIsNi42MjcsNi42MjZDMTQuNjIzLDExLjY0MywxMS42NDksMTQuNjE1LDcuOTk4LDE0LjYxNXoiLz4NCgk8cG9seWdvbiBmaWxsPSIjNzU3NTc1IiBwb2ludHM9IjYuMzkyLDExLjM2MyAxMC44NjUsNy45OSA2LjM5Miw0LjYxNyAJIi8+DQo8L2c+DQo8L3N2Zz4NCg==');
+			transition: all 0.25s linear 0s;
+		}
+	}
+	div.Content
+	{
+		visibility: hidden;
+		opacity: 0;
+	}
+	
+	&.Expanded
+	{
+		div.Title
+		{
+			span.DisclosureButton
+			{
+				transform: rotate(90deg);
+			}
+		}
+		div.Content
+		{
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}

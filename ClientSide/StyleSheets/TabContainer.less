@@ -1,0 +1,33 @@
+div.TabContainer
+{
+	&> div.Tabs
+	{
+		&> a
+		{
+			min-width: 75px;
+			padding-top: 6px;
+			padding-bottom: 6px;
+			padding-left: 8px;
+			padding-right: 8px;
+			text-align: center;
+			text-decoration: none;
+
+			display: none;
+			&.Visible
+			{
+				display: inline-block;
+			}
+		}
+	}
+	&> div.TabPages
+	{
+		&> div.TabPage
+		{
+			display: none;
+			&.Selected
+			{
+				display: block;
+			}
+		}
+	}
+}

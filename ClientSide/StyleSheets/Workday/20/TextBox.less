@@ -1,0 +1,38 @@
+input[type=text], input[type=password], input[type=number], input[type=color], textarea
+{
+	&:focus
+	{
+		border: solid 2px #5cc0ff;
+	}
+}
+div.Textbox
+{
+	border: solid 1px #AAAAAA;
+	position: relative;
+	input[type=text]
+	{
+		border: none 0px;
+	}
+	.TextboxSelectedItems
+	{
+		position: absolute;
+		top: 24px;
+		background-color: #FFFFFF;
+		min-width: 100px;
+		z-index: 4;
+		
+		.TextboxSelectedItem
+		{
+			display: table-row;
+			.TextboxSelectedItemText
+			{
+				display: table-cell;
+				width: 100%;
+			}
+			.TextboxSelectedItemCloseButton
+			{
+				display: table-cell;
+			}
+		}
+	}
+}

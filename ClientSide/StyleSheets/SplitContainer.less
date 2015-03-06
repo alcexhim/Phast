@@ -1,0 +1,30 @@
+div.SplitContainer
+{
+	position: relative;
+	
+	&.Horizontal
+	{
+		div.SplitContainerPanel
+		{
+		}
+		div.Splitter
+		{
+			cursor: row-resize;
+		}
+	}
+	&.Vertical
+	{
+		display: table;
+		
+		div.SplitContainerPanel
+		{
+			display: table-cell;
+			vertical-align: top;
+		}
+		div.Splitter
+		{
+			cursor: col-resize;
+			display: table-cell;
+		}
+	}
+}

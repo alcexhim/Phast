@@ -1,0 +1,179 @@
+div.Panel, div.Disclosure
+{
+	background-color: #FFFFFF;
+	border: solid 1px #CFDBE2;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	margin-bottom: 24px;
+	
+	&> div.Header, &> div.Title
+	{
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+		padding: 10px 16px;
+		
+		background-color: #FAFBFC;
+		border: solid 1px #DADFE3;
+		color: #93a8a8;
+		margin: 0px -1px;
+		
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+	&> div.Content
+	{
+		background-color: #FFFFFF;
+		font-size: 14px;
+		padding: 20px;
+		&> span.Primary
+		{
+			font-size: 48pt;
+			font-weight: 300;
+			padding: 8px;
+		}
+		&> span.Secondary
+		{
+			font-size: 24pt;
+			font-weight: 300;
+		}
+	}
+	&> div.Watermark
+	{
+		bottom: 0px;
+		font-size: 96pt;
+		opacity: 0.1;
+		padding: 16px;
+		position: absolute;
+		right: 0px;
+	}
+	&> div.Footer
+	{
+		background-color: #FAFAFA;
+		border-bottom-left-radius: 4px;
+		border-bottom-right-radius: 4px;
+		padding: 10px 16px;
+		
+		&:not(.Borderless)
+		{
+			border-top: solid 1px #EEEEEE;
+		}
+		
+		a
+		{
+			color: #5D9CEC;
+			text-decoration: none;
+			&:hover
+			{
+				color: #1B72E2;
+			}
+		}
+		
+		&.Dark
+		{
+			background-color: #3A3F51;
+			color: #FFFFFF;
+			a
+			{
+				color: #FFFFFF;
+				&:hover
+				{
+					color: #DDDDDD;
+				}
+			}
+		}
+	}
+	
+	&.Information
+	{
+		div.Header
+		{
+			background-color: #23B7E5;
+			color: #FFFFFF;
+		}
+	}
+	&.Warning
+	{
+		div.Header
+		{
+			background-color: #FF902B;
+			color: #FFFFFF;
+		}
+	}
+	&.Success
+	{
+		div.Header
+		{
+			background-color: #27C24C;
+			color: #FFFFFF;
+		}
+	}
+	&.Primary
+	{
+		div.Header
+		{
+			background-color: #5D9CEC;
+			color: #FFFFFF;
+		}
+	}
+	&.Error
+	{
+		div.Header
+		{
+			background-color: #F05050;
+			color: #FFFFFF;
+		}
+	}
+}
+div.PanelContainer
+{
+	&.TwoColumn, &.ThreeColumn
+	{
+		&> div.Panel
+		{
+			break-inside: avoid-column;
+			-webkit-column-break-inside: avoid;
+			overflow: hidden;
+		}
+	}
+	
+	@media (min-width: 500px) and (max-width: 600px)
+	{
+		&.TwoColumn
+		{
+			columns: 2;
+			-moz-columns: 2;
+			-webkit-columns: 2;
+		}
+		&.ThreeColumn
+		{
+			columns: 2;
+			-moz-columns: 2;
+			-webkit-columns: 2;
+		}
+	}
+	@media (min-width: 800px)
+	{
+		&.TwoColumn
+		{
+			columns: 2;
+			-moz-columns: 2;
+			-webkit-columns: 2;
+		}
+		&.ThreeColumn
+		{
+			/* specifying a three-column layout as two columns unless min-width is greater than or equal to 1024px */
+			columns: 2;
+			-moz-columns: 2;
+			-webkit-columns: 2;
+		}
+		@media (min-width: 1024px)
+		{
+			&.ThreeColumn
+			{
+				columns: 3;
+				-moz-columns: 3;
+				-webkit-columns: 3;
+			}
+		}
+	}
+}

@@ -1,0 +1,41 @@
+div.Panel
+{
+	background-color: #FFFFFF;
+	
+	line-height: 24px;
+	color: #BBBBBB;
+	font-size: 13px;
+	font-weight: normal;
+	
+	hr
+	{
+		border: none;
+		border-top: solid 1px #E8E8E8;
+	}
+	
+	&> div.Header, div.Content, div.Footer
+	{
+		padding: 9px;
+	}
+	&> div.Header, div.Footer
+	{
+		background-color: #F5F5F5;
+		text-align: center;
+		
+		border-top: none 1px #E3E3E3;
+		border-bottom: none 1px #E3E3E3;
+	}
+	&> div.Header
+	{
+		border-bottom-style: solid;
+	}
+	&> div.Content
+	{
+		padding-left: 36px;
+		padding-right: 36px;
+	}
+	&> div.Footer
+	{
+		border-top-style: solid;
+	}
+}

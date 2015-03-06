@@ -1,0 +1,29 @@
+div.Panel
+{
+	position: relative;
+	div.PanelContentWrapper
+	{
+		position: relative;
+		div.PanelThrobber
+		{
+			position: absolute;
+			top: 40%;
+			right: 0px;
+			left: 0px;
+			bottom: 0px;
+			vertical-align: middle;
+			text-align: center;
+			z-index: 5;
+		}
+		div.PanelContent
+		{
+			display: none;
+			iframe
+			{
+				border: none 0px;
+				position: relative;
+				width: 100%;
+			}
+		}
+	}
+}

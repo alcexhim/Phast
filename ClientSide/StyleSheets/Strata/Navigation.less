@@ -1,0 +1,235 @@
+nav.Primary
+{
+	background-color: #313E3E;
+	border-color: #485A5A;
+	color: #93A8A8;
+	
+	/*
+	padding-left: 48px;
+	padding-right: 48px;
+	*/
+
+	&> div.Menu
+	{
+		border: none;
+	}
+	
+	div.Menu
+	{
+		position: relative;
+		
+		background-color: inherit;
+		color: inherit;
+		
+		div.Separator
+		{
+			background-color: #E6EAED;
+			height: 1px;
+			overflow: hidden;
+			border-bottom: 1px solid #3D4C4C;
+			margin: 8px 4px;
+			box-sizing: border-box;
+		}
+		
+		&> div.MenuItems
+		{
+			&> div.MenuItem
+			{
+				display: inline-block;
+				&.Image
+				{
+					&> a
+					{
+						padding: 6px 16px;
+						&> img
+						{
+							height: 40px;
+							vertical-align: middle;
+						}
+					}
+				}
+				&.Right
+				{
+					float: right;
+					&> div.Menu
+					{
+						right: 0px;
+						div.MenuItem > div.Menu
+						{
+							margin-left: initial;
+							right: 160px;
+						}
+					}
+				}
+				
+				&> a
+				{
+					display: inline-block;
+					padding: 16px;
+					text-decoration: none;
+					color: inherit;
+				}
+				&> div.Menu
+				{
+					display: none;
+					position: absolute;
+					padding: 0px;
+					a
+					{
+						padding: 8px;
+						display: block;
+					}
+				}
+				&:hover, &.Opened
+				{
+					&> a
+					{
+						background-color: #3D4C4C;
+						color: #CBD6D6;
+					}
+					&> div.Menu
+					{
+						display: block;
+						background-color: #485A5A;
+					}
+				}
+				
+				/*
+				 *  n-level menu item menus below the primary menu item
+				 */
+				div.Menu div.MenuItem
+				{
+					display: block;
+					min-width: 160px;
+					div.Menu
+					{
+						margin-left: 160px;
+						margin-top: -38px;
+					}
+				}			
+			}
+		}
+	}
+}
+
+div.Page > nav.Top
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 56px;
+	
+	background-color: @HeaderBackground;
+
+	background: @HeaderBackground; /* Old browsers */
+	background: -moz-linear-gradient(top, @HeaderBackground 0%, darken(@HeaderBackground, 20%) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@HeaderBackground), color-stop(100%,darken(@HeaderBackground, 20%))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, @HeaderBackground 0%,darken(@HeaderBackground, 20%) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, @HeaderBackground 0%,darken(@HeaderBackground, 20%) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, @HeaderBackground 0%,darken(@HeaderBackground, 20%) 100%); /* IE10+ */
+	background: linear-gradient(to bottom, @HeaderBackground 0%,darken(@HeaderBackground, 20%) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@HeaderBackground', endColorstr='darken(@HeaderBackground, 20%)',GradientType=0 ); /* IE6-9 */
+	
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+	
+	&> a.MenuButton
+	{
+		font-size: 16pt;
+		padding: 12px;
+		position: absolute;
+		color: #FFFFFF;
+		cursor: pointer;
+		
+		&:hover
+		{
+			color: darken(@HeaderBackground, 20%);
+		}
+	}
+	&> img.Logo
+	{
+		left: 48px;
+		position: absolute;
+		top: 10px;
+		
+		height: 34px;
+	}
+	
+	div.DropDownButton
+	{
+		cursor: pointer;
+		color: #FFFFFF;
+		text-decoration: none;
+		padding: 18px;
+		
+		&:hover
+		{
+			color: darken(@HeaderBackground, 20%);
+		}
+		&.Opened
+		{
+			background-color: darken(@HeaderBackground, 20%);
+			color: #FFFFFF;
+		}
+		
+		&> div.DropDownMenu
+		{
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity linear 0.3s, visibility linear 0.3s;
+			
+			background-color: #FFFFFF;
+			border: 1px solid #E1E1E1;
+			position: absolute;
+			right: 0;
+			top: 56px;
+			width: -moz-max-content;
+			z-index: 1;
+			
+			/*
+			background-clip: padding-box;
+			background-color: #fff;
+			border: 1px solid #e1e1e1;
+			*/
+			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+			/*
+			display: none;
+			float: left;
+			font-size: 14px;
+			left: 0;
+			list-style: outside none none;
+			margin: 2px 0 0;
+			min-width: 160px;
+			padding: 5px 0;
+			position: absolute;
+			text-align: left;
+			top: 100%;
+			z-index: 1000;
+			*/
+			
+			&> a
+			{
+				display: block;
+				text-decoration: none;
+				color: #555555;
+				padding: 8px;
+				&:hover
+				{
+					background-color: #FAFBFC;
+				}
+			}
+		}
+		&.Opened > div.DropDownMenu
+		{
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+	
+	&> div.UserInfo
+	{
+		position: absolute;
+		right: 16px;
+		top: 0px;
+	}
+}

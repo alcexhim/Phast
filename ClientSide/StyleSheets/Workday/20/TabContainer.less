@@ -1,0 +1,49 @@
+div.TabContainer
+{
+	div.Tabs
+	{
+		border-bottom: solid 1px #b2b2b2;
+		height: 21px;
+		
+		a.Tab
+		{
+			color: #666666;
+			font-weight: bold;
+			font-size: 9pt;
+			text-decoration: none;
+			cursor: default;
+			
+			padding-left: 11px;
+			padding-top: 4px;
+			padding-bottom: 5px;
+			padding-right: 14px;
+			
+			border: solid 1px #b2b2b2;
+			border-bottom: solid 1px #b2b2b2;
+			
+			border-top-left-radius: 3px;
+			border-top-right-radius: 3px;
+			
+			background: #daf1f5; /* Old browsers */
+			background: -moz-linear-gradient(top, #daf1f5 0%, #f5f5f5 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#daf1f5), color-stop(100%,#f5f5f5)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #daf1f5 0%,#f5f5f5 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #daf1f5 0%,#f5f5f5 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #daf1f5 0%,#f5f5f5 100%); /* IE10+ */
+			background: linear-gradient(to bottom, #daf1f5 0%,#f5f5f5 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#daf1f5', endColorstr='#f5f5f5',GradientType=0 ); /* IE6-9 */
+			
+			&:hover
+			{
+				color: #f57b20;
+			}
+			
+			&.Selected
+			{
+				background-color: #FFFFFF;
+				color: #f57b20;
+				border-bottom: solid 1px #FFFFFF;
+			}
+		}
+	}
+}

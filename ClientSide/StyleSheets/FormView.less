@@ -1,0 +1,44 @@
+div.FormView
+{
+	display: table;
+	width: -moz-available;
+	border-collapse: collapse;
+	
+	&> div.Separator
+	{
+		display: table-row;
+		width: 100%;
+	}
+	&> div.Field
+	{
+		display: table-row;
+		width: -moz-available;
+		
+		&> *
+		{
+			vertical-align: baseline;
+		}
+		
+		&> label
+		{
+			width: 96px;
+			vertical-align: inherit;
+		}
+		&> label, input, textarea
+		{
+			display: table-cell;
+		}
+		&> input, textarea
+		{
+			width: -moz-available;
+		}
+	}
+}
+@media (max-width: 600px)
+{
+	div.FormView > div.Field > label
+	{
+		display: block;
+		text-align: left;
+	}
+}

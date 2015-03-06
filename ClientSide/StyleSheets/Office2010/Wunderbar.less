@@ -1,0 +1,51 @@
+div.Wunderbar
+{
+	& > div.WunderbarButtons
+	{
+		& > a
+		{
+			border: solid 1px transparent;
+			
+			font-family: "Tahoma", sans-serif;
+			font-weight: bold;
+			font-size: 8pt;
+			color: #3b3b3b;
+			
+			&.Selected, &:hover
+			{
+				border-color: #a1a9b3;
+				color: #000000;
+			}
+			&.Selected
+			{
+				background: #dee3ea; /* Old browsers */
+				background: -moz-linear-gradient(top, #dee3ea 0%, #d9dee4 50%, #dadfe4 51%, #eef1f5 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dee3ea), color-stop(50%,#d9dee4), color-stop(51%,#dadfe4), color-stop(100%,#eef1f5)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #dee3ea 0%,#d9dee4 50%,#dadfe4 51%,#eef1f5 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #dee3ea 0%,#d9dee4 50%,#dadfe4 51%,#eef1f5 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #dee3ea 0%,#d9dee4 50%,#dadfe4 51%,#eef1f5 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #dee3ea 0%,#d9dee4 50%,#dadfe4 51%,#eef1f5 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dee3ea', endColorstr='#eef1f5',GradientType=0 ); /* IE6-9 */
+			}
+			&:hover
+			{
+				background: #f4f6f9; /* Old browsers */
+				background: -moz-linear-gradient(top, #f4f6f9 0%, #e2e6ec 50%, #e2e6ec 51%, #eaedf2 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f4f6f9), color-stop(50%,#e2e6ec), color-stop(51%,#e2e6ec), color-stop(100%,#eaedf2)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #f4f6f9 0%,#e2e6ec 50%,#e2e6ec 51%,#eaedf2 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #f4f6f9 0%,#e2e6ec 50%,#e2e6ec 51%,#eaedf2 100%); /* Opera 11.10+ */
+				background: -ms-linear-gradient(top, #f4f6f9 0%,#e2e6ec 50%,#e2e6ec 51%,#eaedf2 100%); /* IE10+ */
+				background: linear-gradient(to bottom, #f4f6f9 0%,#e2e6ec 50%,#e2e6ec 51%,#eaedf2 100%); /* W3C */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f6f9', endColorstr='#eaedf2',GradientType=0 ); /* IE6-9 */
+			}
+			&:active
+			{
+				border-color: #8e98a3;
+				color: #000000;
+				
+				background: none;
+				background-color: #c0c7cf;
+			}
+		}
+	}
+}

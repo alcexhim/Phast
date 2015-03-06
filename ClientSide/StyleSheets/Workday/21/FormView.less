@@ -1,0 +1,30 @@
+table.FormView
+{
+	padding: 16px;
+	
+	tr
+	{
+		td
+		{
+			vertical-align: top;
+			border: none 0px;
+			&:first-child
+			{
+				width: 96px;
+			}
+		}
+		&.Required td:first-child:before
+		{
+			color: #ED1F24;
+			content: "*";
+			display: block;
+			font-size: 22pt;
+			height: 0;
+			left: 88px;
+			overflow: visible;
+			position: relative;
+			text-align: right;
+			width: 0;
+		}
+	}
+}

@@ -1,0 +1,123 @@
+table.ListView
+{
+	border-collapse: collapse;
+	
+	th
+	{
+		a
+		{
+			color: #888888;
+			text-decoration: none;
+			padding: 14px 8px;
+			display: block;
+			
+			font-weight: normal;
+			text-align: left;
+			
+			&:hover
+			{
+				background-color: #FAFBFC;
+			}
+		}
+	}
+	
+	&> tbody > tr
+	{
+		&:hover
+		{
+			background-color: #FAFBFC;
+		}
+	}
+	
+	tr
+	{
+		&> td, th
+		{
+			&:first-child
+			{
+				border-left: solid 3px transparent;
+			}
+			&:last-child
+			{
+				border-right: solid 1px transparent;
+			}
+		}
+		&.Selected
+		{
+			&> td, th
+			{
+				background-color: lighten(@ThemeColor, 45%) !important;
+				border-top: double 1px @ThemeColor !important;
+				border-bottom: double 1px @ThemeColor !important;
+				&:first-child
+				{
+					box-shadow: 3px 0 0 @ThemeColor inset;
+				}
+				&:last-child
+				{
+					border-right: solid 1px @ThemeColor;
+				}
+			}
+		}
+		/*
+		&.Selected
+		{
+			&> td
+			{
+				background-color: #F1F2F3;
+			}
+			&:hover > td
+			{
+				background-color: #EDEEEF;
+			}
+		}
+		*/
+		&> td
+		{
+			padding: 8px;
+			
+			&> input.Filter
+			{
+				font-weight: bold;
+				
+				&::-moz-placeholder
+				{
+					color: #B7BAC9;
+				}
+			}
+			
+			&> div.Title
+			{
+				font-size: 18px;
+				font-weight: 700;
+			}
+		}
+	}
+	
+	&.HasBorder
+	{
+		border: solid 1px #EEEEEE;
+	}
+	&.GridLines
+	{
+		&> thead, &>tbody
+		{
+			&> tr
+			{
+				&:not(:last-child)
+				{
+					border-bottom: solid 1px #EEEEEE;
+				}
+				&> td, &> th
+				{
+					border-left: solid 1px #EEEEEE;
+					border-right: solid 1px #EEEEEE;
+				}
+			}
+		}
+	}
+	&.AlternateShading > tbody > tr:nth-child(2n+1)
+	{
+		background-color: #FAFBFC;
+	}
+}

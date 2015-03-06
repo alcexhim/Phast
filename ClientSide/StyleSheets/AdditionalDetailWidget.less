@@ -1,0 +1,80 @@
+div.AdditionalDetailWidget
+{
+	position: relative;
+	&> div.Content
+	{
+		display: block;
+		position: absolute;
+		z-index: 5;
+
+		padding: 8px;
+
+		left: 100%;
+		width: 100%;
+		
+		opacity: 0;
+		visibility: hidden;
+
+		transition: opacity linear 0.3s, visibility linear 0.3s;
+		
+		&> div > div.Header
+		{
+			padding-bottom: 8px;
+			margin-bottom: 8px;
+			padding-right: 16px;
+		}
+		&> div.MenuItems, &> div.PreviewContent
+		{
+			display: table-cell;
+		}
+		&> div.MenuItems.Empty
+		{
+			display: none;
+		}
+		&> div.PreviewContent > div.Header
+		{
+			&> span.ClassTitle, &> span.ObjectTitle
+			{
+				display: inline-block;
+			}
+			&> span.ClassTitle
+			{
+				padding-right: 8px;
+			}
+		}
+	}
+	&.Visible
+	{
+		&> div.Content
+		{
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+	&:not(.Text) > a.AdditionalDetailText
+	{
+		display: none;
+	}
+	
+	&> a.AdditionalDetailButton
+	{
+		display: inline-block;
+		background-repeat: no-repeat;
+		cursor: pointer;
+		text-decoration: none;
+	}
+	&.Ellipsis
+	{
+		&> a.AdditionalDetailButton
+		{
+			opacity: 0;
+			visibility: hidden;
+		}
+		&:hover > a.AdditionalDetailButton,
+		&.Visible > a.AdditionalDetailButton
+		{
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+}

@@ -1,0 +1,78 @@
+div.Page
+{
+	margin: 0px;
+	&.HideHeader
+	{
+		&> nav.Top
+		{
+			display: none;
+		}
+		&> div.Sidebar, header
+		{
+			top: 0px;
+		}
+		&> div.Content
+		{
+			top: 89px;
+		}
+	}
+	&> header
+	{
+		position: fixed;
+		top: 56px;
+		left: 0px;
+		right: 0px;
+		height: 52px;
+		
+		background-color: @SubHeaderBackground;
+		border-bottom: solid 1px @SubHeaderBorder;
+		color: @SubHeaderForeground;
+		font-weight: 400;
+		padding: 16px;
+		
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+		
+		&> div.Title
+		{
+			font-size: 24px;
+		}
+		&> div.Subtitle
+		{
+			font-size: 12px;
+		}
+		&> div.Buttons
+		{
+			position: absolute;
+			right: 16px;
+			top: 28px;
+		}
+	}
+	&> div.Content
+	{
+		position: fixed;
+		left: 0px;
+		top: 145px;
+		right: 0px;
+		bottom: 64px;
+		overflow: auto;
+		
+		padding: 20px;
+	}
+	&> footer
+	{
+		background-color: @PageBackground;
+		border-top: 1px solid #E4EAEC;
+		bottom: 0px;
+		left: 0px;
+		padding: 20px;
+		position: fixed;
+		right: 0px;
+	}
+}
+body > div.Page
+{
+	&> header, &> div.Content, &> footer
+	{
+		left: 256px;
+	}
+}

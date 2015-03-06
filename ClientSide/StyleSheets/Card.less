@@ -1,0 +1,169 @@
+div.CardLayout
+{
+	display: table;
+	font-family: "Open Sans";
+	font-weight: lighter;
+	font-size: 0.9em;
+	width: 100%;
+	
+	div.CardSet
+	{
+		display: table-cell;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: auto;
+		vertical-align: top;
+		
+		div.Card
+		{
+			display: block;
+			border: solid 1px #CCCCCC;
+			border-bottom: solid 1px #AAAAAA;
+			border-right: solid 1px #AAAAAA;
+			
+			margin: 16px;
+			
+			div.Title
+			{
+				background-color: #EEEEEE;
+				cursor: default;
+				
+				a
+				{
+					color: #3366FF;
+					text-decoration: none;
+					&:hover
+					{
+						text-decoration: underline;
+					}
+				}
+				span.Text
+				{
+					display: table-cell;
+					vertical-align: middle;
+				}
+			}
+			div.Buttons
+			{
+				display: table;
+				width: 100%;
+				
+				a
+				{
+					display: table-cell;
+					text-align: center;
+					vertical-align: middle;
+					width: 33%;
+					height: 32px;
+					cursor: default;
+					text-decoration: none;
+					color: #000000;
+					
+					background-color: #3366FF;
+					&:hover
+					{
+						background-color: #99AAFF;
+					}
+					&:active
+					{
+						background-color: #0033AA;
+					}
+					
+					&.Accept
+					{
+						background-color: #33FF66;
+						&:hover
+						{
+							background-color: #99FFAA;
+						}
+						&:active
+						{
+							background-color: #00AA33;
+						}
+					}
+					&.Decline
+					{
+						background-color: #FF6633;
+						&:hover
+						{
+							background-color: #FFAA99;
+						}
+						&:active
+						{
+							background-color: #AA3300;
+						}
+					}
+				}
+			}
+			div.Content
+			{
+				padding: 8px;
+				span.Emphasis
+				{
+					font-size: 2em;
+				}
+			}
+			div.Actions.Horizontal, div.Title
+			{
+				display: table;
+				width: 100%;
+				
+				div.Left
+				{
+					display: table-cell;
+					text-align: left;
+					width: 33%;
+				}
+				div.Center
+				{
+					display: table-cell;
+					text-align: center;
+					width: 33%;
+				}
+				div.Right
+				{
+					display: table-cell;
+					text-align: right;
+					width: 33%;
+				}
+			}
+			div.Actions
+			{
+				cursor: default;
+				background-color: #EEEEEE;
+				color: #AAAAAA;
+				
+				a
+				{
+					padding: 8px;
+					text-decoration: none;
+					color: #3366FF;
+					&:hover
+					{
+						text-decoration: underline;
+					}
+					
+					span.Number
+					{
+						background-color: #FF0000;
+						border-radius: 4px 4px 4px 4px;
+						color: #FFFFFF;
+						font-weight: bold !important;
+						padding: 2px;
+					}
+				}
+				&.Vertical a
+				{
+					display: block;
+				}
+				&.Horizontal
+				{
+					a
+					{
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+}

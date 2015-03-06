@@ -1,0 +1,124 @@
+/* ListView (as TABLE) */
+table.ListView tr td
+{
+	cursor: default;
+	input.Filter
+	{
+		width: 100%;
+	}
+	a.Wrapper
+	{
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+}
+
+table.ListView
+{
+	position: relative;
+	-moz-user-select: none;
+	
+	&:not(.RowCheckBoxes) th.RowCheckBoxes *, &:not(.RowCheckBoxes) td.RowCheckBoxes *
+	{
+		display: none;
+	}
+	th
+	{
+		&.RowCheckBoxes
+		{
+			width: 64px;
+		}
+	}
+	&:not(.RowCheckBoxes) th.RowCheckBoxes
+	{
+		display: none;
+	}
+	
+	a.NavigateURL
+	{
+		cursor: pointer;
+		position: absolute;
+		right: 0px;
+	}
+	&:not(.AllowFiltering) > thead > tr.Filter
+	{
+		display: none;
+	}
+	&> thead
+	{
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+	&.HasBorder
+	{
+		border-style: solid;
+		border-width: 1px;
+	}
+	&.GridLines tr
+	{
+		td, th
+		{
+			border-style: solid;
+			border-width: 1px;
+			&:first-child
+			{
+				border-left: none;
+			}
+			&:last-child
+			{
+				border-right: none;
+			}
+		}
+		&:first-child td, th
+		{
+			border-top: none;
+		}
+		&:last-child td, th
+		{
+			border-bottom: none;
+		}
+	}
+	&:not(.RowCheckBoxes).GridLines tr td,th
+	{
+		&:nth-child(2)
+		{
+			border-left: none !important;
+		}
+	}
+}
+
+/* ListView (as DIV) */
+div.ListView
+{
+	position: relative;
+	
+	a
+	{
+		cursor: default;
+		&:hover
+		{
+			background-color: #EEEEEE;
+		}
+	}
+	a.Selected, span.Selected
+	{
+		background-color: Highlight;
+		color: HighlightText;
+	}
+	&.TileView a
+	{
+		display: block;
+		padding: 8px;
+		color: #000000;
+		text-decoration: none;
+		span
+		{
+			display: block;
+			&.ItemText
+			{
+				font-weight: bold;
+			}
+		}
+	}
+}

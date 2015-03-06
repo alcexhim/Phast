@@ -1,0 +1,24 @@
+.Triangle (@FillColor: white)
+{
+	&:before
+	{
+		border-color: @FillColor;
+		border-style: solid;
+		border-width: 14px;
+		content: " ";
+		display: block;
+		font-size: 0;
+		position: absolute;
+		z-index: 3;
+		&.Inner:before
+		{
+			border-left-color: transparent !important;
+			border-right-color: transparent !important;
+			border-top-color: transparent;
+			/*
+			left: -14px;
+			top: -12px;
+			*/
+		}
+	}
+}

@@ -1,0 +1,84 @@
+@TableBorderColor: #E2E7EB;
+@TableGridLineColor: #F5F5F5;
+
+@TableRowHoverBackgroundColor: @TableGridLineColor;
+
+@TableRowSelectedBackgroundColor: darken(@ThemeColor, 5%); /* #E2E7E9; */
+@TableRowSelectedForegroundColor: #FFFFFF;
+
+@TableRowSelectedHoverBackgroundColor: lighten(@TableRowSelectedBackgroundColor, 5%);
+
+table.ListView
+{
+	background-color: #FFFFFF;
+	border-collapse: collapse;
+	font-size: 12px;
+	
+	&> thead
+	{
+		border-bottom-color: @TableGridLineColor;
+		tr
+		{
+			th
+			{
+				border-bottom: solid 2px @TableBorderColor;
+				color: #242A30;
+				font-weight: 600;
+				a
+				{
+					color: inherit;
+					display: block;
+					text-align: left;
+					&:hover
+					{
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+	
+	tr
+	{
+		th a, td
+		{
+			padding: 10px 15px;
+		}
+		&.Selected
+		{
+			th, td
+			{
+				background-color: @TableRowSelectedBackgroundColor;
+				color: @TableRowSelectedForegroundColor;
+			}
+			&:hover
+			{
+				th, td
+				{
+					background-color: @TableRowSelectedHoverBackgroundColor;
+				}
+			}
+		}
+	}
+	&.HasBorder
+	{
+		border-color: @TableBorderColor;
+	}
+	&.GridLines tr
+	{
+		td, th
+		{
+			border-color: @TableGridLineColor;
+		}
+	}
+	&.HotTracking
+	{
+		&> tbody
+		{
+			tr:hover
+			{
+				background-color: @TableRowHoverBackgroundColor;
+			}
+		}
+	}
+}

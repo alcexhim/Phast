@@ -1,0 +1,112 @@
+body > nav.Sidebar
+{
+	background: #2D353C;
+	
+	position: fixed;
+	top: @HeaderHeight;
+	bottom: 0;
+	left: 0;
+	
+	width: @SidebarWidth;
+	z-index: 10;
+	
+	div.UserInfo
+	{
+		background-color: #1A2229;
+		padding: 20px;
+		
+		&> div.Icon
+		{
+			display: table-cell;
+			width: 56px;
+		}
+		&> div.Text
+		{
+			display: table-cell;
+			font-size: 14px;
+			
+			&> span.UserName, span.StatusText
+			{
+				display: block;
+			}
+			&> span.UserName
+			{
+				color: #FFFFFF;
+			}
+			&> span.StatusText
+			{
+				color: #889097;
+				font-size: 85%;
+			}
+		}
+	}
+	
+	ul.Menu > li
+	{
+		&> a
+		{
+			display: block;
+			line-height: 20px;
+			text-decoration: none;
+			&> i.fa
+			{
+				float: left;
+				font-size: 14px;
+				line-height: 20px;
+				margin-right: 16px;
+				text-align: center;
+				width: 14px;
+			}
+		}
+		&> ul.Menu
+		{
+			background-color: #1A2229;
+			height: 0px;
+			transition: height linear 0.3s;
+			overflow: hidden;
+			padding: 0px;
+			&> li
+			{
+				&> a
+				{
+					color: #889097;
+					font-size: 12px;
+					font-weight: 300;
+					padding: 5px 20px;
+					&:hover
+					{
+						color: #FFFFFF;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+		&.Opened > ul.Menu
+		{
+			height: auto;
+			padding: 10px 0px 10px 30px;
+		}
+	}
+	
+	/* first child styles only */
+	&> ul.Menu > li
+	{
+		&.Opened > a, > a:hover
+		{
+			background-color: #232A2F;
+			text-decoration: none;
+		}
+		&> a
+		{
+			padding: 8px 20px;
+			
+			color: #A8ACB1;
+			font-size: 12px;
+		}
+		&.Selected > a
+		{
+			background-color: @ThemeColor;
+			color: #FFFFFF
+		}
+	}
+}

@@ -1,0 +1,130 @@
+@ThumbSize: 30px;
+@TrackSize: 8px;
+@ThumbOffset: ((@ThumbSize - @TrackSize) / 2);
+
+div.TrackBar
+{
+	margin-bottom: 10px;
+	padding: 16px 30px;
+	
+	&> div.Track
+	{
+		background-color: #A9ACB1;
+		border-radius: 16px;
+		
+		&> div.Quantity
+		{
+			background-color: #017AFD;
+			border-radius: 15px;
+		}
+		&> div.Thumb
+		{
+			background-color: #FFFFFF;
+			border-radius: 100%;
+			box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+			cursor: move;
+			height: @ThumbSize;
+			width: @ThumbSize;
+		}
+	}
+	
+	&.Horizontal
+	{
+		&> div.Track
+		{
+			height: @TrackSize;
+			&> div.Quantity
+			{
+				transition: width linear 0.1s;
+			}
+			&> div.Thumb
+			{
+				top: -@ThumbOffset;
+				transition: left linear 0.1s;
+			}
+		}
+	}
+	&.Vertical
+	{
+		&> div.Track
+		{
+			width: @TrackSize;
+			&> div.Quantity
+			{
+				transition: height linear 0.1s;
+			}
+			&> div.Thumb
+			{
+				left: -@ThumbOffset;
+				transition: top linear 0.1s;
+			}
+		}
+	}
+	
+	&> div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColor;
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColor;
+		}
+	}
+	&.ColorRed > div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColorRed;
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColorRed;
+		}
+	}
+	&.ColorBlue > div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColorBlue;
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColorBlue;
+		}
+	}
+	&.ColorPurple > div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColorPurple;
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColorPurple;
+		}
+	}
+	&.ColorOrange > div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColorOrange; 
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColorOrange; 
+		}
+	}
+	&.ColorBlack > div.Track
+	{
+		&> div.Quantity
+		{
+			background-color: @ThemeColorBlack; 
+		}
+		&> div.Thumb
+		{
+			color: @ThemeColorBlack; 
+		}
+	}
+}

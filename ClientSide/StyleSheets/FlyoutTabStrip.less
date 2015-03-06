@@ -1,0 +1,46 @@
+/* the tab strip */
+div.FlyoutTabStrip
+{
+	&.Right
+	{
+		bottom: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+	}
+
+	/* the tabs users click on to activate various flyouts */
+	div.FlyoutTab
+	{
+		border-bottom-left-radius: 16px;
+		border-top-left-radius: 16px;
+		height: 96px;
+		left: -24px;
+		margin-bottom: -8px;
+		position: relative;
+		vertical-align: middle;
+		width: 24px;
+
+		&.Active
+		{
+			left: -256px;
+		}
+	}
+
+	/* the actual area where the flyout tab contents go */
+	div.FlyoutTabContents div.FlyoutTabContent
+	{
+		bottom: 0;
+		display: none;
+		position: fixed;
+		right: 24px;
+		top: 0;
+		width: 232px;
+
+		&.Active
+		{
+			/* when it is the active tab, display it and hide the rest */
+			display: block;
+		}
+	}
+}

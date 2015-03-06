@@ -1,0 +1,36 @@
+div.Jumbotron
+{
+	margin-bottom: 30px;
+	padding: 48px 30px;
+	
+	border: solid 1px #DDE6E9;
+	background-color: #FCFCFC;
+	
+	&> div.Title
+	{
+		font-size: 63px;
+		font-weight: 600;
+	}
+	&> div.Content
+	{
+		font-size: 22px;
+		font-weight: lighter;
+		margin-bottom: 16px;
+	}
+}
+@media(max-width: 600px)
+{
+	div.Jumbotron
+	{
+		padding: 24px 18px;
+		margin-bottom: 16px;
+		&> div.Title
+		{
+			font-size: 24px;
+		}
+		&> div.Content
+		{
+			font-size: 16px;
+		}
+	}
+}

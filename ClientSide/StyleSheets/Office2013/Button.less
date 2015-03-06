@@ -1,0 +1,21 @@
+input[type=button], input[type=submit], input[type=reset], button
+{
+	font-family: "Segoe UI", sans-serif;
+	font-size: 9pt;
+	
+	padding: 4px;
+	
+	background-color: @BrandingLightColor;
+	color: #000000;
+	
+	border: solid 1px @BrandingDarkColor;
+	&:hover
+	{
+		background-color: @BrandingLightLightColor;
+	}
+	&:active
+	{
+		background-color: @BrandingDarkDarkColor;
+		color: #FFFFFF;
+	}
+}

@@ -1,0 +1,61 @@
+.Message
+{
+	/*
+		border: 1px solid #AAAAAA;
+		border-radius: 8px;
+		box-shadow: 2px 2px 8px #000000;
+	*/
+	
+	font-family: "Open Sans Light",sans-serif;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 16px;
+	width: 50%;
+	.Title
+	{
+		font-size: 18pt;
+		font-weight: bold;
+		padding-bottom: 8px;
+		
+		border-bottom: 1px solid #AAAAAA;
+		margin-bottom: 24px;
+	}
+	.Content
+	{
+		border-bottom: dotted 1px #AAAAAA;
+		padding-bottom: 8px;
+	}
+	.Buttons
+	{
+		position: relative;
+		a
+		{
+			background-color: #AAEEFF;
+			border-bottom-left-radius: 8px;
+			border-bottom-right-radius: 8px;
+			border: solid 1px #AAAAAA;
+			border-top-style: none;
+			color: #000000;
+			display: inline-block;
+			font-size: 8pt;
+			font-weight: bold;
+			padding: 8px;
+			position: absolute;
+			right: 0px;
+			text-decoration: none;
+			text-transform: uppercase;
+			
+			&:hover
+			{
+				background-color: #CCFFFF;
+			}
+		}
+	}
+	.Icon
+	{
+		&.ErrorIcon
+		{
+			background-image: url('http://static.alcehosting.net/images/icons/error.png');
+		}
+	}
+}

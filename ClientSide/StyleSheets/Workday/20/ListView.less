@@ -1,0 +1,153 @@
+@ListView_BorderColor: #D9D9D9;
+
+@ListView_Item_BackgroundColor_Primary_Normal: #FFFFFF;
+@ListView_Item_BackgroundColor_Primary_Alternate: #EAF6F8;
+@ListView_Item_BackgroundColor_Primary_Hover: #EBF4C1;
+@ListView_Item_BackgroundColor_Primary_Selected: #D4E87E;
+
+@ListView_Item_BackgroundColor_Secondary_Normal: #D9EFF3;
+@ListView_Item_BackgroundColor_Secondary_Alternate: #D9EFF3;
+@ListView_Item_BackgroundColor_Secondary_Hover: #F3FAFB;
+@ListView_Item_BackgroundColor_Secondary_Selected: #B6E2EA;
+
+table tr td
+{
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+}
+table:not(.Borderless)
+{
+	@ListView_Item_BackgroundColor_Normal: @ListView_Item_BackgroundColor_Primary_Normal;
+	@ListView_Item_BackgroundColor_Alternate: @ListView_Item_BackgroundColor_Primary_Alternate;
+	@ListView_Item_BackgroundColor_Hover: @ListView_Item_BackgroundColor_Primary_Hover;
+	@ListView_Item_BackgroundColor_Selected: @ListView_Item_BackgroundColor_Primary_Selected;
+
+	background-color: #FFFFFF;
+	
+	tr, th, td
+	{
+		border: solid 1px @ListView_BorderColor;
+	}
+	border-collapse: collapse;
+	
+	border: solid 1px @ListView_BorderColor;
+	border-left: none;
+	border-right: none;
+	border-bottom: solid 1px #B7BABC;
+	
+	&.Border
+	{
+		border-left: solid 1px @ListView_BorderColor;
+		border-right: solid 1px @ListView_BorderColor;
+	}
+	
+	tr
+	{
+		border-left: none;
+		border-right: none;
+		
+		&:last-child td
+		{
+			border-bottom: solid 1px #B7BABC;
+		}
+		
+		th, td
+		{
+			padding: 4px;
+		}
+		th
+		{
+			border-top: solid 1px #B7BABC;
+			border-bottom: solid 1px #B7BABC;
+			
+			background: #daf1f5; /* Old browsers */
+			background: -moz-linear-gradient(top, #daf1f5 0%, #ffffff 40%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#daf1f5), color-stop(40%,#ffffff)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* IE10+ */
+			background: linear-gradient(to bottom, #daf1f5 0%,#ffffff 40%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#daf1f5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+			
+			font-weight: bold;
+			text-align: left;
+			font-size: 9pt;
+			
+			&:first-child
+			{
+				border-left: none;
+			}
+			&:last-child
+			{
+				border-right: none;
+			}
+			
+			a
+			{
+				color: #003767;
+			}
+		}
+		td
+		{
+			vertical-align: top;
+			transition: background-color 0.3s;
+			
+			&:first-child
+			{
+				border-left: none;
+			}
+			&:last-child
+			{
+				border-right: none;
+			}
+		}
+		
+		&.Alternate
+		{
+			td
+			{
+				background-color: @ListView_Item_BackgroundColor_Primary_Alternate;
+			}
+		}
+		&:hover
+		{
+			td, th
+			{
+				background-color: @ListView_Item_BackgroundColor_Primary_Hover;
+			}
+		}
+		&:active, &:focus, &.Selected
+		{
+			td
+			{
+				background-color: @ListView_Item_BackgroundColor_Primary_Selected;
+			}
+		}
+	
+		&.Secondary tr
+		{
+			&.Alternate
+			{
+				td
+				{
+					background-color: @ListView_Item_BackgroundColor_Secondary_Alternate;
+				}
+			}
+			
+			&:hover
+			{
+				td, th
+				{
+					background-color: @ListView_Item_BackgroundColor_Secondary_Hover;
+				}
+			}
+			&:active, &:focus, &.Selected
+			{
+				td
+				{
+					background-color: @ListView_Item_BackgroundColor_Secondary_Selected;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,49 @@
+div.TabContainer
+{
+	div.Tabs
+	{
+		border-bottom: solid 1px #A7A9AC;
+		padding-bottom: 6px;
+		padding-left: 24px;
+		
+		a.Tab
+		{
+			text-decoration: none;
+			cursor: default;
+			
+			background-color: #F1F3F3;
+			border: solid 1px #D0D1D2;
+			border-bottom: solid 1px #A7A9AC;
+			color: #919295;
+			padding: 6px 30px;
+			margin: 0px;
+			
+			position: relative;
+			
+			&:hover
+			{
+				color: #35ABED;
+			}
+			
+			&.Selected
+			{
+				background-color: #FFFFFF;
+				font-weight: bold;
+				border: solid 1px #A7A9AC;
+				border-bottom: none 0px;
+				color: #44A9DF;
+				padding-bottom: 10px;
+				padding-top: 9px;
+				
+				top: -3px;
+			}
+		}
+	}
+	div.TabPages
+	{
+		div.TabPage
+		{
+			padding: 15px 0px 0px;
+		}
+	}
+}

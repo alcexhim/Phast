@@ -1,0 +1,54 @@
+div.TrackBar
+{
+	-moz-user-select: none;
+	
+	&> div.Track
+	{
+		position: relative;
+		&> div.Quantity, div.Thumb
+		{
+			display: inline-block;
+			position: absolute;
+		}
+		&> div.Thumb
+		{
+			&> span.Text
+			{
+				display: block;
+				font-size: 0.8em;
+				padding: 6px 0px;
+				text-align: center;
+			}
+		}
+	}
+	&:not(.ShowText) > div.Track > div.Thumb > span.Text
+	{
+		display: none;
+	}
+	&.Horizontal
+	{
+		&> div.Track
+		{
+			display: block;
+			width: 100%;
+			&> div.Quantity
+			{
+				height: 100%;
+			}
+		}
+	}
+	&.Vertical
+	{
+		display: inline-block;
+		&> div.Track
+		{
+			display: block;
+			height: 100%;
+			&> div.Quantity
+			{
+				bottom: 0px;
+				width: 100%;
+			}
+		}
+	}
+}

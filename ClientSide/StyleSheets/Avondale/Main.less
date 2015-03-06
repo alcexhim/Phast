@@ -1,0 +1,41 @@
+@import "Branding.less";
+
+@import "Footer.less";
+@import "FormView.less";
+@import "Header.less";
+@import "LinkButton.less";
+@import "ListView.less";
+@import "MainPage.less";
+@import "Menu.less";
+@import "Sidebar.less";
+@import "TextBox.less";
+@import "TrackBar.less";
+
+@import "../../../../fonts/FontAwesome/FontAwesome.css";
+
+body
+{
+	background-color: #D9E0E7;
+	color: #707478;
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	margin: 0px;
+}
+body > div.Content
+{
+	margin-top: @HeaderHeight;
+	margin-left: @SidebarWidth;
+	margin-bottom: @HeaderHeight;
+	
+	padding: 24px;
+}
+
+::selection
+{
+	background-color: @ThemeColor;
+	color: #FFFFFF;
+}
+::-moz-selection
+{
+	background-color: @ThemeColor;
+	color: #FFFFFF;
+}

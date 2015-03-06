@@ -1,0 +1,54 @@
+div.Notification
+{
+	box-shadow: 0px 0px 12px #999999;
+	border-radius: 3px;
+	padding: 15px 15px 15px 50px;
+	
+	position: fixed;
+	top: 62px;
+	right: 12px;
+	
+	color: #FFFFFF;
+	cursor: pointer;
+	
+	opacity: 0;
+	visibility: hidden;
+	
+	transition: opacity linear 0.3s, visibility linear 0.3s;
+	
+	width: 25%;
+	
+	&.Information
+	{
+		background-color: #2F96B4;
+	}
+	&.Success
+	{
+		background-color: #51A351;
+	}
+	&.Warning
+	{
+		background-color: #F89406;
+	}
+	&.Error
+	{
+		background-color: #BD362F;
+	}
+	
+	&.Visible
+	{
+		opacity: 0.8;
+		visibility: visible;
+		&:hover
+		{
+			box-shadow: 0px 0px 12px #000000;
+			transition: opacity none, visibility none;
+			opacity: 1;
+		}
+	}
+	
+	&> div.Title
+	{
+		font-weight: bold;
+	}
+}
