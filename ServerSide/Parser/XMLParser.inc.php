@@ -294,6 +294,8 @@
 	   
 		private function tagData($parser, $value)
 		{
+			if (trim($value) == "") return;
+			
 			$tag = array("Type" => "MarkupLiteralElement", "Value" => $value);
 			array_push($this->mvarOutput, $tag);
 			$this->mvarOutput[count($this->mvarOutput) - 2]['Elements'][] = $this->mvarOutput[count($this->mvarOutput) - 1];
