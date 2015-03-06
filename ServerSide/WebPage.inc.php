@@ -1,14 +1,17 @@
 <?php
 	namespace Phast;
 	
-	use Phast\Parser\ControlLoader;
-	
 	use Phast\HTMLControls\Form;
 	use Phast\HTMLControls\FormMethod;
 	use Phast\HTMLControls\HTMLControlInput;
 	use Phast\HTMLControls\HTMLControlInputType;
+	
+	use Phast\Parser\ControlLoader;
 	use Phast\Parser\PhastPage;
-				
+	use Phast\Parser\PhastParser;
+	
+	use UniversalEditor\ObjectModels\Markup\MarkupElement;
+												
 	/**
 	 * Contains functionality common to all Phast Web pages. 
 	 * @author Michael Becker
@@ -16,6 +19,18 @@
     class WebPage
     {
 		public $BreadcrumbItems;
+		
+		/**
+		 * True if this Web page should be considered when parsing a path; false otherwise.
+		 * @var boolean
+		 */
+		public $Enabled;
+		
+		/**
+		 * The path to this Web page, including any path variables.
+		 * @var string
+		 */
+		public $FileName;
 		
 		/**
 		 * The title of this Web page.
@@ -75,8 +90,21 @@
          */
         public $StyleSheets;
 		public $Styles;
+		/**
+		 * Variables that are defined on the client, manifested as HTML INPUT elements and transmitted via POST.
+		 * @var WebVariable[]
+		 */
 		public $ClientVariables;
+		/**
+		 * Variables that are defined on the server, invisible to the client.
+		 * @var WebVariable[]
+		 */
 		public $ServerVariables;
+		/**
+		 * Variables that are defined in the virtual path (for example /path/to/$(variable) )
+		 * @var WebVariable[]
+		 */
+		public $PathVariables;
 		public $OpenGraph;
 		
 		/**
@@ -112,6 +140,12 @@
 			return null;
 		}
 		
+		/**
+		 * 
+		 * @param MarkupElement $element
+		 * @param PhastParser $parser
+		 * @return WebPage
+		 */
 		public static function FromMarkup($element, $parser)
 		{
 			$page = new WebPage();
@@ -360,6 +394,7 @@
 			$this->OpenGraph = new WebOpenGraphSettings();
 			$this->ResourceLinks = array();
 			$this->ClassList = array();
+			$this->Enabled = true;
 			$this->MasterPage = null;
 			$this->Scripts = array();
 			$this->StyleSheets = array();
@@ -510,6 +545,31 @@
 		protected function AfterFullContent()
 		{
 			
+		}
+
+		/**
+		 * Retrieves the WebPageVariable with the given name associated with this WebPage.
+		 * @param string $name The name of the WebPageVariable to return.
+		 * @return WebPageVariable|NULL The WebPageVariable with the given name, or NULL if no WebPageVariable with the given name is defined for this WebPage.
+		 */
+		public function GetPathVariable($name)
+		{
+			foreach ($this->PathVariables as $variable)
+			{
+				if ($variable->Name == $name) return $variable;
+			}
+			return null;
+		}
+		/**
+		 * Retrieves the string value for the WebPageVariable with the given name associated with this WebPage.
+		 * @param string $name The name of the WebPageVariable whose value is to be returned.
+		 * @return string The value of the WebPageVariable with the given name, or the empty string ("") if no WebPageVariable with the given name is defined for this WebPage.
+		 */
+		public function GetPathVariableValue($name)
+		{
+			$variable = $this->GetPathVariable($name);
+			if ($variable == null) return null;
+			return $variable->Value;
 		}
 		
 		/**
@@ -672,7 +732,7 @@
 				
 				// ========== BEGIN: Resource Links ==========
 				$items = array();
-
+				
 				if ($this->MasterPage != null)
 				{
 					foreach ($this->MasterPage->ResourceLinks as $item)

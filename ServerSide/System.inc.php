@@ -12,6 +12,7 @@
 	set_error_handler("Phast\\wfx_exception_error_handler");
 	*/
 	
+	use Phast\Parser\PhastParser;
 	use Phast\Pages\ErrorPage;
 
 	/**
@@ -117,22 +118,6 @@
 		}
 		
 		/**
-		 * Gets the Module with the specified name, or creates it if no Module with the specified name exists.
-		 * @param string $name The name of the Module to search for.
-		 */
-		public static function GetModuleByName($name)
-		{
-			foreach (System::$Modules as $module)
-			{
-				if ($module->Name == $name) return $module;
-			}
-			
-			$module = new Module($name);
-			System::$Modules[] = $module;
-			return $module;
-		}
-		
-		/**
 		 * Gets the relative path on the Web site for the current page.
 		 * @return string $_SERVER["REQUEST_URI"]
 		 */
@@ -184,10 +169,10 @@
 		}
 		
 		/**
-		 * Array of Modules which are loaded when this application executes.
-		 * @var Module
+		 * The Parser
+		 * @var PhastParser
 		 */
-		public static $Modules;
+		public static $Parser;
 		
 		/**
 		 * The event handler that is called when an irrecoverable error occurs.
@@ -302,7 +287,6 @@
 		public static function Launch()
 		{
 			global $RootPath;
-			$Phast_files = glob($RootPath . "/Include/Pages/*.wfx");
 			
 			$path = System::GetVirtualPath();
 			if (System::$EnableTenantedHosting && System::$TenantName == "")
@@ -326,45 +310,57 @@
 				if (!$retval) return false;
 			}
 			
-			if (!is_array(System::$Modules) || count(System::$Modules) == 0)
-			{
-				$retval = call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("There are no modules configured for this Phast application."));
-				return false;
-			}
-			
 			$success = false;
-			foreach (System::$Modules as $module)
+			
+			$actualPathStr = $_GET["virtualpath"];
+			$actualPathParts = explode("/", $actualPathStr);
+			$pathVars = array();
+			
+			$actualPage = null;
+			
+			foreach (System::$Parser->Pages as $page)
 			{
-				if (!$module->Enabled) continue;
+				if (!$page->Enabled) continue;
 				
-				foreach ($module->Pages as $vpath)
+				// try to parse the path, for example:
+				// profile/$(username)/dashboard
+				
+				$pathParts = explode("/", $page->FileName);
+				$pathPartCount = count($pathParts);
+				$found = true;
+				for ($i = 0; $i < $pathPartCount; $i++)
 				{
-					$path0 = "";
-					if (isset($path[0]))
+					$pathPart = $pathParts[$i];
+					if (stripos($pathPart, "$(") == 0 && stripos($pathPart, ")") == strlen($pathPart) - 1)
 					{
-						$path0 = $path[0];
+						$pathVarName = substr($pathPart, 2, strlen($pathPart) - 3);
+						$pathVars[$pathVarName] = $actualPathParts[$i];
 					}
-					if ($vpath->PathName == $path0)
+					else
 					{
-						$xpath = $path;
-						array_shift($xpath);
-						if (!$vpath->Execute($xpath))
+						if ($actualPathParts[$i] != $pathPart)
 						{
-							/*
-							if (is_callable(System::$ErrorEventHandler))
-							{
-								$retval = call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("The module '" . $path[0] . "' did not execute properly"));
-								if (!$retval) return false;
-							}
-							*/
-						}
-						else
-						{
-							$success = true;
+							// a literal path string is broken; we can't use this
+							$found = false;
 							break;
 						}
 					}
 				}
+				if ($found)
+				{
+					$actualPage = $page;
+					break;
+				}
+			}
+			
+			if ($actualPage != null)
+			{
+				foreach ($pathVars as $key => $value)
+				{
+					$actualPage->PathVariables[] = new WebVariable($key, $value);
+				}
+				$actualPage->Render();
+				$success = true;
 			}
 			
 			if (is_callable(System::$AfterLaunchEventHandler))
@@ -381,194 +377,7 @@
 			return true;
 		}
 	}
-	/**
-	 * Represents a module, a collection of related ModulePages.
-	 * @author Michael Becker
-	 */
-	class Module
-	{
-		/**
-		 * The name of this Module.
-		 * @var string
-		 */
-		public $Name;
-		/**
-		 * True if this Module is enabled and will respond to ModulePage requests; false otherwise.
-		 * @var boolean
-		 */
-		public $Enabled;
-		/**
-		 * Array of ModulePages that are handled by this Module.
-		 * @var ModulePage[]
-		 */
-		public $Pages;
-		
-		/**
-		 * Retrieves the ModulePage with the specified name on this Module, or creates one if no ModulePage with the specified name exists on this Module.
-		 * @param string $name
-		 * @return ModulePage
-		 */
-		public function GetPageByName($name)
-		{
-			foreach ($this->Pages as $page)
-			{
-				if ($page->PathName == $name) return $page;
-			}
-			$page = new ModulePage($name, null);
-			$this->Pages[] = $page;
-			return $page;
-		}
-		
-		/**
-		 * Creates a new Module with the specified parameters.
-		 * @param string $name The name of this Module.
-		 * @param ModulePage[] $pages Array of ModulePages that are handled by this Module.
-		 */
-		public function __construct($name, $pages = null)
-		{
-			$this->Name = $name;
-			$this->Enabled = true;
-			if ($pages == null) $pages = array();
-			if (is_array($pages))
-			{
-				$this->Pages = $pages;
-			}
-			else
-			{
-				$this->Pages = array($pages);
-			}
-		}
-	}
-	/**
-	 * Represents a page provided by a Module that is accessible by the specified URL.
-	 * @author Michael Becker
-	 */
-	class ModulePage
-	{
-		/**
-		 * The relative path of this ModulePage.
-		 * @var string
-		 */
-		public $PathName;
-		/**
-		 * The user function that is executed when this ModulePage is accessed. Only valid if Pages is
-		 * not defined.
-		 * @var callable
-		 */
-		public $UserFunction;
-		/**
-		 * Array of ModulePages that are sub-pages of this ModulePage. Only valid if UserFunction is not
-		 * defined.
-		 * @var ModulePage[]
-		 */
-		public $Pages;
-		/**
-		 * The user function that is executed before this ModulePage is accessed. 
-		 * @var callable
-		 */
-		public $BeforeExecute;
-		/**
-		 * The user function that is executed after this ModulePage is accessed.
-		 * @var callable
-		 */
-		public $AfterExecute;
-		/**
-		 * Extra data associated with this ModulePage.
-		 * @var unknown
-		 */
-		public $ExtraData;
-		
-		/**
-		 * Creates a ModulePage with the specified parameters.
-		 * @param string $pathName The relative path of this ModulePage.
-		 * @param callable|ModulePage[] $userFunctionOrPages Either a user function to execute when this ModulePage is accessed, or an array of ModulePages that are sub-pages of this ModulePage.
-		 * @param callable $beforeExecute The user function that is executed before this ModulePage is accessed.
-		 * @param callable $afterExecute The user function that is executed after this ModulePage is accessed.
-		 */
-		public function __construct($pathName, $userFunctionOrPages, $beforeExecute = null, $afterExecute = null)
-		{
-			$this->PathName = $pathName;
-			if (is_callable($userFunctionOrPages))
-			{
-				$this->UserFunction = $userFunctionOrPages;
-			}
-			else if (is_array($userFunctionOrPages))
-			{
-				$this->Pages = $userFunctionOrPages;
-			}
-			$this->BeforeExecute = $beforeExecute;
-			$this->AfterExecute = $afterExecute;
-		}
-		
-		/**
-		 * Retrieves the ModulePage with the specified name on this ModulePage, or creates one if no ModulePage with the specified name exists on this ModulePage.
-		 * @param string $name
-		 * @return ModulePage
-		 */
-		public function GetPageByName($name)
-		{
-			foreach ($this->Pages as $page)
-			{
-				if ($page->PathName == $name) return $page;
-			}
-			$page = new ModulePage($name, null);
-			$this->Pages[] = $page;
-			return $page;
-		}
-		
-		/**
-		 * Executes this ModulePage with the specified path.
-		 * @param string $path The relative path to handle via this ModulePage.
-		 * @return boolean True if the specified path was handled by this ModulePage or a sub-page; false otherwise.
-		 */
-		public function Execute($path)
-		{
-			foreach (System::$IncludeFiles as $includefile)
-			{
-				if (get_class($includefile) != "Phast\\IncludeFile") continue;
-				System::IncludeFile($includefile->FileName, $includefile->IsRequired);
-			}
-			
-			if (is_callable($this->BeforeExecute))
-			{
-				$retval = call_user_func($this->BeforeExecute, $this, $path);
-				if ($retval === false) return false;
-			}
-			if (is_array($this->Pages))
-			{
-				foreach ($this->Pages as $vpath)
-				{
-					if (((count($path) > 0) && ($vpath->PathName == $path[0])) || (count($path) == 0 && $vpath->PathName == ""))
-					{
-						array_shift($path);
-						if (!$vpath->Execute($path))
-						{
-							if (is_callable(System::$ErrorEventHandler))
-							{
-								// $retval = call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("The module '" . $path[0] . "' did not execute properly"));
-								return true;
-							}
-						}
-						return true;
-					}
-				}
-				return false;
-			}
-			
-			$retval = false;
-			if (is_callable($this->UserFunction))
-			{
-				$retval = call_user_func($this->UserFunction, $this, $path);
-			}
-			if (is_callable($this->AfterExecute))
-			{
-				$retval2 = call_user_func($this->AfterExecute, $this, $path);
-				if ($retval2 === false) return false;
-			}
-			return $retval;
-		}
-	}
-
+	
 	require_once("Enumeration.inc.php");
 	
 	require_once("RenderMode.inc.php");
@@ -666,7 +475,6 @@
 	System::$EnableTenantedHosting = false;
 	
 	System::$IncludeFiles = array();
-	System::$Modules = array();
 	System::$UnspecifiedTenantErrorHandler = function()
 	{
 		return call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("No tenant name was specified for this tenanted hosting application."));
@@ -676,6 +484,7 @@
 		echo($e->Message);
 	};
 	System::$Variables = array();
+	System::$Parser = new PhastParser();
 	
 	global $PhastRootPath;
 	$PhastRootPath = dirname(__FILE__);
@@ -716,35 +525,44 @@
 		require_once($filename);
 	}
 	
+	// Local MasterPages Code-Behind loader
+	$a = glob($RootPath . "/Include/MasterPages/*.phpx.php");
+	foreach ($a as $filename)
+	{
+		require_once($filename);
+	}
 	// Local MasterPages loader
-	$a = glob($RootPath . "/Include/MasterPages/*.inc.php");
+	$a = glob($RootPath . "/Include/MasterPages/*.phpx");
+	foreach ($a as $filename)
+	{
+		System::$Parser->LoadFile($filename);
+	}
+
+	// Local Pages Code-Behind loader
+	$a = glob($RootPath . "/Include/Pages/*.phpx.php");
 	foreach ($a as $filename)
 	{
 		require_once($filename);
 	}
-	
 	// Local Pages loader
-	$a = glob($RootPath . "/Include/Pages/*.inc.php");
+	$a = glob($RootPath . "/Include/Pages/*.phpx");
+	foreach ($a as $filename)
+	{
+		System::$Parser->LoadFile($filename);
+	}
+	
+	// Module Pages Code-Behind loader
+	$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx.php");
 	foreach ($a as $filename)
 	{
 		require_once($filename);
 	}
-	
-	// Local Modules loader
-	$a = glob($RootPath . "/Include/Modules/*/Main.inc.php");
+	// Module Pages loader
+	$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx");
 	foreach ($a as $filename)
 	{
-		include_once($filename);
+		System::$Parser->LoadFile($filename);
 	}
-	
-	// Local Module Pages loader
-	// $a = glob($RootPath . "/Include/Modules/*/Pages/*.inc.php");
-	/*
-	foreach ($a as $filename)
-	{
-		include_once($filename);
-	}
-	*/
 	
 	session_start();
 ?>
