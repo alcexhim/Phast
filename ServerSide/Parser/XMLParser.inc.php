@@ -247,10 +247,16 @@
 	
 	class XMLParser
 	{
+		public $RemoveWhitespace;
 		
 		private $mvarOutput;
 		var $resParser;
 		var $strXmlData;
+		
+		public function __construct()
+		{
+			$this->RemoveWhitespace = true;
+		}
 		
 		public function LoadFile($filename)
 		{
@@ -294,8 +300,7 @@
 	   
 		private function tagData($parser, $value)
 		{
-			if (trim($value) == "") return;
-			
+			if ($this->RemoveWhitespace && trim($value) == "") return;
 			$tag = array("Type" => "MarkupLiteralElement", "Value" => $value);
 			array_push($this->mvarOutput, $tag);
 			$this->mvarOutput[count($this->mvarOutput) - 2]['Elements'][] = $this->mvarOutput[count($this->mvarOutput) - 1];
