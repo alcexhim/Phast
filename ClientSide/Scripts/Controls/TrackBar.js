@@ -19,6 +19,50 @@ function TrackBar(parentElement)
 	this.ThumbElement = this.TrackElement.childNodes[1];
 	this.ThumbTextElement = this.ThumbElement.childNodes[0];
 	
+	this.OnMouseWheel = function(e)
+	{ 
+		if (e.detail > 0)
+		{
+			// scrolling down
+			var value = this.NativeObject.get_CurrentValue() - this.NativeObject.get_ScrollInterval();
+			if (value < 0) value = 0;
+			if (value > this.NativeObject.get_MaximumValue()) value = this.NativeObject.get_MaximumValue();
+			
+			this.NativeObject.set_CurrentValue(this.NativeObject.get_CurrentValue() - this.NativeObject.get_ScrollInterval());
+		}
+		else if (e.detail < 0)
+		{
+			// scrolling up
+			var value = this.NativeObject.get_CurrentValue() + this.NativeObject.get_ScrollInterval();
+			if (value < 0) value = 0;
+			if (value > this.NativeObject.get_MaximumValue()) value = this.NativeObject.get_MaximumValue();
+			
+			this.NativeObject.set_CurrentValue(value);
+		}
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	};
+
+	this.ParentElement.addEventListener("mousewheel", this.OnMouseWheel);
+	this.ParentElement.addEventListener("DOMMouseScroll", this.OnMouseWheel);
+	
+	this.mvarScrollInterval = 5;
+	this.get_ScrollInterval = function()
+	{
+		if (this.ParentElement.hasAttribute("data-scroll-interval"))
+		{
+			return this.ParentElement.getAttribute("data-scroll-interval");
+		}
+		return this.mvarScrollInterval;
+	};
+	this.set_ScrollInterval = function(value)
+	{
+		this.ParentElement.setAttribute("data-scroll-interval", value);
+		this.mvarScrollInterval = value;
+		return value;
+	};
+	
 	this.get_Orientation = function()
 	{
 		if (System.ClassList.Contains(this.ParentElement, "Vertical"))
