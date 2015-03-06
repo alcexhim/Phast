@@ -1,0 +1,77 @@
+div.Wizard
+{
+	ol
+	{
+		background-color: #F0F3F4;
+		li
+		{
+			cursor: pointer;
+			font-size: 14px;
+			line-height: 20px;
+			padding: 16px;
+			
+			span.Title, span.Description
+			{
+				display: block;
+				margin-left: 30px;
+			}
+			span.Title
+			{
+				color: #333333;
+			}
+			span.Description
+			{
+				color: #999999;
+				font-size: 85%;
+			}
+			span.Number
+			{
+				background-color: #6D7479;
+				color: #FFFFFF;
+				
+				border-radius: 50%;
+				float: left;
+				height: 20px;
+				line-height: 20px;
+				margin-right: 10px;
+				padding: 0;
+				text-align: center;
+				top: 0;
+				width: 20px;
+				
+				font-size: 75%;
+				font-weight: 600;
+			}
+			
+			&:hover
+			{
+				background-color: #D3DADF;
+			}
+			&.Selected
+			{
+				background-color: @ThemeColor;
+				cursor: default;
+				
+				span.Title
+				{
+					color: #FFFFFF;
+				}
+				span.Description
+				{
+					color: rgba(255, 255, 255, 0.6);
+				}
+			}
+		}
+	}
+	div.WizardPages
+	{
+		margin: 10px 0px -10px;
+		padding: 16px;
+		div.WizardPage
+		{
+			border: solid 1px #E3E3E3;
+			border-radius: 4px;
+			min-height: 20px;
+		}
+	}
+}
