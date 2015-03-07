@@ -312,8 +312,7 @@
 			
 			$success = false;
 			
-			$actualPathStr = $_GET["virtualpath"];
-			$actualPathParts = explode("/", $actualPathStr);
+			$actualPathParts = $path;
 			$pathVars = array();
 			
 			$actualPage = null;
