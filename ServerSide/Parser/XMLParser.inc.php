@@ -111,9 +111,21 @@
 	}
 	class MarkupTagElement extends MarkupElement
 	{
+		/**
+		 * The name of this MarkupTagElement.
+		 * @var string
+		 */
 		public $Name;
 		
+		/**
+		 * The MarkupAttributes associated with this MarkupTagElement.
+		 * @var MarkupAttribute[]
+		 */
 		public $Attributes;
+		/**
+		 * The child MarkupElements of this MarkupTagElement.
+		 * @var MarkupTagElement[]
+		 */
 		public $Elements;
 		
 		public function GetOuterMarkup()
