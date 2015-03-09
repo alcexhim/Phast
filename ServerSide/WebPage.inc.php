@@ -1041,19 +1041,22 @@
         	{
         		foreach ($controls as $control)
         		{
-        			if (get_class($control) == "Phast\\WebControls\\SectionPlaceholder")
+        			$ctl = clone $control;
+        			
+        			if (get_class($ctl) == "Phast\\WebControls\\SectionPlaceholder")
         			{
         				$pageControls = $this->Controls;
         				foreach ($pageControls as $pageControl)
         				{
-        					if (get_class($pageControl) != "Phast\\WebControls\\Section") continue;
-        					$newControls[] = $pageControl;
+        					$pageCtl = clone $pageControl;
+        					if (get_class($pageCtl) != "Phast\\WebControls\\Section") continue;
+        					$newControls[] = $pageCtl;
         				}
         			}
         			else
         			{
-        				$control->Controls = $this->MergeMasterPageControls($control->Controls);
-        				$newControls[] = $control;
+        				$ctl->Controls = $this->MergeMasterPageControls($ctl->Controls);
+        				$newControls[] = $ctl;
         			}
         		}
         	}
