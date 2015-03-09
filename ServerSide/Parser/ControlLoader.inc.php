@@ -3,16 +3,25 @@
 
 	use Phast\HTMLControl;
 	use Phast\HTMLControls\Literal;
-	
+
+	use Phast\WebControl;
 	use Phast\WebControlAttribute;
 	use Phast\WebPageMessage;
 	use Phast\System;
-		
+
+	use UniversalEditor\ObjectModels\Markup\MarkupElement;
+	use UniversalEditor\ObjectModels\Markup\MarkupTagElement;
+					
 	class ControlLoader
 	{
 		public static $Messages;
 		public static $Namespaces;
-	
+		
+		/**
+		 * Parses the children of the specified MarkupElement into the specified object. 
+		 * @param MarkupTagElement $elem
+		 * @param WebControl $obj
+		 */
 		public static function ParseChildren($elem, &$obj)
 		{
 			// our parent is a WebControl and we should parse its children as properties
@@ -27,15 +36,23 @@
 						trigger_error("\$elem1->Elements not array for tag '" . $elem1->Name . "'");
 						continue;
 					}
-						
+					
 					foreach ($elem1->Elements as $elem2)
 					{
 						if (get_class($elem2) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
-							
-						$i = stripos($elem->Name, ":");
-						$prefix = substr($elem2->Name, 0, $i);
-						$name = substr($elem2->Name, $i + 1);
-	
+						
+						$i = stripos($elem2->Name, ":");
+						if ($i === false)
+						{
+							$prefix = "";
+							$name = $elem2->Name;
+						}
+						else
+						{
+							$prefix = substr($elem2->Name, 0, $i);
+							$name = substr($elem2->Name, $i + 1);
+						}
+						
 						if (isset(ControlLoader::$Namespaces[$prefix]) && ControlLoader::$Namespaces[$prefix] != "")
 						{
 							$realname = ControlLoader::$Namespaces[$prefix] . "\\" . $name;
@@ -44,16 +61,32 @@
 						{
 							$realname = $name;
 						}
-						if (class_exists($realname))
+						
+						if ($prefix == "")
 						{
-							$obj1 = new $realname();
+							// assume regular HTML control
+							$obj1 = new HTMLControl($name);
+							if ($elem2->GetInnerMarkup() == "")
+							{
+								// we have to make some compromises; AFAIK the SCRIPT tag is the only
+								// tag that doesn't know how to properly handle close /> tag
+								$obj1->HasContent = false;
+							}
 						}
 						else
 						{
-							ControlLoader::$Messages[] = new WebPageMessage("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")", WebPageMessageSeverity::Error);
-							System::WriteErrorLog("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")");
-							continue;
+							if (class_exists($realname))
+							{
+								$obj1 = new $realname();
+							}
+							else
+							{
+								ControlLoader::$Messages[] = new WebPageMessage("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")", WebPageMessageSeverity::Error);
+								System::WriteErrorLog("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")");
+								continue;
+							}
 						}
+						
 						ControlLoader::LoadAttributes($elem2, $obj1);
 	
 						if ($obj1->ParseChildElements)
@@ -86,6 +119,11 @@
 				}
 			}
 		}
+		/**
+		 * Creates a WebControl from markup in a MarkupElement.
+		 * @param MarkupElement $elem The MarkupElement to parse.
+		 * @param WebControl $parent The WebControl that owns this control.
+		 */
 		public static function LoadControl($elem, $parent)
 		{
 			if (get_class($elem) == "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement")

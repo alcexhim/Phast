@@ -45,6 +45,8 @@
 			$this->Title = $title;
 			$this->ImageURL = $imageURL;
 			$this->Width = $width;
+
+			$this->ParseChildElements = false;
 		}
 	}
 	class ListViewItem

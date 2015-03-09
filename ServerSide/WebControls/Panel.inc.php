@@ -20,6 +20,7 @@
 		{
 			parent::__construct($id);
 			$this->Title = $title;
+			$this->ParseChildElements = true;
 			
 			$this->HeaderControls = array();
 			$this->ContentControls = array();

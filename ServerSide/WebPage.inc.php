@@ -82,6 +82,13 @@
 		 * @var WebPageMetadata[]
 		 */
         public $Metadata;
+        
+        /**
+         * The references to XML namespaces and Phast elements associated with this WebPage.
+         * @var WebNamespaceReference[]
+         */
+        public $References;
+        
         public $ResourceLinks;
         public $Scripts;
         /**
@@ -253,7 +260,7 @@
 					$page->References[] = new WebNamespaceReference($attTagPrefix->Value, $attNamespacePath->Value, $namespaceURL);
 				}
 			}
-				
+			
 			$references = $page->References;
 			if ($page->MasterPage != null)
 			{
@@ -396,6 +403,7 @@
 			$this->ClassList = array();
 			$this->Enabled = true;
 			$this->MasterPage = null;
+			$this->References = array();
 			$this->Scripts = array();
 			$this->StyleSheets = array();
 			$this->Styles = array();
@@ -457,7 +465,7 @@
             	}
             }
 
-            if (method_exists($this->OnInitialized, "OnInitializing"))
+            if (method_exists($this, "OnInitialized"))
             {
 	            $this->OnInitialized(EventArgs::GetEmptyInstance());
             }
