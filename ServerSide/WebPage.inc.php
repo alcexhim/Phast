@@ -457,7 +457,7 @@
             	}
             }
 
-            if (method_exists($this->OnInitialized, "OnInitializing"))
+            if (method_exists($this, "OnInitialized"))
             {
 	            $this->OnInitialized(EventArgs::GetEmptyInstance());
             }
