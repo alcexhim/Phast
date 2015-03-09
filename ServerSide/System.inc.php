@@ -104,6 +104,12 @@
 		public static $UnspecifiedTenantErrorHandler;
 		
 		/**
+		 * The format in which to serve WebPages.
+		 * @var WebPageFormat
+		 */
+		public static $WebPageFormat;
+		
+		/**
 		 * Global application variables
 		 * @var string[]
 		 */
@@ -261,6 +267,30 @@
 						System::$TenantName = $array[0];
 						array_shift($array);
 					}
+					
+					if ($array[0] == "j" || $array[0] == "x")
+					{
+						// JSON or XML request
+						switch ($array[0])
+						{
+							case "j":
+							{
+								System::$WebPageFormat = WebPageFormat::JSON;
+								break;
+							}
+							case "x":
+							{
+								System::$WebPageFormat = WebPageFormat::XML;
+								break;
+							}
+						}
+						array_shift($array);
+					}
+					else
+					{
+						System::$WebPageFormat = WebPageFormat::HTML;
+					}
+					
 					return $array;
 				}
 			}
@@ -461,6 +491,8 @@
 	require("WebControlAttribute.inc.php");
 	require("WebControlClientIDMode.inc.php");
 	require("WebControl.inc.php");
+
+	require("WebPageFormat.inc.php");
 	
 	require("WebPage.inc.php");
 	require("WebPageCommand.inc.php");

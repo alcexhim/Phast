@@ -11,7 +11,7 @@
 	use Phast\Parser\PhastParser;
 	
 	use UniversalEditor\ObjectModels\Markup\MarkupElement;
-												
+	
 	/**
 	 * Contains functionality common to all Phast Web pages. 
 	 * @author Michael Becker
@@ -685,6 +685,55 @@
 			if ($variable == null) return false;
 			return ($variable->IsSet == "true");
 		}
+		
+		/**
+		 * Renders the specified WebControl as a JSON control.
+		 * @param WebControl $ctl
+		 */
+		private function RenderJSONControl($ctl)
+		{
+			echo("{");
+			echo("\"ID\":\"" . \JH\Utilities::JavaScriptEncode($ctl->ID, "\"") . "\",");
+			echo("\"TagName\":\"" . \JH\Utilities::JavaScriptEncode($ctl->TagName, "\"") . "\",");
+			echo("\"ClassName\":\"" . \JH\Utilities::JavaScriptEncode(get_class($ctl), "\"") . "\",");
+			echo("\"Attributes\":[");
+			$count = count($ctl->Attributes);
+			for ($i = 0; $i < $count; $i++)
+			{
+				echo("{");
+				$attr = $ctl->Attributes[$i];
+				echo("\"" . $attr->Name . "\": \"" . \JH\Utilities::JavaScriptEncode($attr->Value, "\"") . "\"");
+				echo("}");
+				if ($i < $count - 1) echo(",");
+			}
+			echo("],");
+			echo("\"Controls\":[");
+			$count = count($ctl->Controls);
+			for($i = 0; $i < $count; $i++)
+			{
+				$ctl1 = $ctl->Controls[$i];
+				$this->RenderJSONControl($ctl1);
+				if ($i < $count - 1) echo(",");
+			}
+			echo("],");
+			echo("\"Properties\":[");
+			$ctla = (array)$ctl;
+			$count = count($ctla);
+			$i = 0;
+			foreach($ctla as $key=>$value)
+			{
+				if ($key == "ParentObject") continue;
+				 
+				echo("{");
+				echo("\"" . $key . "\"");
+				echo (":");
+				echo("\"" . \JH\Utilities::JavaScriptEncode($value, "\"") . "\"");
+				echo("}");
+				if ($i < $count - 1) echo(",");
+				$i++;
+			}
+			echo("}");
+		}
         
         public function Render()
         {
@@ -692,6 +741,65 @@
         	{
         		trigger_error("Could not initialize the WebPage");
         		return;
+        	}
+        	
+        	switch (System::$WebPageFormat)
+        	{
+        		case WebPageFormat::JSON:
+        		{
+        			header("Content-Type: application/json; charset=utf-8");
+        			echo("{");
+        			echo("\"FileName\":\"" . $this->FileName . "\",");
+        			echo("\"Controls\":[");
+        			$count = count($this->Controls);
+        			for($i = 0; $i < $count; $i++)
+        			{
+        				$ctl = $this->Controls[$i];
+        				$this->RenderJSONControl($ctl);
+        				if ($i < $count - 1) echo(",");
+        			}
+        			echo("]");
+        			echo("}");
+        			return;
+        		}
+        		case WebPageFormat::XML:
+        		{
+        			header("Content-Type: application/xml");
+        			echo ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        			
+        			$tagPage = new HTMLControl("Page");
+        			$tagPage->Attributes[] = new WebControlAttribute("FileName", $this->FileName);
+        			
+        			if (count($this->Controls) > 0)
+        			{
+        				$tagControls = new HTMLControl("Controls");
+        				foreach ($this->Controls as $ctl)
+        				{
+        					$tagControl = new HTMLControl("Control");
+        					$tagControl->Attributes[] = new WebControlAttribute("ID", $ctl->ID);
+        					$tagControl->Attributes[] = new WebControlAttribute("ClassName", get_class($ctl));
+        					
+        					if (count($ctl->Attributes) > 0)
+        					{
+        						$tagAttributes = new HTMLControl("Attributes");
+	        					foreach ($ctl->Attributes as $attr)
+	        					{
+	        						$tagAttribute = new HTMLControl("Attribute");
+	        						$tagAttribute->Attributes[] = new WebControlAttribute("Name", $attr->Name);
+	        						$tagAttribute->Attributes[] = new WebControlAttribute("Value", $attr->Value);
+	        						$tagAttributes[] = $tagAttribute;
+	        					}
+	        					$tagControl->Controls[] = $tagAttributes;
+        					}
+        					
+        					$tagControls->Controls[] = $tagControl;
+        				}
+        				$tagPage->Controls[] = $tagControls;
+        			}
+        			
+        			$tagPage->Render();
+        			return;
+        		}
         	}
             
 			if (!$this->IsPartial)
