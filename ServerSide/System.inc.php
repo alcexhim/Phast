@@ -267,30 +267,6 @@
 						System::$TenantName = $array[0];
 						array_shift($array);
 					}
-					
-					if ($array[0] == "j" || $array[0] == "x")
-					{
-						// JSON or XML request
-						switch ($array[0])
-						{
-							case "j":
-							{
-								System::$WebPageFormat = WebPageFormat::JSON;
-								break;
-							}
-							case "x":
-							{
-								System::$WebPageFormat = WebPageFormat::XML;
-								break;
-							}
-						}
-						array_shift($array);
-					}
-					else
-					{
-						System::$WebPageFormat = WebPageFormat::HTML;
-					}
-					
 					return $array;
 				}
 			}
@@ -319,6 +295,44 @@
 			global $RootPath;
 			
 			$path = System::GetVirtualPath();
+			
+			// strip path extension if there is one
+			$pathLast = $path[count($path) - 1];
+			$ix = strripos($pathLast, ".");
+			if ($ix !== false)
+			{
+				$pathExt = substr($pathLast, $ix + 1);
+				$path[count($path) - 1] = substr($pathLast, 0, $ix);
+				
+				switch ($pathExt)
+				{
+					case "json":
+					{
+						System::$WebPageFormat = WebPageFormat::JSON;
+						break;
+					}
+					case "xml":
+					{
+						System::$WebPageFormat = WebPageFormat::XML;
+						break;
+					}
+					case "html":
+					{
+						System::$WebPageFormat = WebPageFormat::HTML;
+						break;
+					}
+					default:
+					{
+						if ($path[count($path) - 1] != "")
+						{
+							$path[count($path) - 1] = $path[count($path) - 1];
+							System::Redirect("~/" . implode("/", $path));
+							return;
+						}
+					}
+				}
+			}
+			
 			if (System::$EnableTenantedHosting && System::$TenantName == "")
 			{
 				$DefaultTenant = System::GetConfigurationValue("Application.DefaultTenant");
