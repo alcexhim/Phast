@@ -253,7 +253,7 @@
 					$page->ServerVariables[] = new WebVariable($attName->Value, $value);
 				}
 			}
-				
+			
 			$tagReferences = $element->GetElement("References");
 			if ($tagReferences != null)
 			{
@@ -424,7 +424,11 @@
 			$this->Scripts = array();
 			$this->StyleSheets = array();
 			$this->Styles = array();
-			$this->Variables = array();
+			
+			$this->ClientVariables = array();
+			$this->PathVariables = array();
+			$this->ServerVariables = array();
+			
 			$this->UseCompatibleRenderingMode = false;
 			
 			$this->IsPartial = isset($_GET["partial"]);
@@ -433,38 +437,38 @@
 			$this->OnCreating($ce);
 			if ($ce->Cancel) return;
 			
-			if (is_array($this->Variables))
+			foreach ($this->ClientVariables as $variable)
 			{
-				foreach ($this->Variables as $variable)
+				if (isset($_POST["WebPageVariable_" . $variable->Name . "_Value"]))
 				{
-					if (isset($_POST["WebPageVariable_" . $variable->Name . "_Value"]))
-					{
-						$variable->Value = $_POST["WebPageVariable_" . $variable->Name . "_Value"];
-					}
-					if (isset($_POST["WebPageVariable_" . $variable->Name . "_IsSet"]))
-					{
-						$variable->IsSet = $_POST["WebPageVariable_" . $variable->Name . "_IsSet"];
-					}
+					$variable->Value = $_POST["WebPageVariable_" . $variable->Name . "_Value"];
+				}
+				if (isset($_POST["WebPageVariable_" . $variable->Name . "_IsSet"]))
+				{
+					$variable->IsSet = $_POST["WebPageVariable_" . $variable->Name . "_IsSet"];
 				}
 			}
+			
 			$this->OnCreated(EventArgs::GetEmptyInstance());
 		}
         
         private $isInitialized;
         
-        public function Initialize()
+        public function Initialize($renderingPage = null)
         {
         	if ($this->isInitialized) return true;
+        	if ($renderingPage == null) $renderingPage = this;
         	
         	$ce = new CancelEventArgs();
         	
         	if ($this->MasterPage != null)
         	{
-        		if (!$this->MasterPage->Initialize()) return false;
+        		if (!$this->MasterPage->Initialize($this)) return false;
         	}
         	
         	if (method_exists($this, "OnInitializing"))
         	{
+        		$ce->RenderingPage = $renderingPage;
             	$this->OnInitializing($ce);
             	if ($ce->Cancel) return false;
         	}
