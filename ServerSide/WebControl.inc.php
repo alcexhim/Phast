@@ -3,8 +3,20 @@
 	
     class WebControl
     {
+    	/**
+    	 * The unique identifier of this WebControl on a WebPage.
+    	 * @var string
+    	 */
 		public $ID;
+		/**
+		 * The unique identifier of this WebControl on the client rendered WebPage.
+		 * @var string
+		 */
 		public $ClientID;
+		/**
+		 * Determines how ClientIDs are generated for WebControls.
+		 * @var WebControlClientIDMode
+		 */
 		public $ClientIDMode;
 		
 		public $Content;
@@ -36,8 +48,19 @@
 		 */
 		public $VerticalAlignment;
 		
+		/**
+		 * The CssClass to assign to this WebControl. CssClass is assigned after all classes defined in ClassList have been assigned.
+		 * @var string
+		 * @see WebControl::$ClassList
+		 */
 		public $CssClass;
+		/**
+		 * Array of CssClasses to assign to this WebControl.
+		 * @var string[]
+		 * @see WebControl::$CssClass
+		 */
 		public $ClassList;
+		
 		public $TagName;
 		public $Attributes;
 		public $StyleRules;
@@ -45,6 +68,10 @@
 		public $ToolTipTitle;
 		public $ToolTipText;
 		
+		/**
+		 * True if child tags should be parsed as control properties; false if they should be parsed as child controls.
+		 * @var boolean
+		 */
 		public $ParseChildElements;
 		
 		/**
