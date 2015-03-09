@@ -337,7 +337,10 @@
 					}
 					else
 					{
-						if ($actualPathParts[$i] != $pathPart)
+						$app = "";
+						if (isset($actualPathParts[$i])) $app = $actualPathParts[$i];
+						
+						if ($app != $pathPart && (!($app == "" && $pathPart == "")))
 						{
 							// a literal path string is broken; we can't use this
 							$found = false;
