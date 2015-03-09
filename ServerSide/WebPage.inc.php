@@ -692,47 +692,75 @@
 		 */
 		private function RenderJSONControl($ctl)
 		{
-			echo("{");
-			echo("\"ID\":\"" . \JH\Utilities::JavaScriptEncode($ctl->ID, "\"") . "\",");
-			echo("\"TagName\":\"" . \JH\Utilities::JavaScriptEncode($ctl->TagName, "\"") . "\",");
-			echo("\"ClassName\":\"" . \JH\Utilities::JavaScriptEncode(get_class($ctl), "\"") . "\",");
-			echo("\"Attributes\":[");
+			$ary = array
+			(
+				"ClassName" => get_class($ctl)
+			);
+			
 			$count = count($ctl->Attributes);
-			for ($i = 0; $i < $count; $i++)
+			if ($count > 0)
 			{
-				echo("{");
-				$attr = $ctl->Attributes[$i];
-				echo("\"" . $attr->Name . "\": \"" . \JH\Utilities::JavaScriptEncode($attr->Value, "\"") . "\"");
-				echo("}");
-				if ($i < $count - 1) echo(",");
+				$attrs = array();
+				for ($i = 0; $i < $count; $i++)
+				{
+					$attr = $ctl->Attributes[$i];
+					$attrs[] = array
+					(
+						"Name" => $attr->Name,
+						"Value" => $attr->Value
+					);
+				}
+				$ary["Attributes"] = $attrs;
 			}
-			echo("],");
-			echo("\"Controls\":[");
-			$count = count($ctl->Controls);
-			for($i = 0; $i < $count; $i++)
+			
+			$reflect = new \ReflectionClass($ctl);
+			$props = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);
+			$count = count($props);
+			
+			if ($count > 0)
 			{
-				$ctl1 = $ctl->Controls[$i];
-				$this->RenderJSONControl($ctl1);
-				if ($i < $count - 1) echo(",");
+				$attrs = array();
+				$props2 = array();
+				foreach($props as $prop)
+				{
+					$key = $prop->getName();
+					$value = $prop->getValue($ctl);
+					if ($value == null) continue;
+					
+					if (is_array($value))
+					{
+						foreach ($value as $val)
+						{
+							if (is_object($val))
+							{
+								$val->ClassName = get_class($val);
+							}
+						}
+					}
+					
+					$props2[$key] = $value;
+				}
+				$count = count($props2);
+				
+				if ($count > 0)
+				{
+					foreach ($props2 as $key => $value)
+					{
+						if ($key == "ParentObject")
+						{
+							$key = "ParentObjectID";
+							$value = $value->ID;
+						}
+						$attrs[] = array
+						(
+							"Name" => $key,
+							"Value" => $value
+						);
+					}
+					$ary["Properties"] = $props2;
+				}
 			}
-			echo("],");
-			echo("\"Properties\":[");
-			$ctla = (array)$ctl;
-			$count = count($ctla);
-			$i = 0;
-			foreach($ctla as $key=>$value)
-			{
-				if ($key == "ParentObject") continue;
-				 
-				echo("{");
-				echo("\"" . $key . "\"");
-				echo (":");
-				echo("\"" . \JH\Utilities::JavaScriptEncode($value, "\"") . "\"");
-				echo("}");
-				if ($i < $count - 1) echo(",");
-				$i++;
-			}
-			echo("}");
+			return $ary;
 		}
         
         public function Render()
@@ -748,18 +776,25 @@
         		case WebPageFormat::JSON:
         		{
         			header("Content-Type: application/json; charset=utf-8");
-        			echo("{");
-        			echo("\"FileName\":\"" . $this->FileName . "\",");
-        			echo("\"Controls\":[");
+        			
+        			$ary = array
+        			(
+        				"FileName" => $this->FileName
+        			);
+        			
         			$count = count($this->Controls);
-        			for($i = 0; $i < $count; $i++)
+        			if ($count > 0)
         			{
-        				$ctl = $this->Controls[$i];
-        				$this->RenderJSONControl($ctl);
-        				if ($i < $count - 1) echo(",");
+        				$ctls = array();
+	        			for($i = 0; $i < $count; $i++)
+	        			{
+	        				$ctl = $this->Controls[$i];
+	        				$ctls[] = $this->RenderJSONControl($ctl);
+	        			}
+	        			$ary["Controls"] = $ctls;
         			}
-        			echo("]");
-        			echo("}");
+
+        			echo(json_encode($ary));
         			return;
         		}
         		case WebPageFormat::XML:
