@@ -480,6 +480,10 @@
 				{
 					call_user_func($this->Content, $this);
 				}
+				else if (is_string($this->Content))
+				{
+					echo($this->Content);
+				}
 				else
 				{
 					$this->RenderContent();
