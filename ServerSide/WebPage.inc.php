@@ -32,6 +32,20 @@
 		 */
 		public $FileName;
 		
+		public function GetCanonicalFileName()
+		{
+			$path = System::GetVirtualPath();
+			// strip path extension if there is one
+			$pathLast = $path[count($path) - 1];
+			$ix = strripos($pathLast, ".");
+			if ($ix !== false)
+			{
+				$pathExt = substr($pathLast, $ix + 1);
+				$path[count($path) - 1] = substr($pathLast, 0, $ix);
+			}
+			return System::ExpandRelativePath("~/" . implode($path, "/"));
+		}
+		
 		/**
 		 * The title of this Web page.
 		 * @var string
@@ -362,7 +376,10 @@
 			$tag->TagName = "link";
 			$tag->HasContent = false;
 			$tag->Attributes[] = new WebControlAttribute("rel", $link->Relationship);
-			$tag->Attributes[] = new WebControlAttribute("type", $link->ContentType);
+			if ($link->ContentType != null)
+			{
+				$tag->Attributes[] = new WebControlAttribute("type", $link->ContentType);
+			}
 			$tag->Attributes[] = new WebControlAttribute("href", System::ExpandRelativePath($link->URL));
 			return $tag;
 		}
@@ -883,6 +900,7 @@
 				
 				// ========== BEGIN: Resource Links ==========
 				$items = array();
+				$items[] = new WebResourceLink($this->GetCanonicalFileName(), "canonical");
 				
 				if ($this->MasterPage != null)
 				{
