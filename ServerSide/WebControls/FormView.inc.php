@@ -62,20 +62,12 @@
 		{
 			foreach ($this->Items as $item)
 			{
-				if (get_class($item) == "Phast\\WebControls\\FormViewItemSeparator")
+				$div = new HTMLControl("div");
+				$div->ClassList[] = "Field";
+				if ($item->Required) $div->ClassList[] = "Required";
+				
+				if ($item->GenerateLabel)
 				{
-					echo("<div class=\"Separator\">");
-					echo("<div class=\"Title\">");
-					echo($item->Title);
-					echo("</div>");
-					echo("</div>");
-				}
-				else
-				{
-					$div = new HTMLControl("div");
-					$div->ClassList[] = "Field";
-					if ($item->Required) $div->ClassList[] = "Required";
-					
 					$title = $item->Title;
 					$i = stripos($title, "_");
 					$char = null;
@@ -96,11 +88,11 @@
 					}
 					$lbl->InnerHTML = $title;
 					$div->Controls[] = $lbl;
-					
-					$ctl = $item->CreateControl();
-					if ($ctl != null) $div->Controls[] = $ctl;
-					$div->Render();
 				}
+				
+				$ctl = $item->CreateControl();
+				if ($ctl != null) $div->Controls[] = $ctl;
+				$div->Render();
 			}
 		}
 	}
@@ -112,6 +104,8 @@
 		public $Title;
 		public $DefaultValue;
 		public $Required;
+		
+		public $GenerateLabel;
 		
 		/**
 		 * The client-side script called when the value of this FormViewItem changed and validated.
@@ -133,6 +127,7 @@
 			$this->Required = false;
 			
 			$this->ParseChildElements = false;
+			$this->GenerateLabel = true;
 		}
 		
 		public function CreateControl()
@@ -147,11 +142,20 @@
 		public function __construct($id = null, $title = null)
 		{
 			parent::__construct($id, $id, $title);
+			$this->GenerateLabel = false;
 		}
 		
 		protected function CreateControlInternal()
 		{
-			return null;
+			$divSeparator = new HTMLControl("div");
+			$divSeparator->ClassList[] = "Separator";
+			
+			$divTitle = new HTMLControl("div");
+			$divTitle->ClassList[] = "Title";
+			$divTitle->InnerHTML = $this->Title;
+			
+			$divSeparator->Controls[] = $divTitle;
+			return $divSeparator;
 		}
 	}
 	class FormViewItemText extends FormViewItem
