@@ -16,7 +16,7 @@
 		public $ContentControls;
 		public $FooterControls;
 		
-		public function __construct($id, $title = "")
+		public function __construct($id = null, $title = "")
 		{
 			parent::__construct($id);
 			$this->Title = $title;
