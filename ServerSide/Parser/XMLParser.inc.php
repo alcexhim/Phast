@@ -128,6 +128,12 @@
 		 */
 		public $Elements;
 		
+		public function __construct()
+		{
+			$this->Attributes = array();
+			$this->Elements = array();
+		}
+		
 		public function GetOuterMarkup()
 		{
 			$str = "<" . $this->Name;
