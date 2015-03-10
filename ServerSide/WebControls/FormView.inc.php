@@ -1,6 +1,7 @@
 <?php
 	namespace Phast\WebControls;
 	
+	use Phast\HTMLControl;
 	use Phast\HTMLControls\HTMLControlInput;
 	use Phast\HTMLControls\HTMLControlInputType;
 	
@@ -11,7 +12,8 @@
 	
 	use Phast\WebControlAttribute;
 	use Phast\Enumeration;
-	
+	use Phast\Phast;
+		
 	class FormViewLabelStyle extends Enumeration
 	{
 		/**
@@ -39,6 +41,15 @@
 		 */
 		public $Items;
 		
+		public function GetItemByID($id)
+		{
+			foreach ($this->Items as $item)
+			{
+				if ($item->ID == $id) return $item;
+			}
+			return null;
+		}
+		
 		public function __construct()
 		{
 			parent::__construct();
@@ -61,9 +72,9 @@
 				}
 				else
 				{
-					echo("<div class=\"Field");
-					if ($item->Required) echo(" Required");
-					echo("\">");
+					$div = new HTMLControl("div");
+					$div->ClassList[] = "Field";
+					if ($item->Required) $div->ClassList[] = "Required";
 					
 					$title = $item->Title;
 					$i = stripos($title, "_");
@@ -76,14 +87,19 @@
 						$title = $before . "<u>" . $char . "</u>" . substr($after, 1);
 					}
 					
-					echo("<label for=\"" . $item->ID . "\"");
+					$lbl = new HTMLControl("label");
+					$lbl->Attributes[] = new WebControlAttribute("for", $item->ID);
 					if ($char !== null)
 					{
+						$lbl->Attributes[] = new WebControlAttribute("accesskey", $char);
 						echo(" accesskey=\"" . $char . "\"");
 					}
-					echo(">" . $title . "</label>");
-					$item->Render();
-					echo("</div>");
+					$lbl->InnerHTML = $title;
+					$div->Controls[] = $lbl;
+					
+					$ctl = $item->CreateControl();
+					if ($ctl != null) $div->Controls[] = $ctl;
+					$div->Render();
 				}
 			}
 		}
@@ -119,12 +135,12 @@
 			$this->ParseChildElements = false;
 		}
 		
-		public function Render()
+		public function CreateControl()
 		{
-			$this->RenderContent();
+			return $this->CreateControlInternal();
 		}
 		
-		protected abstract function RenderContent();
+		protected abstract function CreateControlInternal();
 	}
 	class FormViewItemSeparator extends FormViewItem
 	{
@@ -133,9 +149,9 @@
 			parent::__construct($id, $id, $title);
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
-			
+			return null;
 		}
 	}
 	class FormViewItemText extends FormViewItem
@@ -158,7 +174,7 @@
 			parent::__construct($id, $name, $title, $defaultValue);
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlInput();
 			$elem->ID = $this->ID;
@@ -173,7 +189,7 @@
 			{
 				$elem->Attributes[] = new WebControlAttribute("onchange", $this->OnClientValueChanged);
 			}
-			$elem->Render();
+			return $elem;
 		}
 	}
 	class FormViewItemPassword extends FormViewItemText
@@ -183,7 +199,7 @@
 			parent::__construct($id, $name, $title, $defaultValue);
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlInput();
 			$elem->ID = $this->ID;
@@ -194,7 +210,7 @@
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
 			}
-			$elem->Render();
+			return $elem;
 		}
 	}
 	class FormViewItemMemo extends FormViewItemText
@@ -208,7 +224,7 @@
 			parent::__construct($id, $name, $title, $defaultValue);
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlTextArea();
 			$elem->ID = $this->ID;
@@ -217,7 +233,7 @@
 			if (isset($this->Columns)) $elem->Columns = $this->Columns;
 			$elem->Value = $this->DefaultValue;
 			if (isset($this->PlaceholderText)) $elem->PlaceholderText = $this->PlaceholderText;
-			$elem->Render();
+			return $elem;
 		}
 	}
 	class FormViewItemBoolean extends FormViewItem
@@ -227,7 +243,7 @@
 			parent::__construct($id, $name, $title, $defaultValue);
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlInput();
 			$elem->ID = $this->ID;
@@ -237,7 +253,7 @@
 			{
 				$elem->Attributes[] = new WebControlAttribute("checked", "checked");
 			}
-			$elem->Render();
+			return $elem;
 		}
 	}
 	class FormViewItemChoice extends FormViewItem
@@ -257,7 +273,7 @@
 			}
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlSelect();
 			$elem->ID = $this->ID;
@@ -266,7 +282,7 @@
 			{
 				$elem->Items[] = new HTMLControlSelectOption($item->Title, $item->Value, $item->Selected);
 			}
-			$elem->Render();
+			return $elem;
 		}
 	}
 	class FormViewItemChoiceValue
@@ -293,13 +309,13 @@
 			$this->Nullable = $nullable;
 		}
 		
-		protected function RenderContent()
+		protected function CreateControlInternal()
 		{
 			$elem = new HTMLControlInput();
 			$elem->ID = $this->ID;
 			$elem->Type = HTMLControlInputType::Text;
 			$elem->Name = $this->Name;
-			$elem->Render();
+			return $elem;
 		}
 	}
 ?>
