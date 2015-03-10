@@ -423,8 +423,10 @@
 			return true;
 		}
 	}
-	
+
 	require_once("Enumeration.inc.php");
+
+	require_once("Authentication.inc.php");
 	
 	require_once("RenderMode.inc.php");
 	
@@ -541,10 +543,6 @@
 	require_once($RootPath . "/Include/Configuration.inc.php");
 	
 	require_once("Data/DataSystem.inc.php");
-	
-	// After loading the configuration, attempt to establish PDO connection (must be done before everything
-	// else gets initialized, in case something depends on the PDO)
-	include_once("PDO.inc.php");
 	
 	// Global Controls loader
 	$a = glob($PhastRootPath . "/WebControls/*.inc.php");

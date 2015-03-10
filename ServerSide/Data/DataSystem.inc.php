@@ -1,7 +1,10 @@
 <?php
 	namespace Phast\Data;
+	
 	use Phast\System;
 	use Phast\Enumeration;
+	
+	use PDO;
 		
 	abstract class ColumnValue extends Enumeration
 	{
@@ -10,50 +13,42 @@
 		const Today = 2;
 		const CurrentTimestamp = 3;
 	}
-	
+
+	require_once("Column.inc.php");
 	require_once("DataObject.inc.php");
+	require_once("DatabaseOperationResult.inc.php");
+	require_once("Record.inc.php");
+	require_once("RecordColumn.inc.php");
+	require_once("Table.inc.php");
+	require_once("TableForeignKey.inc.php");
+	require_once("TableKey.inc.php");
+	
+	require_once("Traits/DataObject.inc.php");
 	
 	class DataSystem
 	{
 		public static $Errors;
 		
+		private static $_PDO = null;
 		/**
-		 * Returns the currently-loaded PDO engine. Efforts are being made to move from MySQLi to PDO but have not been finished completely just yet.
+		 * Returns the currently-loaded PDO engine.
 		 * @return \PDO The currently-loaded PDO engine.
 		 */
 		public static function GetPDO()
 		{
-			global $pdo;
-			return $pdo;
-		}
-		
-		public static function Initialize()
-		{
-			global $MySQL;
-			if (!(isset(System::$Configuration["Database.ServerName"]) && isset(System::$Configuration["Database.UserName"]) && isset(System::$Configuration["Database.Password"]) && isset(System::$Configuration["Database.DatabaseName"])))
+			if (DataSystem::$_PDO == null)
 			{
-				// Phast\Data error!
-				return false;
+				$engine = 'mysql';
+				$host = System::GetConfigurationValue("Database.ServerName");
+				$database = System::GetConfigurationValue("Database.DatabaseName");
+				$user = System::GetConfigurationValue("Database.UserName");
+				$pass = System::GetConfigurationValue("Database.Password");
+				
+				$dns = $engine . ':dbname=' . $database . ";host=" . $host;
+				
+				DataSystem::$_PDO = new PDO($dns, $user, $pass);
 			}
-			
-			$MySQL = new \mysqli(System::$Configuration["Database.ServerName"], System::$Configuration["Database.UserName"], System::$Configuration["Database.Password"], System::$Configuration["Database.DatabaseName"]);
-			$MySQL->set_charset("utf8");
-			
-			if ($MySQL->connect_error)
-			{
-				Phast\Data::$Errors->Clear();
-				Phast\Data::$Errors->Add(new Phast\DataError($MySQL->connect_errno, $MySQL->connect_error));
-				return false;
-			}
-			
-			require_once("Column.inc.php");
-			require_once("DatabaseOperationResult.inc.php");
-			require_once("Record.inc.php");
-			require_once("RecordColumn.inc.php");
-			require_once("Table.inc.php");
-			require_once("TableForeignKey.inc.php");
-			require_once("TableKey.inc.php");
-			return true;
+			return DataSystem::$_PDO;
 		}
 	}
 	DataSystem::$Errors = new DataErrorCollection();
@@ -88,6 +83,4 @@
 			$this->Items = array();
 		}
 	}
-	
-	DataSystem::Initialize();
 ?>
