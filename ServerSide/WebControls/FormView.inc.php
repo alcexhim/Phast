@@ -103,6 +103,7 @@
 		public $Name;
 		public $Title;
 		public $DefaultValue;
+		public $Value;
 		public $Required;
 		
 		public $GenerateLabel;
@@ -184,7 +185,14 @@
 			$elem->ID = $this->ID;
 			$elem->Type = HTMLControlInputType::Text;
 			$elem->Name = $this->Name;
-			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value))
+			{
+				$elem->Value = $this->Value;
+			}
+			else
+			{
+				$elem->Value = $this->DefaultValue;
+			}
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
