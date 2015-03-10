@@ -18,6 +18,7 @@
 			{
 				$tag = new HTMLControl();
 				$tag->TagName = "input";
+				$tag->HasContent = false;
 				
 				$tag->ClassList = $this->ClassList;
 				$tag->ClassList[] = $this->CssClass;
