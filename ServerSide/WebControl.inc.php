@@ -81,6 +81,11 @@
 		 */
 		public $ParseChildElements;
 		
+		public function GetAllControls()
+		{
+			return $this->Controls;
+		}
+		
 		/**
 		 * Retrieves the control with the specified ID in this control's child control collection.
 		 * @param string $id The ID of the control to search for.
@@ -88,16 +93,14 @@
 		 */
 		public function GetControlByID($id, $recurse = true)
 		{
-			if (is_array($this->Controls))
+			$ctls = $this->GetAllControls();
+			foreach ($ctls as $ctl)
 			{
-				foreach ($this->Controls as $ctl)
+				if ($ctl->ID == $id) return $ctl;
+				if ($recurse)
 				{
-					if ($ctl->ID == $id) return $ctl;
-					if ($recurse)
-					{
-						$ctl1 = $ctl->GetControlByID($id, true);
-						if ($ctl1 != null) return $ctl1;
-					}
+					$ctl1 = $ctl->GetControlByID($id, true);
+					if ($ctl1 != null) return $ctl1;
 				}
 			}
 			return null;
