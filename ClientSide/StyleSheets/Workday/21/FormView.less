@@ -1,19 +1,14 @@
-table.FormView
+div.FormView
 {
 	padding: 16px;
-	
-	tr
+	div.Field
 	{
-		td
+		border-bottom: solid 16px transparent;
+		&:first-child
 		{
-			vertical-align: top;
-			border: none 0px;
-			&:first-child
-			{
-				width: 96px;
-			}
+			width: 96px;
 		}
-		&.Required td:first-child:before
+		&.Required :first-child:before
 		{
 			color: #ED1F24;
 			content: "*";
