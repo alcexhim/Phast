@@ -457,7 +457,7 @@
         public function Initialize($renderingPage = null)
         {
         	if ($this->isInitialized) return true;
-        	if ($renderingPage == null) $renderingPage = this;
+        	if ($renderingPage == null) $renderingPage = $this;
         	
         	$ce = new CancelEventArgs();
         	
