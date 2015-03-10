@@ -20,6 +20,13 @@
 		public $ClientIDMode;
 		
 		public $Content;
+		
+		/**
+		 * True if the WebControl should render its content to the output HTML; false otherwise.
+		 * @var boolean
+		 */
+		public $EnableRender;
+		
 		public $ExtraData;
 		
 		public $Controls;
@@ -149,6 +156,8 @@
 			$this->VerticalAlignment = VerticalAlignment::Inherit;
 			
 			$this->Controls = array();
+			$this->EnableRender = true;
+			
 			$this->HasContent = true;
 			
 			$this->TagName = null;
@@ -465,6 +474,8 @@
 		 */
 		public function BeginContent()
 		{
+        	if ($this->EnableRender !== true) return;
+        	
 			$this->RenderBeginTag();
             $this->BeforeContent();
 		}
@@ -474,6 +485,8 @@
 		 */
 		public function EndContent()
 		{
+        	if ($this->EnableRender !== true) return;
+        	
             $this->AfterContent();
 			$this->RenderEndTag();
 		}
@@ -490,6 +503,8 @@
 		 */
         public function Render()
         {
+        	if ($this->EnableRender !== true) return;
+        	
         	if (!$this->Initialized) $this->Initialize();
         	$this->CreateControl();
         	
