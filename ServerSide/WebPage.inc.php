@@ -778,12 +778,12 @@
 							"Value" => $value
 						);
 					}
-					$ary["Properties"] = $props2;
+					$ary["Properties"] = $attrs;
 				}
 			}
 			return $ary;
 		}
-        
+		
         public function Render()
         {
         	if (!$this->Initialize())
@@ -814,7 +814,7 @@
 	        			}
 	        			$ary["Controls"] = $ctls;
         			}
-
+        			
         			echo(json_encode($ary));
         			return;
         		}
