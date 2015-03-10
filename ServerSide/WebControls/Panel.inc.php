@@ -16,6 +16,24 @@
 		public $ContentControls;
 		public $FooterControls;
 		
+		public function GetAllControls()
+		{
+			$ary = array();
+			foreach ($this->HeaderControls as $ctl)
+			{
+				$ary[] = $ctl;
+			}
+			foreach ($this->ContentControls as $ctl)
+			{
+				$ary[] = $ctl;
+			}
+			foreach ($this->FooterControls as $ctl)
+			{
+				$ary[] = $ctl;
+			}
+			return $ary;
+		}
+		
 		public function __construct($id = null, $title = "")
 		{
 			parent::__construct($id);
