@@ -21,15 +21,10 @@
 		public static function Get()
 		{
 			$pdo = DataSystem::GetPDO();
-			$query = "SELECT * FROM :tablename";
+			$query = "SELECT * FROM " . (System::GetConfigurationValue("Database.TablePrefix") . self::$DataObjectTableName);
 			$statement = $pdo->prepare($query);
-			$statement->execute(array
-			(
-				":tablename" => System::GetConfigurationValue("Database.TablePrefix") . self::$DataObjectTableName
-			));
-			
+			$statement->execute();
 			$count = $statement->rowCount();
-			
 			$retval = array();
 			
 			$columnNames = array();
