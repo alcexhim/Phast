@@ -10,7 +10,7 @@
 		public static $DataObjectTableName;
 		public static $DataObjectColumnPrefix;
 		
-		public static function BindDataColumn($instance, $columnName, $value)
+		protected function BindDataColumn($columnName, $value)
 		{
 			return true;
 		}
@@ -34,7 +34,8 @@
 				$meta = $statement->getColumnMeta($c);
 				$columnNames[] = $meta["name"];
 			}
-			
+
+			$columnPrefix = self::$DataObjectColumnPrefix;
 			for ($i = 0; $i < $count; $i++)
 			{
 				$values = $statement->fetch(PDO::FETCH_ASSOC);
@@ -42,9 +43,16 @@
 				for ($j = 0; $j < $columnCount; $j++)
 				{
 					$columnName = $columnNames[$j];
-					$item->BindDataColumn($columnName, $values[$columnName]);
+					$realColumnName = $columnName;
+					if (stripos($realColumnName, $columnPrefix) === 0)
+					{
+						$realColumnName = substr($realColumnName, strlen($columnPrefix)); 
+					}
+					if ($item->BindDataColumn($realColumnName, $values[$columnName]))
+					{
+						$item->{$realColumnName} = $values[$columnName];
+					}
 				}
-				echo ("Found object " . $i);
 				$retval[] = $item;
 			}
 			return $retval;
