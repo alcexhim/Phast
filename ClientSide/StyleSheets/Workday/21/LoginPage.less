@@ -11,5 +11,16 @@ body.LoginPage
 		padding: 20px;
 		position: relative;
 		width: 660px;
+		
+		&> div.Panel > div.Content
+		{
+			display: table;
+			div.LoginCredentials, div.LoginBranding
+			{
+				display: table-cell;
+				padding: 8px;
+				vertical-align: top;
+			}
+		}
 	}
 }
