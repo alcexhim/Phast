@@ -66,6 +66,10 @@
 						{
 							// assume regular HTML control
 							$obj1 = new HTMLControl($name);
+							foreach ($elem2->Attributes as $att)
+							{
+								$obj1->Attributes[] = new WebControlAttribute($att->Name, $att->Value);
+							}
 							if ($elem2->GetInnerMarkup() == "")
 							{
 								// we have to make some compromises; AFAIK the SCRIPT tag is the only
