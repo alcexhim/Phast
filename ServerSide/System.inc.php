@@ -425,8 +425,8 @@
 	}
 
 	require_once("Enumeration.inc.php");
-
-	require_once("Authentication.inc.php");
+	
+	require_once("RandomStringGenerator.inc.php");
 	
 	require_once("RenderMode.inc.php");
 	
