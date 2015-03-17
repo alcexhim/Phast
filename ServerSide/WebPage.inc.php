@@ -577,6 +577,17 @@
 		}
 
 		/**
+		 * Determines if the WebPageVariable with the given name exists on this WebPage.
+		 * @param string $name The name of the WebPageVariable to search for.
+		 * @return boolean True if the WebPageVariable with the given name exists on this WebPage; false otherwise.
+		 * @see WebPageVariable
+		 */
+		public function HasPathVariable($name)
+		{
+			return ($this->GetPathVariable($name) != null);
+		}
+
+		/**
 		 * Retrieves the WebPageVariable with the given name associated with this WebPage.
 		 * @param string $name The name of the WebPageVariable to return.
 		 * @return WebPageVariable|NULL The WebPageVariable with the given name, or NULL if no WebPageVariable with the given name is defined for this WebPage.
