@@ -5,29 +5,58 @@
 	use Phast\WebControl;
 	use Phast\WebControlAttribute;
 	
-	\Enum::Create("Phast\\WebControls\\TabContainerTabPosition", "Top", "Bottom", "Left", "Right");
+	use Phast\HTMLControl;
+	use Phast\HTMLControls\Anchor;
+	use Phast\Enumeration;
+	
+	/**
+	 * Enumeration specifying the position of tabs on a tab container.
+	 * @author Michael Becker
+	 */
+	abstract class TabContainerTabPosition extends Enumeration
+	{
+		/**
+		 * The tabs are aligned at the top of the tab container, before the tab page content.
+		 * @var TabContainerTabPosition
+		 */
+		const Top = 1;
+		/**
+		 * The tabs are aligned at the bottom of the tab container, after the tab page content.
+		 * @var TabContainerTabPosition
+		 */
+		const Bottom = 2;
+		/**
+		 * The tabs are aligned to the left of the tab container, before the tab page content.
+		 * @var TabContainerTabPosition
+		 */
+		const Left = 3;
+		/**
+		 * The tabs are aligned to the right of the tab container, after the tab page content.
+		 * @var TabContainerTabPosition
+		 */
+		const Right = 4;
+	}
 	
 	class TabPage
 	{
 		public $ID;
 		public $Title;
-		public $Content;
+		
+		public $Controls;
 		
 		public $Visible;
 		
 		public $ImageURL;
 		public $TargetURL;
 		public $TargetScript;
-		public $ContentFunction;
 		
-		public function __construct($id, $title, $imageURL = null, $targetURL = null, $targetScript = null, $contentFunction = null, $visible = true)
+		public function __construct($id, $title, $imageURL = null, $targetURL = null, $targetScript = null, $visible = true)
 		{
 			$this->ID = $id;
 			$this->Title = $title;
 			$this->ImageURL = $imageURL;
 			$this->TargetURL = $targetURL;
 			$this->TargetScript = $targetScript;
-			$this->ContentFunction = $contentFunction;
 			$this->Visible = $visible;
 		}
 	}
@@ -35,7 +64,14 @@
 	class TabContainer extends WebControl
 	{
 		public $SelectedTab;
+		public $SelectedTabID;
+		
 		public $TabPages;
+		/**
+		 * Determines the position of the tabs relative to the tab pages.
+		 * @var TabContainerTabPosition
+		 */
+		public $TabPosition;
 		
 		public $OnClientTabChanged;
 		
@@ -43,6 +79,8 @@
 		{
 			parent::__construct($id);
 			$this->TagName = "div";
+			$this->ParseChildElements = true;
+			$this->TabPosition = TabContainerTabPosition::Top;
 		}
 		
 		public function GetTabByID($id)
@@ -69,59 +107,130 @@
 			}
 			$this->ClassList[] = "TabContainer";
 			
-			parent::RenderBeginTag();
-		}
-		
-		protected function RenderContent()
-		{
-			echo("<div class=\"Tabs\">");
+			if (is_string($this->TabPosition))
+			{
+				switch (strtolower($this->TabPosition))
+				{
+					case "left":
+					{
+						$this->ClassList[] = "TabPositionLeft";
+						break;
+					}
+					case "top":
+					{
+						$this->ClassList[] = "TabPositionTop";
+						break;
+					}
+					case "right":
+					{
+						$this->ClassList[] = "TabPositionRight";
+						break;
+					}
+					case "bottom":
+					{
+						$this->ClassList[] = "TabPositionBottom";
+						break;
+					}
+				}
+			}
+			else
+			{
+				switch ($this->TabPosition)
+				{
+					case TabContainerTabPosition::Left:
+					{
+						$this->ClassList[] = "TabPositionLeft";
+						break;
+					}
+					case TabContainerTabPosition::Top:
+					{
+						$this->ClassList[] = "TabPositionTop";
+						break;
+					}
+					case TabContainerTabPosition::Right:
+					{
+						$this->ClassList[] = "TabPositionRight";
+						break;
+					}
+					case TabContainerTabPosition::Bottom:
+					{
+						$this->ClassList[] = "TabPositionBottom";
+						break;
+					}
+				}
+			}
+			
+			$this->Controls = array();
+				
+			$divTabs = new HTMLControl("div");
+			$divTabs->ClassList = array("Tabs", "TopLeft");
+			
 			$j = 0;
 			foreach ($this->TabPages as $tabPage)
 			{
-				echo("<a data-id=\"" . $tabPage->ID . "\" class=\"Tab");
+				$aTab = new Anchor();
+				$aTab->Attributes[] = new WebControlAttribute("data-id", $tabPage->ID);
+				$aTab->ClassList[] = "Tab";
 				if ($tabPage->Visible)
 				{
-					echo (" Visible");
+					$aTab->ClassList[] = "Visible";
 				}
-				if ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID))
+				if (($this->SelectedTabID != null && $tabPage->ID == $this->SelectedTabID) || ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID)))
 				{
-					echo (" Selected");
+					$aTab->ClassList[] = "Selected";
 				}
-				echo("\" href=\"");
-				if ($tabPage->TargetURL != null)
-				{
-					echo(System::ExpandRelativePath($tabPage->TargetURL));
-				}
-				else
-				{
-					echo("#");
-				}
-				echo("\">");
-				echo($tabPage->Title);
-				echo("</a>");
+				$aTab->TargetURL = $tabPage->TargetURL;
+				$aTab->InnerHTML = $tabPage->Title;
+				$divTabs->Controls[] = $aTab;
 				$j++;
 			}
-			echo("</div>");
-			echo("<div class=\"TabPages\">");
+			$this->Controls[] = $divTabs;
+			
+			$divTabPages = new HTMLControl("div");
+			$divTabPages->ClassList[] = "TabPages";
 			foreach ($this->TabPages as $tabPage)
 			{
-				echo("<div class=\"TabPage");
-				if ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID))
+				$divTabPage = new HTMLControl("div");
+				$divTabPage->ClassList[] = "TabPage";
+				if (($this->SelectedTabID != null && $tabPage->ID == $this->SelectedTabID) || ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID)))
 				{
-					echo (" Selected");
+					$divTabPage->ClassList[] = "Selected";
 				}
-				echo("\">");
-				if (is_callable($tabPage->ContentFunction))
+			
+				$divTabPage->Content = $tabPage->Content;
+				foreach ($tabPage->Controls as $ctl)
 				{
-					call_user_func($tabPage->ContentFunction);
+					$divTabPage->Controls[] = $ctl;
 				}
-				else
-				{
-					echo($tabPage->Content);
-				}
-				echo("</div>");
+				$divTabPages->Controls[] = $divTabPage;
 			}
-			echo("</div>");
+			$this->Controls[] = $divTabPages;
+			
+			$divTabs = new HTMLControl("div");
+			$divTabs->ClassList = array("Tabs", "BottomRight");
+			
+			$j = 0;
+			foreach ($this->TabPages as $tabPage)
+			{
+				$aTab = new Anchor();
+				$aTab->Attributes[] = new WebControlAttribute("data-id", $tabPage->ID);
+				$aTab->ClassList[] = "Tab";
+				if ($tabPage->Visible)
+				{
+					$aTab->ClassList[] = "Visible";
+				}
+				if (($this->SelectedTabID != null && $tabPage->ID == $this->SelectedTabID) || ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID)))
+				{
+					$aTab->ClassList[] = "Selected";
+				}
+				$aTab->TargetURL = $tabPage->TargetURL;
+				$aTab->InnerHTML = $tabPage->Title;
+				$divTabs->Controls[] = $aTab;
+				$j++;
+			}
+			$this->Controls[] = $divTabs;
+			
+			parent::RenderBeginTag();
 		}
 	}
 ?>

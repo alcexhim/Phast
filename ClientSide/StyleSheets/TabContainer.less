@@ -1,5 +1,9 @@
 div.TabContainer
 {
+	box-sizing: border-box;
+	display: table;
+	width: 100%;
+	
 	&> div.Tabs
 	{
 		&> a
@@ -28,6 +32,36 @@ div.TabContainer
 			{
 				display: block;
 			}
+		}
+	}
+	&.TabPositionLeft, &.TabPositionRight
+	{
+		&> div.Tabs
+		{
+			display: table-cell;
+			width: 25%;
+			&> a.Tab
+			{
+				display: block;
+			}
+		}
+		&> div.TabPages
+		{
+			display: table-cell;
+		}
+	}
+	&.TabPositionLeft, &.TabPositionTop
+	{
+		&> div.Tabs.BottomRight
+		{
+			display: none;
+		}
+	}
+	&.TabPositionBottom, &.TabPositionRight
+	{
+		&> div.Tabs.TopLeft
+		{
+			display: none;
 		}
 	}
 }
