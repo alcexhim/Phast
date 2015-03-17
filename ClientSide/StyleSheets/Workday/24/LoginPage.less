@@ -1,0 +1,55 @@
+body.LoginPage
+{
+	div.Wrapper
+	{
+		min-width: 230px;
+		max-width: 345px;
+		padding: 40px 45px 45px;
+		width: auto;
+		
+		input[type=text], input[type=password], div.TextBox
+		{
+			background-color: #F7F7F7;
+			
+			border: 1px solid #DCDEE1;
+			border-radius: 3px;
+			box-shadow: 0 2px 1px rgba(0, 0, 0, 0.04) inset;
+			box-sizing: border-box;
+			direction: inherit;
+			font-size: 12px;
+			min-height: 39px;
+			min-width: 230px;
+			outline: medium none !important;
+			padding: 11px 8px 12px 36px;
+			width: 100%;
+			
+			&:hover
+			{
+				border-color: #CCCCCC;
+			}
+			&:active, &:focus
+			{
+				border-color: @ThemeColorPrimary !important;
+			}
+		}
+		input[type=submit], input[type=reset], input[type=button], a.Button
+		{
+			box-sizing: border-box;
+			
+			margin: unset;
+			padding: 11px 15px 12px;
+			
+			width: 100%;
+		}
+		div.FormView
+		{
+			div.Field
+			{
+				label
+				{
+					display: none;
+				}
+			}
+		}
+	}
+}
