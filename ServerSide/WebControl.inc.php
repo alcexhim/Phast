@@ -229,7 +229,10 @@
 				foreach ($this->Controls as $control)
 				{
 					$control->ParentObject = $this;
-					$control->Initialize();
+					if (method_exists($control, "Initialize"))
+					{
+						$control->Initialize();
+					}
 				}
 			}
 			else
