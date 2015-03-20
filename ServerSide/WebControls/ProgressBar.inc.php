@@ -27,7 +27,6 @@
 			echo("<div class=\"ProgressValueFill\" id=\"ProgressBar_" . $this->ID . "_ValueFill\" style=\"width: " . (($this->Value / ($this->MaximumValue - $this->MinimumValue)) * 100) . "%\">&nbsp;</div>");
 			echo("<div class=\"ProgressValueLabel\" id=\"ProgressBar_" . $this->ID . "_ValueLabel\">&nbsp;</div>");
 			echo("</div>");
-			echo("<script type=\"text/javascript\">var " . $this->ID . " = new ProgressBar(\"" . $this->ID . "\");</script>");
 		}
 	}
 ?>
