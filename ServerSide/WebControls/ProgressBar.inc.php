@@ -3,6 +3,8 @@
 	
 	use Phast\System;
 	use Phast\WebControl;
+	use Phast\HTMLControl;
+	use Phast\WebStyleSheetRule;
 	
 	class ProgressBar extends WebControl
 	{
@@ -12,21 +14,40 @@
 		
 		public $Text;
 		
-		public function __construct($id)
+		public function __construct()
 		{
-			parent::__construct($id);
+			parent::__construct();
 			
 			$this->MinimumValue = 0;
 			$this->MaximumValue = 100;
-			$this->Value = 0;
+			$this->CurrentValue = 0;
+			
+			$this->TagName = "div";
+			
+			$this->ClassList[] = "ProgressBar";
 		}
 		
-		protected function RenderContent()
+		protected function RenderBeginTag()
 		{
-			echo("<div class=\"ProgressBar\" id=\"ProgressBar_" . $this->ID . "\">");
-			echo("<div class=\"ProgressValueFill\" id=\"ProgressBar_" . $this->ID . "_ValueFill\" style=\"width: " . (($this->Value / ($this->MaximumValue - $this->MinimumValue)) * 100) . "%\">&nbsp;</div>");
-			echo("<div class=\"ProgressValueLabel\" id=\"ProgressBar_" . $this->ID . "_ValueLabel\">&nbsp;</div>");
-			echo("</div>");
+			$divProgressValueFill = new HTMLControl("div");
+			$divProgressValueFill->ClassList[] = "ProgressValueFill";
+			$divProgressValueFill->StyleRules[] = new WebStyleSheetRule("width", ((($this->MinimumValue + $this->CurrentValue) / ($this->MaximumValue - $this->MinimumValue)) * 100) . "%");
+			$divProgressValueFill->Content = "&nbsp;";
+			
+			$divProgressValueLabel = new HTMLControl("div");
+			$divProgressValueLabel->ClassList[] = "ProgressValueLabel";
+			if ($this->Text == "")
+			{
+				$divProgressValueLabel->Content = "&nbsp;";
+			}
+			else
+			{
+				$divProgressValueLabel->Content = $this->Text;
+			}
+			
+			$this->Controls = array($divProgressValueFill, $divProgressValueLabel);
+			
+			parent::RenderBeginTag();
 		}
 	}
 ?>

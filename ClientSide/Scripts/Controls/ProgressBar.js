@@ -1,6 +1,6 @@
-function ProgressBar(id)
+function ProgressBar(parentElement)
 {
-	this.ID = id;
+	this.ParentElement = parentElement;
 	this.MinimumValue = 0;
 	this.MaximumValue = 100;
 	this.CurrentValue = 0;
@@ -17,21 +17,12 @@ function ProgressBar(id)
 		pb_label.innerHTML = ((this.CurrentValue / (this.MaximumValue - this.MinimumValue)) * 100).toFixed(0).toString() + "%";
 	};
 }
-ProgressBar.Create = function(id, parentElement)
+
+window.addEventListener("load", function(e)
 {
-	var pb = document.createElement("div");
-	pb.className = "ProgressBar";
-	
-	var pb_fill = document.createElement("div");
-	pb_fill.id = "ProgressBar_" + id + "_ValueFill";
-	pb.appendChild(pb_fill);
-	
-	var pb_label = document.createElement("div");
-	pb_label.id = "ProgressBar_" + id + "_ValueLabel";
-	pb.appendChild(pb_label);
-	
-	parentElement.appendChild(pb);
-	
-	pb.nativeObject = new ProgressBar(id);
-	return pb.nativeObject;
-}
+	var items = document.getElementsByClassName("ProgressBar");
+	for (var i = 0; i < items.length; i++)
+	{
+		items[i].NativeObject = new ProgressBar(items[i]);
+	}
+});
