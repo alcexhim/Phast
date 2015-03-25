@@ -1,0 +1,29 @@
+body > nav.Sidebar
+{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	top: 0px;
+	
+	width: @SidebarWidth;
+	z-index: 10;
+	
+	display: none;
+}
+body.EnableHeader > nav.Sidebar
+{
+	top: @HeaderHeight;
+}
+body.EnableSidebar > nav.Sidebar
+{
+	display: block;
+}
+body.EnableSidebar > div.Content
+{
+	margin-left: @SidebarWidth;
+}
+body.EnableHeader > div.Content
+{
+	margin-top: @HeaderHeight;
+	margin-bottom: @HeaderHeight;
+}
