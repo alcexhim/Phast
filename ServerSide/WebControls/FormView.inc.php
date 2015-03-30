@@ -250,6 +250,17 @@
 		public $MinimumValue;
 		public $MaximumValue;
 		
+		/**
+		 * Creates a new Number FormViewItem with the given parameters.
+		 * @param string $id The control ID for the FormViewItem.
+		 * @param string $name The name of the form field to associate with the FormViewItem.
+		 * @param string $title The title of the FormViewItem.
+		 * @param string $defaultValue The default value of the FormViewItem.
+		 */
+		public function __construct($id = null, $name = null, $title = null, $defaultValue = null)
+		{
+			parent::__construct($id, $name, $title, $defaultValue);
+		}
 	}
 	class FormViewItemBoolean extends FormViewItem
 	{
