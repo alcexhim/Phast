@@ -245,6 +245,12 @@
 			return $elem;
 		}
 	}
+	class FormViewItemNumber extends FormViewItemText
+	{
+		public $MinimumValue;
+		public $MaximumValue;
+		
+	}
 	class FormViewItemBoolean extends FormViewItem
 	{
 		public function __construct($id = null, $name = null, $title = null, $defaultValue = null)
