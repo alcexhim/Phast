@@ -1,0 +1,22 @@
+input[type=submit], input[type=reset], input[type=button], a.Button
+{
+	&.Large
+	{
+		font-size: 18px;
+		line-height: 1.33;
+		padding: 10px 16px;
+	}
+	
+	border: solid 1px transparent;
+	
+	&.Primary
+	{
+		background-color: @ThemeColorPrimary;
+		border-color: @ThemeColorPrimary;
+	}
+	&.Danger
+	{
+		background-color: @ThemeColorDanger;
+		border-color: @ThemeColorDanger;
+	}
+}
