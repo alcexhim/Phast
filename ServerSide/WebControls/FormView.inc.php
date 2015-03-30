@@ -185,14 +185,9 @@
 			$elem->ID = $this->ID;
 			$elem->Type = HTMLControlInputType::Text;
 			$elem->Name = $this->Name;
-			if (isset($this->Value))
-			{
-				$elem->Value = $this->Value;
-			}
-			else
-			{
-				$elem->Value = $this->DefaultValue;
-			}
+			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
+			
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
@@ -218,6 +213,7 @@
 			$elem->Type = HTMLControlInputType::Password;
 			$elem->Name = $this->Name;
 			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
@@ -244,6 +240,7 @@
 			if (isset($this->Rows)) $elem->Rows = $this->Rows;
 			if (isset($this->Columns)) $elem->Columns = $this->Columns;
 			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
 			if (isset($this->PlaceholderText)) $elem->PlaceholderText = $this->PlaceholderText;
 			return $elem;
 		}
