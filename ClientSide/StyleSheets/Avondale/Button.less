@@ -8,15 +8,41 @@ input[type=submit], input[type=reset], input[type=button], a.Button
 	}
 	
 	border: solid 1px transparent;
+	border-radius: 3px;
+	line-height: 1.42857;
+	font-size: 14px;
+	font-weight: 300;
+	padding: 6px 12px;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	
+	&+ input[type=submit], &+ input[type=reset], &+ input[type=button], &+ a.Button
+	{
+		margin-left: 5px;
+	}
+	
+	.ButtonColor(@backcolor, @forecolor)
+	{
+		background-color: @backcolor;
+		border-color: @backcolor;
+		color: @forecolor;
+		&:hover
+		{
+			background-color: darken(@backcolor, 10%);
+		}
+	}
 	
 	&.Primary
 	{
-		background-color: @ThemeColorPrimary;
-		border-color: @ThemeColorPrimary;
+		.ButtonColor(@ThemeColorPrimary, #FFFFFF);
 	}
 	&.Danger
 	{
-		background-color: @ThemeColorDanger;
-		border-color: @ThemeColorDanger;
+		.ButtonColor(@ThemeColorDanger, #FFFFFF);
+	}
+	&.Success
+	{
+		.ButtonColor(@ThemeColorSuccess, #FFFFFF);
 	}
 }
