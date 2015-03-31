@@ -29,6 +29,15 @@
 		 * @var string
 		 */
 		public $Title;
+		
+		public function GetControlByID($id)
+		{
+			foreach ($this->Controls as $ctl)
+			{
+				if ($ctl->ID == $id) return $ctl;
+			}
+			return null;
+		}
 	}
 	class Wizard extends WebControl
 	{
@@ -51,6 +60,15 @@
 			$this->TagName = "div";
 			$this->ClassList[] = "Wizard";
 			$this->ParseChildElements = true;
+		}
+		
+		public function GetPageByID($id)
+		{
+			foreach ($this->Pages as $page)
+			{
+				if ($page->ID == $id) return $page;
+			}
+			return null;
 		}
 		
 		protected function OnInitialize()

@@ -185,14 +185,9 @@
 			$elem->ID = $this->ID;
 			$elem->Type = HTMLControlInputType::Text;
 			$elem->Name = $this->Name;
-			if (isset($this->Value))
-			{
-				$elem->Value = $this->Value;
-			}
-			else
-			{
-				$elem->Value = $this->DefaultValue;
-			}
+			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
+			
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
@@ -218,6 +213,7 @@
 			$elem->Type = HTMLControlInputType::Password;
 			$elem->Name = $this->Name;
 			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
@@ -244,8 +240,26 @@
 			if (isset($this->Rows)) $elem->Rows = $this->Rows;
 			if (isset($this->Columns)) $elem->Columns = $this->Columns;
 			$elem->Value = $this->DefaultValue;
+			if (isset($this->Value)) $elem->Value = $this->Value;
 			if (isset($this->PlaceholderText)) $elem->PlaceholderText = $this->PlaceholderText;
 			return $elem;
+		}
+	}
+	class FormViewItemNumber extends FormViewItemText
+	{
+		public $MinimumValue;
+		public $MaximumValue;
+		
+		/**
+		 * Creates a new Number FormViewItem with the given parameters.
+		 * @param string $id The control ID for the FormViewItem.
+		 * @param string $name The name of the form field to associate with the FormViewItem.
+		 * @param string $title The title of the FormViewItem.
+		 * @param string $defaultValue The default value of the FormViewItem.
+		 */
+		public function __construct($id = null, $name = null, $title = null, $defaultValue = null)
+		{
+			parent::__construct($id, $name, $title, $defaultValue);
 		}
 	}
 	class FormViewItemBoolean extends FormViewItem

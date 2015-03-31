@@ -3,7 +3,10 @@ div.TabContainer
 	div.Tabs
 	{
 		border-bottom: solid 1px #A7A9AC;
-		padding-bottom: 6px;
+		
+		/* modified (used to be 6px) after testing with firefox on linux, may cause problems on other browsers/platforms */
+		padding-bottom: 0px;
+		
 		padding-left: 24px;
 		padding-right: 24px;
 		
@@ -18,6 +21,9 @@ div.TabContainer
 			color: #919295;
 			padding: 6px 30px;
 			margin: 0px;
+			
+			/* added after testing with firefox on linux, may cause problems on other browsers/platforms */
+			margin-bottom: -4px;
 			
 			position: relative;
 			

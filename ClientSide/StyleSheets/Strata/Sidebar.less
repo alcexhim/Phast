@@ -3,7 +3,7 @@
 
 body
 {
-	&.SidebarCollapsed > div.Page
+	&.SidebarCollapsed
 	{
 		&> header, &> div.Content, &> footer
 		{
@@ -28,7 +28,7 @@ body
 			}
 		}
 	}
-	&.SidebarHidden > div.Page
+	&.SidebarHidden
 	{
 		&> header, &> div.Content, &> footer
 		{
@@ -39,234 +39,231 @@ body
 			width: 0px;
 		}
 	}
-	&> div.Page
+	&> nav.Sidebar
 	{
-		&> nav.Sidebar
-		{
-			position: fixed;
-			left: 0px;
-			top: @HeaderHeight;
-			bottom: 0px;
-			z-index: 1;
-			
-			width: @SidebarWidth;
-			opacity: 1;
-			transition: width linear 0.3s, opacity linear 0.3s;
+		position: fixed;
+		left: 0px;
+		top: @HeaderHeight;
+		bottom: 0px;
+		z-index: 1;
 		
-			background-color: @SidebarBackground;
+		width: @SidebarWidth;
+		opacity: 1;
+		transition: width linear 0.3s, opacity linear 0.3s;
+	
+		background-color: @SidebarBackground;
 
-			-moz-user-select: none;
-			overflow: hidden;
+		-moz-user-select: none;
+		overflow: hidden;
+		
+		/**
+		 * Styles for child-level lists 
+		 */
+		&> ul
+		{
+			overflow: auto;
+			overflow-x: hidden;
 			
-			/**
-			 * Styles for child-level lists 
-			 */
-			&> ul
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			bottom: 0px;
+			width: @SidebarWidth - 40px;
+			
+			margin: 0px;
+			
+			li ul
 			{
-				overflow: auto;
-				overflow-x: hidden;
+				background-color: @SidebarMenuChildBackground;
+				color: @SidebarMenuChildForeground;
 				
-				position: absolute;
-				left: 0px;
-				top: 0px;
-				bottom: 0px;
-				width: @SidebarWidth - 40px;
-				
-				margin: 0px;
-				
-				li ul
+				a
 				{
-					background-color: @SidebarMenuChildBackground;
-					color: @SidebarMenuChildForeground;
-					
-					a
-					{
-						padding: 5px 20px 5px 47px;
-					}
-				}
-				&> li.Button
-				{
-					&:first-child > a
-					{
-						border-bottom: solid 1px transparent;
-					}
-					&:last-child > a
-					{
-						border-top: solid 1px transparent;
-					}
-					&> a
-					{
-						border-bottom: solid 1px #384646;
-						
-						background-color: @SidebarMenuTopLevelItemBackground;
-						color: @SidebarMenuTopLevelItemForeground;
-						
-						&:hover
-						{
-							background-color: @SidebarMenuTopLevelItemBackgroundHover;
-							color: @SidebarMenuTopLevelItemForegroundHover;
-						}	
-					}
+					padding: 5px 20px 5px 47px;
 				}
 			}
-			
-			/**
-			 * Styles for backstage view 
-			*/
-			&> ul, div.BackstageView
+			&> li.Button
 			{
-				display: table-cell;
-			}
-			&> div.BackstageView
-			{
-				position: absolute;
-				left: @SidebarWidth;
-				top: 0px;
-				right: 0px;
-				bottom: 0px;
-				background-color: #F2F5F7;
-				&> div.Content
+				&:first-child > a
 				{
-					display: table;
-					width: 100%;
-					height: 100%;
-					
-					&> div.Column
-					{
-						display: table-cell;
-						vertical-align: top;
-						border-right: solid 1px #E6EAED;
-						padding: 0px 20px;
-						
-						div.Title, a
-						{
-							padding: 6px 20px;
-							margin: 0px -20px;
-						}
-						
-						div.Title
-						{
-							color: #93A8A8;
-							font-size: 14px;
-							text-transform: uppercase;
-							letter-spacing: 0.1em;
-							font-weight: 400;
-							margin-top: 10px;
-							margin-bottom: 10px;
-						}
-						a
-						{
-							color: #5F7676;
-							display: block;
-							text-decoration: none;
-							
-							&:hover
-							{
-								background-color: #E6EAED;
-								color: #313E3E;
-							}
-						}
-					}
+					border-bottom: solid 1px transparent;
 				}
-			}
-			
-			&.Expanded
-			{
-				opacity: 1;
-				width: 100%;
-			}
-			li.Separator, li.Button
-			{
-				list-style-type: none;
-				margin-left: -32px;
-			}
-			li.Separator
-			{
-				color: #919DA8;
-				cursor: default;
-				font-size: 12pt;
-				padding: 12px 15px;
-			}
-			li.Button
-			{
+				&:last-child > a
+				{
+					border-top: solid 1px transparent;
+				}
 				&> a
 				{
-					position: relative;
-					background-color: @SidebarMenuChildItemBackground;
-					color: @SidebarMenuChildItemForeground;
-					&:hover
-					{
-						background-color: @SidebarMenuChildItemBackgroundHover;
-						color: @SidebarMenuChildItemForegroundHover;
-					}
+					border-bottom: solid 1px #384646;
 					
-					display: block;
-					font-weight: 400;
-					letter-spacing: 0.025em;
-					padding: 12px 24px;
-					text-decoration: none;
-					border-left: solid 2px transparent;
-					
-					&> span.Text, span.Icon
-					{
-						display: table-cell;
-					}
-					&> span.Icon
-					{
-						width: 24px;
-					}
-					&> span.Info
-					{
-						border-radius: 4px;
-						display: inline-block;
-						padding: 8px;
-						position: absolute;
-						right: 16px;
-						top: 4px;
-						
-						background-color: @HeaderBackground;
-						color: #FFFFFF;
-					}
+					background-color: @SidebarMenuTopLevelItemBackground;
+					color: @SidebarMenuTopLevelItemForeground;
 					
 					&:hover
 					{
-						color: @HeaderBackground;
-						text-decoration: none;
-					}
-					&.Selected
-					{
-						border-left-color: @HeaderBackground;
-						background-color: #FCFCFC;
-						color: @HeaderBackground;
-					}
-				}
-				&> ul
-				{
-					display: none;
-				}
-				&.Expanded ul
-				{
-					display: block;
+						background-color: @SidebarMenuTopLevelItemBackgroundHover;
+						color: @SidebarMenuTopLevelItemForegroundHover;
+					}	
 				}
 			}
 		}
 		
-		&.HideSidebar
+		/**
+		 * Styles for backstage view 
+		*/
+		&> ul, div.BackstageView
 		{
-			&> nav.Sidebar:not(.Expanded)
+			display: table-cell;
+		}
+		&> div.BackstageView
+		{
+			position: absolute;
+			left: @SidebarWidth;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			background-color: #F2F5F7;
+			&> div.Content
+			{
+				display: table;
+				width: 100%;
+				height: 100%;
+				
+				&> div.Column
+				{
+					display: table-cell;
+					vertical-align: top;
+					border-right: solid 1px #E6EAED;
+					padding: 0px 20px;
+					
+					div.Title, a
+					{
+						padding: 6px 20px;
+						margin: 0px -20px;
+					}
+					
+					div.Title
+					{
+						color: #93A8A8;
+						font-size: 14px;
+						text-transform: uppercase;
+						letter-spacing: 0.1em;
+						font-weight: 400;
+						margin-top: 10px;
+						margin-bottom: 10px;
+					}
+					a
+					{
+						color: #5F7676;
+						display: block;
+						text-decoration: none;
+						
+						&:hover
+						{
+							background-color: #E6EAED;
+							color: #313E3E;
+						}
+					}
+				}
+			}
+		}
+		
+		&.Expanded
+		{
+			opacity: 1;
+			width: 100%;
+		}
+		li.Separator, li.Button
+		{
+			list-style-type: none;
+			margin-left: -32px;
+		}
+		li.Separator
+		{
+			color: #919DA8;
+			cursor: default;
+			font-size: 12pt;
+			padding: 12px 15px;
+		}
+		li.Button
+		{
+			&> a
+			{
+				position: relative;
+				background-color: @SidebarMenuChildItemBackground;
+				color: @SidebarMenuChildItemForeground;
+				&:hover
+				{
+					background-color: @SidebarMenuChildItemBackgroundHover;
+					color: @SidebarMenuChildItemForegroundHover;
+				}
+				
+				display: block;
+				font-weight: 400;
+				letter-spacing: 0.025em;
+				padding: 12px 24px;
+				text-decoration: none;
+				border-left: solid 2px transparent;
+				
+				&> span.Text, span.Icon
+				{
+					display: table-cell;
+				}
+				&> span.Icon
+				{
+					width: 24px;
+				}
+				&> span.Info
+				{
+					border-radius: 4px;
+					display: inline-block;
+					padding: 8px;
+					position: absolute;
+					right: 16px;
+					top: 4px;
+					
+					background-color: @HeaderBackground;
+					color: #FFFFFF;
+				}
+				
+				&:hover
+				{
+					color: @HeaderBackground;
+					text-decoration: none;
+				}
+				&.Selected
+				{
+					border-left-color: @HeaderBackground;
+					background-color: #FCFCFC;
+					color: @HeaderBackground;
+				}
+			}
+			&> ul
 			{
 				display: none;
 			}
-			&> header, div.Content, footer
+			&.Expanded ul
 			{
-				left: 0px;
+				display: block;
 			}
+		}
+	}
+	
+	&.HideSidebar
+	{
+		&> nav.Sidebar:not(.Expanded)
+		{
+			display: none;
+		}
+		&> header, div.Content, footer
+		{
+			left: 0px;
 		}
 	}
 }
 @media (max-width: 600px)
 {
-	body > div.Page
+	body
 	{
 		&> header, div.Content, footer
 		{
