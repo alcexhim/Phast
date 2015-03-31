@@ -196,8 +196,11 @@
 				{
 					$divTabPage->ClassList[] = "Selected";
 				}
-			
-				$divTabPage->Content = $tabPage->Content;
+				
+				if (isset($tabPage->Content))
+				{
+					$divTabPage->Content = $tabPage->Content;
+				}
 				foreach ($tabPage->Controls as $ctl)
 				{
 					$divTabPage->Controls[] = $ctl;
