@@ -10,7 +10,7 @@
 		
 		public function __construct()
 		{
-			$this->ParseChildElements = true;
+			$this->ParseChildElements = false;
 			$this->ClassList[] = "Timeline";
 			$this->TagName = "div";
 		}
