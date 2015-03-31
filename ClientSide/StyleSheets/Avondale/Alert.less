@@ -1,0 +1,37 @@
+div.Alert
+{
+	&> div.Title
+	{
+		font-weight: 300;
+		font-size: 24px;
+		margin-bottom: 16px;
+	}
+	
+	.AlertColor(@color)
+	{
+		border: solid 1px hsl(hue(@color), saturation(@color), lightness(@color) + 20);
+		background-color: hsl(hue(@color), saturation(@color), lightness(@color) + 40);
+		color: hsl(hue(@color), saturation(@color), lightness(@color) - 20);
+	}
+	
+	&.Primary
+	{
+		.AlertColor(@ThemeColorPrimary);
+	}
+	&.Danger
+	{
+		.AlertColor(@ThemeColorDanger);
+	}
+	&.Success
+	{
+		.AlertColor(@ThemeColorSuccess);
+	}
+	&.Warning
+	{
+		.AlertColor(@ThemeColorWarning);
+	}
+	&.Info
+	{
+		.AlertColor(@ThemeColorInfo);
+	}
+}
