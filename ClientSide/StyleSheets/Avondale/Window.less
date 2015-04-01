@@ -1,0 +1,27 @@
+div.Window
+{
+	background-color: #FFFFFF;
+	
+	&> div.Header, &> div.Content, &> div.Footer
+	{
+		padding: 16px;
+	}
+	&> div.Header
+	{
+		border-bottom: solid 1px #E2E7EB;
+		color: #242A30;
+		font-size: 18px;
+		font-weight: 500;
+	}
+	&> div.Footer
+	{
+		border-top: solid 1px #E2E7EB;
+	}
+	&> div.Content
+	{
+		&> div.Loading
+		{
+			background-color: rgba(255, 255, 255, 0.8);
+		}
+	}
+}
