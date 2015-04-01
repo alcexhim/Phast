@@ -54,6 +54,31 @@ function Window(parentElement)
 	{
 		this.SetContentURL(parentElement.getAttribute("data-content-url"));
 	}
+
+	this.GetLoading = function()
+	{
+		return System.ClassList.Contains(this.ParentElement, "Loading");
+	};
+	this.SetLoading = function(value)
+	{
+		if (value)
+		{
+			return System.ClassList.Add(this.ParentElement, "Loading");
+		}
+		else
+		{
+			return System.ClassList.Remove(this.ParentElement, "Loading");
+		}
+	};
+	
+	this.GetLoadingText = function()
+	{
+		return this.ParentElement.childNodes[1].childNodes[1].childNodes[0].childNodes[1].innerHTML;
+	};
+	this.SetLoadingText = function(value)
+	{
+		this.ParentElement.childNodes[1].childNodes[1].childNodes[0].childNodes[1].innerHTML = value;
+	};
 	
 	this.Opened = new Callback(this);
 	this.Closed = new Callback(this);

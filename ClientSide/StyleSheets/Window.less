@@ -1,10 +1,49 @@
 div.Window
 {
-	position: absolute;
+	position: fixed;
+
+	opacity: 0;
+	visibility: hidden;
+	
 	cursor: default;
-	div.Buttons
+	&> div.Content
+	{
+		box-sizing: border-box;
+		position: relative;
+		&> div.Loading
+		{
+			bottom: 0px;
+			left: 0px;
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			display: none;
+			&> div.LoadingStatus
+			{
+				position: relative;
+				top: 40%;
+				text-align: center;
+				
+				&> div.Throbber
+				{
+					margin-left: auto;
+					margin-right: auto;
+				}
+			}
+		}
+	}
+	div.Buttons, &> div.Footer
 	{
 		text-align: right;
+	}
+	&.Visible
+	{
+		opacity: 1;
+		visibility: visible;
+	}
+	&.Loading > div.Content > div.Loading
+	{
+		display: block;
 	}
 }
 div.WindowModalBackground
