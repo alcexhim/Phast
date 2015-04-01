@@ -95,6 +95,7 @@
 		public $AllowFiltering;
 		
 		public $EnableAddRemoveRows;
+		public $EnableMultipleSelection;
 		
 		public $Columns;
 		public $Items;
@@ -130,6 +131,7 @@
 			$this->HighlightAlternateRows = false;
 			$this->EnableAddRemoveRows = false;
 			$this->EnableHotTracking = true;
+			$this->EnableMultipleSelection = false;
 			
 			$this->ParseChildElements = true;
 		}
@@ -181,6 +183,10 @@
 						if ($this->EnableRowCheckBoxes)
 						{
 							$table->ClassList[] = "RowCheckBoxes";
+						}
+						if ($this->EnableMultipleSelection)
+						{
+							$table->ClassList[] = "MultiSelect";
 						}
 						
 						$table->StyleRules = array
