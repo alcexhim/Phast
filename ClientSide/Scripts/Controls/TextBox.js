@@ -1,8 +1,93 @@
+function TextBoxItem(parent, value, title)
+{
+	this.NativeObject = parent;
+	this.Title = title;
+	this.Value = value;
+	
+	this.GetSelected = function()
+	{
+		for (var i = 0; i < this.NativeObject.SelectElement.childNodes.length; i++)
+		{
+			if (this.NativeObject.SelectElement.childNodes[i].value == this.Value)
+			{
+				if (this.NativeObject.SelectElement.childNodes[i].hasAttribute("selected")) return true;
+			}
+		}
+		return false;
+	}
+	this.SetSelected = function(value)
+	{
+		for (var i = 0; i < this.NativeObject.SelectElement.childNodes.length; i++)
+		{
+			if (this.NativeObject.SelectElement.childNodes[i].value == this.Value)
+			{
+				if (value)
+				{
+					this.NativeObject.SelectElement.childNodes[i].setAttribute("selected", "selected");
+				}
+				else
+				{
+					this.NativeObject.SelectElement.childNodes[i].removeAttribute("selected", "selected");
+				}
+			}
+			else
+			{
+				if (!this.NativeObject.IsMultiSelect())
+				{
+					this.NativeObject.SelectElement.childNodes[i].removeAttribute("selected");
+				}
+			}
+		}
+		this.NativeObject.UpdateSelectedItems();
+	};
+}
 function TextBox(parentElement)
 {
 	this.ParentElement = parentElement;
 	this.TextBoxElement = parentElement.childNodes[0].childNodes[1];
 	this.DropDownElement = parentElement.childNodes[1];
+	this.SelectElement = parentElement.childNodes[2];
+
+	this.ShouldClearOnFocus = function()
+	{
+		return System.ClassList.Contains(this.ParentElement, "ClearOnFocus");
+	};
+	this.IsMultiSelect = function()
+	{
+		return System.ClassList.Contains(this.ParentElement, "MultiSelect");
+	};
+	
+	this.UpdateSelectedItems = function()
+	{
+		var selectedItems = [];
+		var text = "";
+		for (var i = 0; i < this.SelectElement.childNodes.length; i++)
+		{
+			if (this.SelectElement.childNodes[i].hasAttribute("selected"))
+			{
+				selectedItems.push(new TextBoxItem(this, this.SelectElement.childNodes[i].value, this.SelectElement.childNodes[i].innerHTML));
+			}
+		}
+		for (var i = 0; i < this.DropDownElement.childNodes.length; i++)
+		{
+			System.ClassList.Remove(this.DropDownElement.childNodes[i], "Selected");
+		}
+		for (var i = 0; i < selectedItems.length; i++)
+		{
+			text += selectedItems[i].Title;
+			if (i < selectedItems.length - 1) text += "; ";
+
+			for (var j = 0; j < this.DropDownElement.childNodes.length; j++)
+			{
+				if (this.DropDownElement.childNodes[j].childNodes[0].getAttribute("data-value") == selectedItems[i].Value)
+				{
+					System.ClassList.Add(this.DropDownElement.childNodes[j], "Selected");
+				}
+			}
+		}
+		this.TextBoxElement.placeholder = text;
+		this.ParentElement.selectedItems = selectedItems;
+	}
 	
 	if (parentElement.attributes["name"] != null)
 	{
@@ -11,14 +96,6 @@ function TextBox(parentElement)
 	else
 	{
 		this.Name = "";
-	}
-	if (parentElement.attributes["data-multiselect"] != null)
-	{
-		this.EnableMultipleSelection = (parentElement.attributes["data-multiselect"].value == "true");
-	}
-	else
-	{
-		this.EnableMultipleSelection = false;
 	}
 	if (parentElement.attributes["data-suggestion-url"] != null)
 	{
@@ -46,17 +123,30 @@ function TextBox(parentElement)
 		this.TextBoxElement.value = value;
 	};
 	
-	this.TextBoxElement.onfocus = function(sender, e)
+	this.TextBoxElement.NativeObject = this;
+	this.TextBoxElement.addEventListener("focus", function(e)
 	{
-		if (sender.TextBoxElement.attributes["data-auto-open"] != null)
+		if (this.NativeObject.ShouldClearOnFocus())
 		{
-			if (sender.TextBoxElement.attributes["data-auto-open"].value == "true")
+			this.NativeObject.TextBoxElement.placeholder = this.NativeObject.TextBoxElement.value;
+			this.NativeObject.ClearText();
+		}
+		if (this.NativeObject.ParentElement.attributes["data-auto-open"] != null)
+		{
+			if (this.NativeObject.ParentElement.attributes["data-auto-open"].value == "true")
 			{
-				sender.Refresh();
-				sender.DropDown.Open();
+				this.NativeObject.Refresh();
+				this.NativeObject.DropDown.Open();
 			}
 		}
-	}.PrependArgument(this);
+	});
+	this.TextBoxElement.addEventListener("blur", function(e)
+	{
+		if (this.value == "" && this.placeholder != "")
+		{
+			this.value = this.placeholder;
+		}
+	});
 	
 	this.RefreshTimeout = null;
 	
@@ -78,6 +168,47 @@ function TextBox(parentElement)
 			}, 100);
 		}
 	}.PrependArgument(this);
+	
+	for (var i = 0; i < this.DropDownElement.childNodes.length; i++)
+	{
+		this.DropDownElement.childNodes[i].childNodes[0].NativeObject = this;
+		this.DropDownElement.childNodes[i].childNodes[0].addEventListener("click", function(e)
+		{
+			if (!this.NativeObject.IsMultiSelect())
+			{
+				this.NativeObject.GetItemByValue(this.getAttribute("data-value")).SetSelected(true);
+				
+				this.NativeObject.DropDown.Close();
+				this.NativeObject.TextBoxElement.blur();
+			}
+			else
+			{
+				var item = this.NativeObject.GetItemByValue(this.getAttribute("data-value"));
+				item.SetSelected(!item.GetSelected());
+			}
+			
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		});
+	}
+	
+	this.GetSelectedItems = function()
+	{
+		this.UpdateSelectedItems();
+		return this.ParentElement.selectedItems;
+	}
+	this.GetItemByValue = function(value)
+	{
+		for (var i = 0; i < this.SelectElement.childNodes.length; i++)
+		{
+			if (this.SelectElement.childNodes[i].value == value)
+			{
+				return new TextBoxItem(this, this.SelectElement.childNodes[i].value, this.SelectElement.childNodes[i].innerHTML);
+			}
+		}
+		return null;
+	};
 	
 	this.Refresh = function()
 	{
@@ -136,7 +267,24 @@ function TextBox(parentElement)
 		}
 		else
 		{
-			console.error("TextBox: no data retrieval functionality (SuggestionURL/Suggest) has been implemented");
+			// console.error("TextBox: no data retrieval functionality (SuggestionURL/Suggest) has been implemented");
+			var ul = this.ParentElement.childNodes[1];
+			for (var i = 0; i < ul.childNodes.length; i++)
+			{
+				var spanText = ul.childNodes[i].childNodes[0];
+				if (spanText.childNodes.length > 0 && spanText.childNodes[0].tagName && spanText.childNodes[0].tagName.toLowerCase() == "span")
+				{
+					spanText = spanText.childNodes[0];
+				}
+				if (spanText.innerHTML.toLowerCase().contains(this.GetText().toLowerCase()))
+				{
+					System.ClassList.Add(ul.childNodes[i], "Visible");
+				}
+				else
+				{
+					System.ClassList.Remove(ul.childNodes[i], "Visible");
+				}
+			}
 		}
 	};
 	this.FormatStart = function()
@@ -183,14 +331,13 @@ function TextBox(parentElement)
 		"Open": function()
 		{
 			var popup = uxparent.DropDownElement;
-			popup.style.position = "absolute";
 			popup.style.width = uxparent.ParentElement.offsetWidth + "px";
-			popup.style.display = "block";
+			System.ClassList.Add(popup, "Visible");
 		},
 		"Close": function()
 		{
 			var popup = uxparent.DropDownElement;
-			popup.style.display = "none";
+			System.ClassList.Remove(popup, "Visible");
 		}
 	};
 	/*

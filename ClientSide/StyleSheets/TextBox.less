@@ -1,19 +1,65 @@
-div.Textbox
+div.TextBox
 {
-	cursor: text;
-	&.TextboxMustSelect
+	&:not(.RequireSelection)
 	{
-		background-image: url(@PhastStaticPath + "/dropins/WebFramework/Images/Chevron/down-16x16.png");
-		background-position: 99% center;
-		background-repeat: no-repeat;
+		cursor: text;
 	}
-}
-.TextboxSuggestionList
-{
-	z-index: 4;
+	position: relative;
 	
-	a
+	&.RequireSelection
 	{
-		display: block;
+		&::after
+		{
+			content: "";
+			display: inline-block;
+			font-family: FontAwesome;
+			font-size: inherit;
+			position: absolute;
+			right: 10px;
+			top: 16px;
+			transform: rotate(180deg);
+		}
+		
+		&> div.TextboxContent
+		{
+			&> input
+			{
+				&:not(:focus)
+				{
+					cursor: default;
+				}
+			}
+		}
+		&> ul.SuggestionList
+		{
+			&> li
+			{
+				&> a
+				{
+					&> i.Checkmark
+					{
+						width: 16px;
+						padding-right: 8px;
+						opacity: 0;
+						visibility: hidden;
+					}
+				}
+				&.Selected
+				{
+					&> a
+					{
+						&> i.Checkmark
+						{
+							opacity: 1;
+							visibility: visible;
+						}
+					}
+				}
+			}
+		}
+	}
+	&> select.SuggestionList
+	{
+		display: none;
 	}
 }

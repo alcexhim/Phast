@@ -12,18 +12,42 @@
 	
 	use Phast\System;
 	
+	use Phast\HTMLControl;
+	use Phast\HTMLControls\Anchor;
+	use Phast\HTMLControls\HTMLControlInput;
+	use Phast\HTMLControls\HTMLControlInputType;
+					
+	class TextBoxItem
+	{
+		public $Title;
+		public $Value;
+		public $Selected;
+		
+		public function __construct($title = null, $value = null, $selected = false)
+		{
+			$this->Title = $title;
+			$this->Value = $value;
+			$this->Selected = $selected;
+		}
+	}
+	
 	class TextBox extends WebControl
 	{
 		public $Name;
 		public $PlaceholderText;
 		
-		public $Columns;
+		/**
+		 * The items available for selection from this TextBox.
+		 * @var TextBoxItem[]
+		 */
 		public $Items;
 		
 		public $InnerStyle;
 		
 		public $RequireSelectionFromChoices;
 		public $EnableMultipleSelection;
+		public $ClearOnFocus;
+		public $OpenWhenFocused;
 		
 		public $ShowColumnHeaders;
 		
@@ -38,6 +62,8 @@
 			
 			$this->TagName = "div";
 			$this->ClassList[] = "TextBox";
+			
+			$this->OpenWhenFocused = true;
 		}
 		
 		protected function OnInitialize()
@@ -48,55 +74,111 @@
 		
 		protected function RenderBeginTag()
 		{
+			$this->Controls = array();
+			
 			if ($this->RequireSelectionFromChoices)
 			{
 				$this->ClassList[] = "RequireSelection";
 			}
+			if ($this->ClearOnFocus)
+			{
+				$this->ClassList[] = "ClearOnFocus";
+			}
 			$this->Attributes[] = new WebControlAttribute("data-suggestion-url", System::ExpandRelativePath($this->SuggestionURL));
-			parent::RenderBeginTag();
-		}
-		
-		protected function RenderContent()
-		{
-			echo("<div class=\"TextboxContent\">");
-			echo("<span class=\"TextboxSelectedItems\">");
+			if ($this->OpenWhenFocused)
+			{
+				$this->Attributes[] = new WebControlAttribute("data-auto-open", "true");
+			}
+			
+			$divTextboxContent = new HTMLControl("div");
+			$divTextboxContent->ClassList[] = "TextboxContent";
+			
+			$spanTextboxSelectedItems = new HTMLControl("span");
+			$spanTextboxSelectedItems->ClassList[] = "TextboxSelectedItems";
 			
 			$i = 0;
 			foreach ($this->Items as $item)
 			{
 				if (!$item->Selected) continue;
 				
-				echo("<span class=\"SelectedItem\">");
-				echo("<span class=\"Text\">");
-				echo($item->Title);
-				echo("</span>");
-				echo("<a class=\"CloseButton\" href=\"#\">&nbsp;</a>");
-				echo("</span>");
+				$spanSelectedItem = new HTMLControl("span");
+				$spanSelectedItem->ClassList[] = "SelectedItem";
+				
+				$spanText = new HTMLControl("Text");
+				$spanText->ClassList[] = "Text";
+				$spanText->InnerHTML = $item->Title;
+				$spanSelectedItem->Controls[] = $spanText;
+				
+				$aCloseButton = new Anchor();
+				$aCloseButton->ClassList[] = "CloseButton";
+				$spanSelectedItem->Controls[] = $aCloseButton;
+				
+				$spanTextboxSelectedItems->Controls[] = $spanSelectedItem;
 				
 				$i++;
 			}
+			$divTextboxContent->Controls[] = $spanTextboxSelectedItems;
 			
-			echo("</span>");
-			echo("<input type=\"text\" autocomplete=\"off\" name=\"" . $this->Name . "\" placeholder=\"" . $this->PlaceholderText . "\"");
-			if ($this->Width != null)
-			{
-				echo(" style=\"width: " . $this->Width . ";\"");
-			}
+			$inputText = new HTMLControlInput();
+			$inputText->Type = HTMLControlInputType::Text;
+			$inputText->Attributes[] = new WebControlAttribute("autocomplete", "off"); 
+			$inputText->Name = $this->Name;
+			$inputText->PlaceholderText = $this->PlaceholderText;
+			$inputText->Width = $this->Width;
+			
 			if ($this->InnerStyle != null)
 			{
-				echo (" style=\"" . $this->InnerStyle . "\"");
+				$inputText->Attributes[] = new WebControlAttribute("style", $this->InnerStyle);
 			}
+			$divTextboxContent->Controls[] = $inputText;
 			
-			echo(" />");
-			echo("</div>");
+			$this->Controls[] = $divTextboxContent;
 			
-			echo("<div class=\"SuggestionList Popup\">");
-			$lv = new ListView("Textbox_" . $this->ID . "_ListView");
-			$lv->ShowColumnHeaders = $this->ShowColumnHeaders;
-			$lv->Columns = $this->Columns;
-			$lv->Items = $this->Items;
-			$lv->Render();
-			echo("</div>");
+			$ulSuggestionList = new HTMLControl("ul");
+			$ulSuggestionList->ClassList[] = "SuggestionList";
+			$ulSuggestionList->ClassList[] = "Menu";
+			$ulSuggestionList->ClassList[] = "Popup";
+			foreach ($this->Items as $item)
+			{
+				$li = new HTMLControl("li");
+				$li->ClassList[] = "MenuItem";
+				$li->ClassList[] = "Visible";
+				$aSuggestionListItem = new Anchor();
+				
+				$iCheckmark = new HTMLControl("i");
+				$iCheckmark->ClassList[] = "fa";
+				$iCheckmark->ClassList[] = "fa-check";
+				$iCheckmark->ClassList[] = "Checkmark";
+				$aSuggestionListItem->Controls[] = $iCheckmark;
+				
+				$spanText = new HTMLControl("span");
+				$spanText->InnerHTML = $item->Title;
+				$aSuggestionListItem->Controls[] = $spanText;
+				
+				$aSuggestionListItem->Attributes[] = new WebControlAttribute("data-value", $item->Value);
+				$li->Controls[] = $aSuggestionListItem;
+				$ulSuggestionList->Controls[] = $li;
+			}
+			$this->Controls[] = $ulSuggestionList;
+			
+			$selectSuggestionList = new HTMLControl("select");
+			$selectSuggestionList->ClassList[] = "SuggestionList";
+			$selectSuggestionList->Attributes[] = new WebControlAttribute("multiple", "multiple");
+			
+			foreach ($this->Items as $item)
+			{
+				$option = new HTMLControl("option");
+				$option->Attributes[] = new WebControlAttribute("value", $item->Value);
+				$option->InnerHTML = $item->Title;
+				if ($item->Selected)
+				{
+					$option->Attributes[] = new WebControlAttribute("selected", "selected");
+				}
+				$selectSuggestionList->Controls[] = $option;
+			}
+			$this->Controls[] = $selectSuggestionList;
+			
+			parent::RenderBeginTag();
 		}
 	}
 ?>
