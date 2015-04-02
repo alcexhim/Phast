@@ -1,15 +1,23 @@
-div.Menu
+ul.Menu
 {
-	a.MenuItem
+	list-style-type: none;
+	&.Popup
 	{
-		span.Title
+		position: fixed;
+	}
+	&> li
+	{
+		display: none;
+		&.Visible
 		{
-			font-weight: bold;
-			display: block;
+			display: list-item;
 		}
-		span.Description
+		&> a
 		{
+			cursor: default;
 			display: block;
+			text-decoration: none;
+			position: relative;
 		}
 	}
 }

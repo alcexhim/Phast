@@ -3,8 +3,25 @@ ul.Menu
 	padding: 0px;
 	margin: 0px;
 	
+	&.Popup
+	{
+		background: #FFFFFF;
+		border: solid 1px @ThemeColor;
+		border-top: none;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+	}
+	
 	&> li
 	{
+		&> a
+		{
+			padding: 8px 16px;
+			&:hover
+			{
+				background-color: @ThemeColor;
+				color: #FFFFFF;
+			}
+		}
 		&.Header
 		{
 			color: #6D7983;
@@ -12,10 +29,6 @@ ul.Menu
 			line-height: 20px;
 			margin: 0;
 			padding: 10px 20px;
-		}
-		&> a
-		{
-			position: relative;
 		}
 		&.HasChildren > a
 		{
