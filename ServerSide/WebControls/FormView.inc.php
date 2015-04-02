@@ -284,6 +284,13 @@
 	}
 	class FormViewItemChoice extends FormViewItem
 	{
+		public $EnableMultipleSelection;
+		public $RequireSelectionFromChoices;
+		
+		/**
+		 * The items available for selection.
+		 * @var FormViewItemChoiceValue[]
+		 */
 		public $Items;
 		
 		public function __construct($id = null, $name = null, $title = null, $defaultValue = null, $items = null)
@@ -297,16 +304,20 @@
 			{
 				$this->Items = array();
 			}
+			$this->ParseChildElements = true;
 		}
 		
 		protected function CreateControlInternal()
 		{
-			$elem = new HTMLControlSelect();
+			$elem = new TextBox();
 			$elem->ID = $this->ID;
 			$elem->Name = $this->Name;
+			$elem->EnableMultipleSelection = $this->EnableMultipleSelection;
+			$elem->RequireSelectionFromChoices = $this->RequireSelectionFromChoices;
+			$elem->ClearOnFocus = $elem->RequireSelectionFromChoices;
 			foreach ($this->Items as $item)
 			{
-				$elem->Items[] = new HTMLControlSelectOption($item->Title, $item->Value, $item->Selected);
+				$elem->Items[] = new TextBoxItem($item->Title, $item->Value, $item->Selected);
 			}
 			return $elem;
 		}

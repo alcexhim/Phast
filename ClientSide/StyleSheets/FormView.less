@@ -26,13 +26,14 @@ div.FormView
 			white-space: nowrap;
 			vertical-align: inherit;
 		}
-		&> label, input, textarea
+		&> label, input, textarea, div.TextBox
 		{
 			display: table-cell;
 		}
-		&> input, textarea
+		&> input, textarea, div.TextBox > div.TextboxContent > input
 		{
-			width: -moz-available;
+			box-sizing: border-box;
+			width: 100%;
 		}
 	}
 }
