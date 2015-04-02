@@ -206,12 +206,12 @@ function Window(parentElement)
 			}
 			case HorizontalAlignment.Center:
 			{
-				Window.style.left = ((parseInt(this.GetWidth()) - parseInt(Window.clientWidth)) / 2) + "px";
+				Window.style.left = ((parseInt(window.GetWidth()) - parseInt(this.GetWidth())) / 2) + "px";
 				break;
 			}
 			case HorizontalAlignment.Right:
 			{
-				Window.style.left = (parseInt(this.GetWidth()) - parseInt(Window.clientWidth) - 16) + "px";
+				Window.style.left = (parseInt(window.GetWidth()) - parseInt(this.GetWidth()) - 16) + "px";
 				break;
 			}
 		}
@@ -228,12 +228,12 @@ function Window(parentElement)
 			}
 			case VerticalAlignment.Middle:
 			{
-				Window.style.top = ((parseInt(this.GetHeight()) - parseInt(Window.clientHeight)) / 2) + "px";
+				Window.style.top = ((parseInt(window.GetHeight()) - parseInt(this.GetHeight())) / 2) + "px";
 				break;
 			}
 			case VerticalAlignment.Bottom:
 			{
-				Window.style.top = (parseInt(this.GetHeight()) - parseInt(Window.clientHeight) - 16) + "px";
+				Window.style.top = (parseInt(window.GetHeight() - parseInt(this.GetHeight())) - 16) + "px";
 				break;
 			}
 		}
