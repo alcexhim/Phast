@@ -120,6 +120,7 @@
 			$divTextboxContent->Controls[] = $spanTextboxSelectedItems;
 			
 			$inputText = new HTMLControlInput();
+			$inputText->ID = $this->ID . "_InputElement";
 			$inputText->Type = HTMLControlInputType::Text;
 			$inputText->Attributes[] = new WebControlAttribute("autocomplete", "off"); 
 			$inputText->Name = $this->Name;
