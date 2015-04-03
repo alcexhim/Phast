@@ -80,7 +80,7 @@
 					}
 					
 					$lbl = new HTMLControl("label");
-					$lbl->Attributes[] = new WebControlAttribute("for", $item->ID);
+					$lbl->Attributes[] = new WebControlAttribute("for", $item->GetInputElementID());
 					if ($char !== null)
 					{
 						$lbl->Attributes[] = new WebControlAttribute("accesskey", $char);
@@ -107,6 +107,11 @@
 		public $Required;
 		
 		public $GenerateLabel;
+		
+		public function GetInputElementID()
+		{
+			return $this->ID;
+		}
 		
 		/**
 		 * The client-side script called when the value of this FormViewItem changed and validated.
@@ -305,6 +310,11 @@
 				$this->Items = array();
 			}
 			$this->ParseChildElements = true;
+		}
+		
+		public function GetInputElementID()
+		{
+			return $this->ID . "_InputElement";
 		}
 		
 		protected function CreateControlInternal()
