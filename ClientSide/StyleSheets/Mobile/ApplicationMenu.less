@@ -1,0 +1,14 @@
+@media (min-width: 600px)
+{
+	/* hide the ApplicationMenu if width is greater than 800px */
+	body
+	{
+		&> nav.Top
+		{
+			&> a.ApplicationMenu
+			{
+				display: none;
+			}
+		}
+	}
+}
