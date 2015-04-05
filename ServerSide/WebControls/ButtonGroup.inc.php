@@ -1,14 +1,35 @@
 <?php
 	namespace Phast\WebControls;
 	
+	use Phast\Enumeration;
 	use Phast\System;
 	use Phast\WebControl;
 	
-	// Define enums
-	\Enum::Create("Phast\\WebControls\\ButtonGroupImagePosition", "AboveText", "BelowText");
-	\Enum::Create("Phast\\WebControls\\ButtonGroupOrientation", "Horizontal", "Vertical");
-	\Enum::Create("Phast\\WebControls\\ButtonGroupButtonAlignment", "Left", "Center", "Right");
-	\Enum::Create("Phast\\WebControls\\ButtonGroupButtonAspectRatioPreservationMode", "FitWidth", "FitHeight", "FitBoth", "None");
+	class ButtonGroupImagePosition extends Enumeration
+	{
+		const AboveText = 1;
+		const BelowText = 2;
+	}
+	class ButtonGroupOrientation extends Enumeration
+	{
+		const Horizontal = 1;
+		const Vertical = 2;
+	}
+	
+	class ButtonGroupButtonAlignment extends Enumeration
+	{
+		const Left = 1;
+		const Center = 2;
+		const Right = 3;
+	}
+	
+	class ButtonGroupButtonAspectRatioPreservationMode extends Enumeration
+	{
+		const None = 0;
+		const FitWidth = 1;
+		const FitHeight = 2;
+		const FitBoth = 3;
+	}
 	
 	class ButtonGroup extends WebControl
 	{
