@@ -358,7 +358,7 @@
 					{
 						if (strtolower($attr->Name) == "style")
 						{
-							if (!\StringMethods::EndsWith($attr->Value, ";"))
+							if (!StringMethods::EndsWith($attr->Value, ";"))
 							{
 								$styleAttributeContent .= $attr->Value . "; ";
 							}
