@@ -1,5 +1,5 @@
 <?php
-	require("jsmin.php");
+	include("jsmin.php");
 	header ("Content-Type: text/javascript");
 	
 	$bundles = array();
@@ -28,7 +28,15 @@
 	}
 	else
 	{
-		$output = JSMin::minify($input);
+		if (class_exists("JSMin"))
+		{
+			$output = JSMin::minify($input);
+		}
+		else
+		{
+			$output = "/* could not find class 'JSMin'; minify is unavailable */\r\n";
+			$output .= $input;
+		}
 		echo($output);
 	}
 ?>
