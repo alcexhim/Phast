@@ -1,6 +1,7 @@
 @PhastStaticPath: "http://static.alcehosting.net";
 
 @import "Branding.less";
+@import "Mobile/Main.less";
 
 @import "AdditionalDetailWidget.less";
 @import "Alert.less";
@@ -34,3 +35,13 @@
 @import "Window.less";
 @import "Wizard.less";
 @import "Wunderbar.less";
+
+
+div.ImageAndMessage
+{
+	&> div.Image, &> div.Message
+	{
+		display: table-cell;
+		vertical-align: top;
+	}
+}

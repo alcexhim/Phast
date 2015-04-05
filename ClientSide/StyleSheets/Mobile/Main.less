@@ -1,0 +1,73 @@
+@import "FormView.less";
+
+@media (max-width: 800px)
+{
+	/* TABLET styles */
+	body
+	{
+		&> div.Content
+		{
+			margin-left: 0px !important;
+		}
+	}
+	div.Window
+	{
+		left: 0px !important;
+		top: 0px !important;
+		right: 0px !important;
+		bottom: 0px !important;
+		width: 100% !important;
+		&> div.Footer
+		{
+			position: fixed;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+		}
+	}
+	@media (max-width: 600px)
+	{
+		/* PHONE styles */
+		div.Wizard
+		{
+			&> ol
+			{
+				&> li
+				{
+					width: 20px;
+					&.Selected
+					{
+						width: 100%;
+					}
+					&:not(.Selected)
+					{
+						&> span.Title, &> span.Description
+						{
+							display: none;
+						}
+					}
+				}
+			}
+		}
+		div.ImageAndMessage
+		{
+			text-align: center;
+			&> div.Image, &> div.Message
+			{
+				display: block !important;
+			}
+			&> div.Image > img
+			{
+			}
+			&> div.Message
+			{
+				width: 100%;
+				text-align: left;
+				&> h1
+				{
+					text-align: center;
+				}
+			}
+		}
+	}
+}
