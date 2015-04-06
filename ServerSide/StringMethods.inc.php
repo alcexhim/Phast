@@ -3,21 +3,13 @@
 	
 	class StringMethods
 	{
-		public static function StartsWith($value, $search)
+		public static function StartsWith($haystack, $needle)
 		{
-			$valueLength = strlen($value);
-			$searchLength = strlen($search);
-			if ($valueLength < $searchLength) return false;
-			
-			return (substr($value, 0, $searchLength) == $search);
+			return $needle === "" || strpos($haystack, $needle) === 0;
 		}
-		public static function EndsWith($value, $search)
+		public static function EndsWith($haystack, $needle)
 		{
-			$valueLength = strlen($value);
-			$searchLength = strlen($search);
-			if ($valueLength < $searchLength) return false;
-			
-			return (substr($value, $valueLength - $searchLength, $searchLength) == $search);
+			return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 		}
 	}
 ?>
