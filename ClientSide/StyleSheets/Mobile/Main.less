@@ -1,0 +1,60 @@
+@import "ApplicationMenu.less";
+@import "FormView.less";
+@import "Window.less";
+
+@media (max-width: 800px)
+{
+	/* TABLET styles */
+	body
+	{
+		&> div.Content
+		{
+			margin-left: 0px !important;
+		}
+	}
+	@media (max-width: 600px)
+	{
+		/* PHONE styles */
+		div.Wizard
+		{
+			&> ol
+			{
+				&> li
+				{
+					width: 20px;
+					&.Selected
+					{
+						width: 100%;
+					}
+					&:not(.Selected)
+					{
+						&> span.Title, &> span.Description
+						{
+							display: none;
+						}
+					}
+				}
+			}
+		}
+		div.ImageAndMessage
+		{
+			text-align: center;
+			&> div.Image, &> div.Message
+			{
+				display: block !important;
+			}
+			&> div.Image > img
+			{
+			}
+			&> div.Message
+			{
+				width: 100%;
+				text-align: left;
+				&> h1
+				{
+					text-align: center;
+				}
+			}
+		}
+	}
+}

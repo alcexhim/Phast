@@ -1,9 +1,8 @@
 <?php
 	namespace Phast\WebControls;
 	
+	use Phast\Orientation;
 	use Phast\WebStyleSheetRule;
-	
-	\Enum::Create("Phast\\WebControls\\SplitContainerOrientation", "Horizontal", "Vertical");
 	
 	class SplitContainer extends \Phast\WebControl
 	{
@@ -16,7 +15,7 @@
 		public function __construct($id)
 		{
 			parent::__construct($id);
-			$this->Orientation = SplitContainerOrientation::Vertical;
+			$this->Orientation = Orientation::Vertical;
 			$this->PrimaryPanel = new SplitContainerPanel($this, "Primary");
 			$this->SecondaryPanel = new SplitContainerPanel($this, "Secondary");
 			$this->SplitterWidth = "4px";
@@ -28,12 +27,12 @@
 			$this->ClassList[] = "SplitContainer";
 			switch ($this->Orientation)
 			{
-				case SplitContainerOrientation::Horizontal:
+				case Orientation::Horizontal:
 				{
 					$this->ClassList[] = "Horizontal";
 					break;
 				}
-				case SplitContainerOrientation::Vertical:
+				case Orientation::Vertical:
 				{
 					$this->ClassList[] = "Vertical";
 					break;

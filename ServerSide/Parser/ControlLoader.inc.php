@@ -7,6 +7,7 @@
 	use Phast\WebControl;
 	use Phast\WebControlAttribute;
 	use Phast\WebPageMessage;
+	use Phast\WebPageMessageSeverity;
 	use Phast\System;
 
 	use UniversalEditor\ObjectModels\Markup\MarkupElement;

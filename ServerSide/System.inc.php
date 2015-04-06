@@ -423,8 +423,9 @@
 			return true;
 		}
 	}
-
+	
 	require_once("Enumeration.inc.php");
+	require_once("Orientation.inc.php");
 	
 	require_once("RandomStringGenerator.inc.php");
 	

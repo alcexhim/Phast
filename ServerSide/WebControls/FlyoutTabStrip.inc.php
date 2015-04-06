@@ -1,9 +1,16 @@
 <?php
 	namespace Phast\WebControls;
 	
+	use Phast\Enumeration;
 	use Phast\WebControl;
 	
-	\Enum::Create("Phast\\WebControls\\FlyoutTabStripPosition", "Top", "Bottom", "Left", "Right");
+	class FlyoutTabStripPosition extends Enumeration
+	{
+		const Top = 1;
+		const Bottom = 2;
+		const Left = 3;
+		const Right = 4;
+	}
 	
 	class FlyoutTabStripItem
 	{

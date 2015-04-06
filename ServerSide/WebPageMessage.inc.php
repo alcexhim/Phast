@@ -1,7 +1,13 @@
 <?php
 	namespace Phast;
 	
-	\Enum::Create("Phast\\Parser\\WebPageMessageSeverity", "None", "Information", "Warning", "Error");
+	class WebPageMessageSeverity extends Enumeration
+	{
+		const None = 0;
+		const Information = 1;
+		const Warning = 2;
+		const Error = 3;
+	}
 	
 	class WebPageMessage
 	{

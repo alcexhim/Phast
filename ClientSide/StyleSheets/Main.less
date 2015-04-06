@@ -4,6 +4,7 @@
 
 @import "AdditionalDetailWidget.less";
 @import "Alert.less";
+@import "ApplicationMenu.less";
 @import "Button.less";
 @import "ButtonGroup.less";
 @import "Card.less";
@@ -34,3 +35,14 @@
 @import "Window.less";
 @import "Wizard.less";
 @import "Wunderbar.less";
+
+@import "Mobile/Main.less";
+
+div.ImageAndMessage
+{
+	&> div.Image, &> div.Message
+	{
+		display: table-cell;
+		vertical-align: top;
+	}
+}
