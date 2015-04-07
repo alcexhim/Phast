@@ -596,7 +596,13 @@
 	{
 		System::$Parser->LoadFile($filename);
 	}
-	
+
+	// Module Objects Code-Behind loader
+	$a = glob($RootPath . "/Include/Modules/*/Objects/*.inc.php");
+	foreach ($a as $filename)
+	{
+		require_once($filename);
+	}
 	// Module Pages Code-Behind loader
 	$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx.php");
 	foreach ($a as $filename)
