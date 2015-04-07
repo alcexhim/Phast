@@ -1,0 +1,16 @@
+@media (max-width: 800px)
+{
+	/* PHONE styles */
+	div.FormView > div.Field > label, div.FormView > div.Field > input[type=text], div.FormView > div.Field > textarea, div.FormView > div.Field > div.TextBox
+	{
+		display: block !important;
+		text-align: left !important;
+	}
+	div.FormView > div.Field > div.TextBox
+	{
+		&.RequireSelection::after
+		{
+			top: 8px !important;
+		}
+	}
+}

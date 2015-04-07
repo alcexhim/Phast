@@ -4,6 +4,7 @@
 
 @import "AdditionalDetailWidget.less";
 @import "Alert.less";
+@import "ApplicationMenu.less";
 @import "Button.less";
 @import "ButtonGroup.less";
 @import "Card.less";
@@ -16,9 +17,11 @@
 @import "ImageGallery.less";
 @import "InstanceEditor.less";
 @import "LoginPage.less";
+@import "Logo.less";
 @import "ListView.less";
 @import "Menu.less";
 @import "Message.less";
+@import "PageFooter.less";
 @import "Panel.less";
 @import "Popup.less";
 @import "ProgressBar.less";
@@ -34,3 +37,16 @@
 @import "Window.less";
 @import "Wizard.less";
 @import "Wunderbar.less";
+
+@import "Mobile/Main.less";
+
+@import "../../../fonts/FontAwesome/FontAwesome.css";
+
+div.ImageAndMessage
+{
+	&> div.Image, &> div.Message
+	{
+		display: table-cell;
+		vertical-align: top;
+	}
+}

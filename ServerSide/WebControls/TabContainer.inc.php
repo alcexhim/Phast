@@ -50,6 +50,15 @@
 		public $TargetURL;
 		public $TargetScript;
 		
+		public function GetControlByID($id)
+		{
+			foreach ($this->Controls as $ctl)
+			{
+				if ($ctl->ID == $id) return $ctl;
+			}
+			return null;
+		}
+		
 		public function __construct($id, $title, $imageURL = null, $targetURL = null, $targetScript = null, $visible = true)
 		{
 			$this->ID = $id;
