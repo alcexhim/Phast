@@ -26,22 +26,22 @@
 	{
 		public $Checked;
 		
-		public function __construct($name = null, $title = null, $imageURL = null, $width = null, $checked = false)
+		public function __construct($id = null, $title = null, $imageURL = null, $width = null, $checked = false)
 		{
-			parent::__construct($name, $title, $imageURL, ($width == null ? "64px" : $width));
+			parent::__construct($id, $title, $imageURL, ($width == null ? "64px" : $width));
 			$this->Checked = $checked;
 		}
 	}
 	class ListViewColumn
 	{
-		public $Name;
+		public $ID;
 		public $Title;
 		public $ImageURL;
 		public $Width;
 		
-		public function __construct($name = null, $title = null, $imageURL = null, $width = null)
+		public function __construct($id = null, $title = null, $imageURL = null, $width = null)
 		{
-			$this->Name = $name;
+			$this->ID = $id;
 			$this->Title = $title;
 			$this->ImageURL = $imageURL;
 			$this->Width = $width;
@@ -70,7 +70,7 @@
 	}
 	class ListViewItemColumn
 	{
-		public $Name;
+		public $ID;
 		public $Text;
 		public $Content;
 		public $OnRetrieveContent;
@@ -78,9 +78,9 @@
 		
 		public $ParseChildElements;
 		
-		public function __construct($name = null, $content = null, $text = null, $onRetrieveContent = null, $userData = null)
+		public function __construct($id = null, $content = null, $text = null, $onRetrieveContent = null, $userData = null)
 		{
-			$this->Name = $name;
+			$this->ID = $id;
 			$this->Content = $content;
 			if ($text == null) $text = $content;
 			$this->Text = $text;
@@ -97,7 +97,15 @@
 		public $EnableAddRemoveRows;
 		public $EnableMultipleSelection;
 		
+		/**
+		 * The columns on this ListView.
+		 * @var ListViewColumn[]
+		 */
 		public $Columns;
+		/**
+		 * The items on this ListView.
+		 * @var ListViewItem[]
+		 */
 		public $Items;
 
 		public $EnableHotTracking;
@@ -109,11 +117,11 @@
 		
 		public $Mode;
 		
-		public function GetColumnByName($name)
+		public function GetColumnByID($id)
 		{
 			foreach ($this->Columns as $column)
 			{
-				if ($column->Name == $name) return $column;
+				if ($column->ID == $id) return $column;
 			}
 			return null;
 		}
@@ -232,7 +240,7 @@
 							else if (get_class($column) == "Phast\\WebControls\\ListViewColumn")
 							{
 								$link = new Anchor();
-								$link->TargetScript = "lvListView.Sort('" . $column->Name . "'); return false;";
+								$link->TargetScript = "lvListView.Sort('" . $column->ID . "'); return false;";
 								$link->InnerHTML = $column->Title;
 								$link->Render();
 							}
@@ -266,7 +274,7 @@
 							$table->BeginHeaderCell();
 							if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
 							{
-								$realColumn = $this->GetColumnByName($column->Name);
+								$realColumn = $this->GetColumnByID($column->ID);
 								if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
 								{
 								}
@@ -276,9 +284,9 @@
 									$form->BeginContent();
 									
 									$input = new TextBox();
-									$input->Name = "ListView_" . $this->ID . "_Filter_" . $column->Name;
+									$input->Name = "ListView_" . $this->ID . "_Filter_" . $column->ID;
 									$input->PlaceholderText = "Filter by " . $column->Title;
-									$input->Text = $_POST["ListView_" . $this->ID . "_Filter_" . $column->Name];
+									$input->Text = $_POST["ListView_" . $this->ID . "_Filter_" . $column->ID];
 									$input->Render();
 									
 									$form->EndContent();
@@ -301,15 +309,15 @@
 								{
 									if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
 									{
-										$realColumn = $this->GetColumnByName($column->Name);
+										$realColumn = $this->GetColumnByID($column->ID);
 										if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
 										{
 										}
 										else
 										{
-											if (isset($_POST["ListView_" . $this->ID . "_Filter_" . $column->Name]))
+											if (isset($_POST["ListView_" . $this->ID . "_Filter_" . $column->ID]))
 											{
-												$vps = $_POST["ListView_" . $this->ID . "_Filter_" . $column->Name];
+												$vps = $_POST["ListView_" . $this->ID . "_Filter_" . $column->ID];
 												if ($vps != "" && (mb_stripos($column->Text, $vps) === false))
 												{
 													$continueItem = true;
@@ -342,11 +350,71 @@
 								echo("<!-- edit buttons go here -->");
 								$table->EndCell();
 							}
+							
+							foreach ($this->Columns as $realColumn)
+							{
+								$itemCol = null;
+								foreach ($item->Columns as $itemColumn)
+								{
+									if ($itemColumn->ID == $realColumn->ID)
+									{
+										$itemCol = $itemColumn;
+										break;
+									}
+								}
+								
+								if ($itemCol != null)
+								{
+									if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
+									{
+										$table->BeginCell();
+										echo("<input type=\"checkbox\" />");
+										$table->EndCell();
+									}
+									else if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumn")
+									{
+										$table->BeginCell();
+										if ($item->NavigateURL != null)
+										{
+											?><a class="Wrapper" href="<?php echo(System::ExpandRelativePath($item->NavigateURL)); ?>"><?php
+										}
+										if ($itemCol->OnRetrieveContent != null)
+										{
+											call_user_func($itemCol->OnRetrieveContent, $itemCol->UserData);
+										}
+										else
+										{
+											if ($itemCol->Content == null)
+											{
+												echo($itemCol->Text);
+											}
+											else
+											{
+												echo($itemCol->Content);
+											}
+										}
+										
+										if ($item->NavigateURL != null)
+										{
+											?></a><?php
+										}
+										$table->EndCell();
+									}
+								}
+								else
+								{
+									$table->BeginCell();
+									echo("&nbsp;");
+									$table->EndCell();
+								}
+							}
+							
+							/*
 							foreach ($item->Columns as $column)
 							{
 								if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
 								{
-									$realColumn = $this->GetColumnByName($column->Name);
+									$realColumn = $this->GetColumnByID($column->ID);
 									if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
 									{
 										$table->BeginCell();
@@ -384,6 +452,8 @@
 									}
 								}
 							}
+							*/
+							
 							$table->EndRow();
 						}
 						
