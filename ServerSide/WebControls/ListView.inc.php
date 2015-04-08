@@ -350,7 +350,8 @@
 								echo("<!-- edit buttons go here -->");
 								$table->EndCell();
 							}
-							
+
+							$lvcCount = 0;
 							foreach ($this->Columns as $realColumn)
 							{
 								$itemCol = null;
@@ -373,7 +374,13 @@
 									}
 									else if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumn")
 									{
-										$table->BeginCell();
+										$paramz = array();
+										if ($lvcCount == 0)
+										{
+											$paramz["ClassNames"] = array("FirstVisibleChild");
+										}
+										
+										$table->BeginCell($paramz);
 										if ($item->NavigateURL != null)
 										{
 											?><a class="Wrapper" href="<?php echo(System::ExpandRelativePath($item->NavigateURL)); ?>"><?php
@@ -399,6 +406,8 @@
 											?></a><?php
 										}
 										$table->EndCell();
+										
+										$lvcCount++;
 									}
 								}
 								else
