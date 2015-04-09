@@ -55,6 +55,9 @@
 			foreach ($this->Controls as $ctl)
 			{
 				if ($ctl->ID == $id) return $ctl;
+				
+				$ctll = $ctl->GetControlByID($id);
+				if ($ctll != null) return $ctll;
 			}
 			return null;
 		}
