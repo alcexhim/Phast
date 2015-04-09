@@ -6,6 +6,35 @@ function Meter(parentElement)
 	this.CanvasElement = this.ContentWrapperElement.childNodes[1];
 	this.LabelElement = this.ParentElement.childNodes[1];
 	
+	this.get_Title = function()
+	{
+		return this.LabelElement.innerHTML;
+	};
+	this.set_Title = function(value)
+	{
+		this.LabelElement.innerHTML = value;
+	};
+	
+	this.ParentElement.addEventListener("contextmenu", function(e)
+	{
+		var contextMenu = new ContextMenu();
+		contextMenu.Items = 
+		[
+		 	new MenuItemHeader(null, "Meter - " + this.NativeObject.get_Title()),
+		 	new MenuItemCommand(null, "Decimal", null),
+		 	new MenuItemCommand(null, "Percent", null)
+		];
+		
+		if (this.NativeObject.ParentElement.hasAttribute("data-enable-default-contextmenu") && this.NativeObject.ParentElement.getAttribute("data-enable-default-contextmenu") == "true")
+		{
+			contextMenu.Show(e.clientX, e.clientY);
+		}
+		
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	});
+	
 	var canvas = this.CanvasElement;
 	canvas.height = canvas.width;
 	
