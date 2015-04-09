@@ -57,7 +57,7 @@ function ContextMenu()
 	{
 		if (this.ParentElement == null)
 		{
-			var elem = document.createElement("div");
+			var elem = document.createElement("ul");
 			elem.className = "Menu Popup";
 			elem.addEventListener("contextmenu", function(e)
 			{
@@ -68,6 +68,12 @@ function ContextMenu()
 			
 			for (var i = 0; i < this.Items.length; i++)
 			{
+				var li = document.createElement("li");
+				if (this.Items[i].Visible)
+				{
+					System.ClassList.Add(li, "Visible");
+				}
+				
 				if (this.Items[i].ClassName == "MenuItemCommand")
 				{
 					var elem1 = document.createElement("a");
@@ -85,15 +91,18 @@ function ContextMenu()
 					elem1.NativeObject = this;
 					elem1.MenuItem = this.Items[i];
 					
-					elem.appendChild(elem1);
+					li.appendChild(elem1);
 				}
 				else if (this.Items[i].ClassName == "MenuItemSeparator")
 				{
-					var elem1 = document.createElement("div");
-					elem1.className = "Separator";
-					elem1.innerHTML = this.Items[i].Title;
-					elem.appendChild(elem1);
+					System.ClassList.Add(li, "Separator");
 				}
+				else if (this.Items[i].ClassName == "MenuItemHeader")
+				{
+					System.ClassList.Add(li, "Header");
+					li.innerHTML = this.Items[i].Title;
+				}
+				elem.appendChild(li);
 			}
 			
 			elem.style.left = x + "px";
@@ -112,11 +121,18 @@ function ContextMenu()
 		this.ParentElement.className = "Menu Popup";
 	};
 }
-function MenuItemSeparator(id, title)
+function MenuItemHeader(id, title)
+{
+	this.ClassName = "MenuItemHeader";
+	this.ID = id;
+	this.Title = title;
+	this.Visible = true;
+}
+function MenuItemSeparator(id)
 {
 	this.ClassName = "MenuItemSeparator";
 	this.ID = id;
-	this.Title = title;
+	this.Visible = true;
 }
 function MenuItemCommand(id, title, onclick)
 {
@@ -124,6 +140,7 @@ function MenuItemCommand(id, title, onclick)
 	this.ID = id;
 	this.Title = title;
 	this.OnClientClick = onclick;
+	this.Visible = true;
 	
 	this.Execute = function()
 	{
