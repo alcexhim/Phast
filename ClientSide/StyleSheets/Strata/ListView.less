@@ -33,11 +33,11 @@ table.ListView
 	{
 		&> td, th
 		{
-			&:first-child
+			&.FirstVisibleChild
 			{
 				border-left: solid 3px transparent;
 			}
-			&:last-child
+			&.LastVisibleChild
 			{
 				border-right: solid 1px transparent;
 			}
@@ -49,11 +49,11 @@ table.ListView
 				background-color: lighten(@ThemeColor, 45%) !important;
 				border-top: double 1px @ThemeColor !important;
 				border-bottom: double 1px @ThemeColor !important;
-				&:first-child
+				&.FirstVisibleChild
 				{
 					box-shadow: 3px 0 0 @ThemeColor inset;
 				}
-				&:last-child
+				&.LastVisibleChild
 				{
 					border-right: solid 1px @ThemeColor;
 				}
