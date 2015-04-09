@@ -174,29 +174,32 @@
 			
 			$this->Controls = array();
 				
-			$divTabs = new HTMLControl("div");
-			$divTabs->ClassList = array("Tabs", "TopLeft");
+			$ulTabs = new HTMLControl("ul");
+			$ulTabs->ClassList[] = "Tabs";
 			
 			$j = 0;
 			foreach ($this->TabPages as $tabPage)
 			{
-				$aTab = new Anchor();
-				$aTab->Attributes[] = new WebControlAttribute("data-id", $tabPage->ID);
-				$aTab->ClassList[] = "Tab";
+				$liTab = new HTMLControl("li");
 				if ($tabPage->Visible)
 				{
-					$aTab->ClassList[] = "Visible";
+					$liTab->ClassList[] = "Visible";
 				}
 				if (($this->SelectedTabID != null && $tabPage->ID == $this->SelectedTabID) || ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID)))
 				{
-					$aTab->ClassList[] = "Selected";
+					$liTab->ClassList[] = "Selected";
 				}
+				
+				$aTab = new Anchor();
+				$aTab->Attributes[] = new WebControlAttribute("data-id", $tabPage->ID);
 				$aTab->TargetURL = $tabPage->TargetURL;
 				$aTab->InnerHTML = $tabPage->Title;
-				$divTabs->Controls[] = $aTab;
+				$liTab->Controls[] = $aTab;
+				
+				$ulTabs->Controls[] = $liTab;
 				$j++;
 			}
-			$this->Controls[] = $divTabs;
+			$this->Controls[] = $ulTabs;
 			
 			$divTabPages = new HTMLControl("div");
 			$divTabPages->ClassList[] = "TabPages";
@@ -220,30 +223,6 @@
 				$divTabPages->Controls[] = $divTabPage;
 			}
 			$this->Controls[] = $divTabPages;
-			
-			$divTabs = new HTMLControl("div");
-			$divTabs->ClassList = array("Tabs", "BottomRight");
-			
-			$j = 0;
-			foreach ($this->TabPages as $tabPage)
-			{
-				$aTab = new Anchor();
-				$aTab->Attributes[] = new WebControlAttribute("data-id", $tabPage->ID);
-				$aTab->ClassList[] = "Tab";
-				if ($tabPage->Visible)
-				{
-					$aTab->ClassList[] = "Visible";
-				}
-				if (($this->SelectedTabID != null && $tabPage->ID == $this->SelectedTabID) || ($this->SelectedTab != null && ($tabPage->ID == $this->SelectedTab->ID)))
-				{
-					$aTab->ClassList[] = "Selected";
-				}
-				$aTab->TargetURL = $tabPage->TargetURL;
-				$aTab->InnerHTML = $tabPage->Title;
-				$divTabs->Controls[] = $aTab;
-				$j++;
-			}
-			$this->Controls[] = $divTabs;
 			
 			parent::RenderBeginTag();
 		}

@@ -1,26 +1,30 @@
 div.TabContainer
 {
-	div.Tabs
+	ul
 	{
 		border-bottom: solid 1px #DDDDDD;
-		a
+		&> li
 		{
-			background-color: #EDF1F2;
-			border: solid 1px #DDE6E9;
-			border-radius: 0;
-			color: #515253;
-			cursor: pointer;
-			font-weight: 700;
-			margin: 0;
-			margin-bottom: -1px;
-			padding: 10px 20px;
-			
-			&:hover, &.Selected
+			&>a
+			{
+				background-color: #EDF1F2;
+				border: solid 1px #DDE6E9;
+				border-radius: 0;
+				color: #515253;
+				cursor: pointer;
+				font-weight: 700;
+				margin: 0;
+				margin-bottom: -1px;
+				padding: 10px 20px;
+				
+				&:hover
+				{
+					background-color: #FFFFFF;
+				}
+			}
+			&.Selected > a
 			{
 				background-color: #FFFFFF;
-			}
-			&.Selected
-			{
 				border-bottom-color: #FFFFFF;
 			}
 		}

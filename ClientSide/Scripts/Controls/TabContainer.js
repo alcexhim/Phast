@@ -18,20 +18,27 @@ function TabContainer(parentElement)
 		var selectedIndex = -1;
 		for (var i = 0; i < tabs.childNodes.length; i++)
 		{
-			if (tabs.childNodes[i].className == "Tab Visible Selected") tabs.childNodes[i].className = "Tab Visible";
+			if (System.ClassList.Contains(tabs.childNodes[i], "Selected"))
+			{
+				System.ClassList.Remove(tabs.childNodes[i], "Selected");
+			}
+			
 			if (tabs.childNodes[i] === tab)
 			{
 				selectedIndex = i;
-				tabs.childNodes[i].className = "Tab Visible Selected";
+				System.ClassList.Add(tabs.childNodes[i], "Selected");
 			}
 		}
 		for (var i = 0; i < tabPages.childNodes.length; i++)
 		{
-			if (tabPages.childNodes[i].className == "TabPage Selected") tabPages.childNodes[i].className = "TabPage";
-		}
-		if (selectedIndex > -1 && selectedIndex < tabPages.childNodes.length)
-		{
-			tabPages.childNodes[selectedIndex].className = "TabPage Selected";
+			if (selectedIndex > -1 && selectedIndex < tabPages.childNodes.length && i == selectedIndex)
+			{
+				System.ClassList.Add(tabPages.childNodes[i], "Selected");
+			}
+			else
+			{
+				System.ClassList.Remove(tabPages.childNodes[i], "Selected");
+			}
 		}
 		
 		System.SetClientProperty(this.ID, "SelectedTabIndex", selectedIndex);
