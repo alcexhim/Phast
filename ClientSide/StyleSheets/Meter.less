@@ -1,0 +1,39 @@
+div.Meter
+{
+	display: inline-block;
+	padding: 16px;
+	position: relative;
+	
+	-moz-user-select: none;
+	
+	&> div.ContentWrapper, &> label
+	{
+		display: block;
+		text-align: center;
+	}
+	
+	&> div.ContentWrapper
+	{
+		position: relative;
+		width: 90px;
+		height: 90px;
+		
+		&> div.Content, canvas
+		{
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			width: 90px;
+			height: 90px;
+		}
+		&> div.Content
+		{
+			line-height: 90px;
+			font-size: 1.7em;
+		}
+	}
+	&> label
+	{
+		padding: 8px;
+	}
+}
