@@ -86,7 +86,21 @@
 						$lbl->Attributes[] = new WebControlAttribute("accesskey", $char);
 						echo(" accesskey=\"" . $char . "\"");
 					}
-					$lbl->InnerHTML = $title;
+					
+					if ($item->IconName != "")
+					{
+						$i = new HTMLControl("i");
+						$i->ClassList[] = "fa";
+						$i->ClassList[] = "fa-" . $item->IconName;
+						$lbl->Controls[] = $i;
+					}
+					
+					$spanText = new HTMLControl("span");
+					$spanText->ClassList[] = "Text";
+					$spanText->InnerHTML = $title;
+					
+					$lbl->Controls[] = $spanText;
+					
 					$div->Controls[] = $lbl;
 				}
 				
@@ -105,6 +119,8 @@
 		public $DefaultValue;
 		public $Value;
 		public $Required;
+		
+		public $IconName;
 		
 		public $GenerateLabel;
 		
@@ -162,6 +178,31 @@
 			
 			$divSeparator->Controls[] = $divTitle;
 			return $divSeparator;
+		}
+	}
+	class FormViewItemLabel extends FormViewItem
+	{
+		/**
+		 * Creates a new Label FormViewItem with the given parameters.
+		 * @param string $id The control ID for the FormViewItem.
+		 * @param string $name The name of the form field to associate with the FormViewItem.
+		 * @param string $title The title of the FormViewItem.
+		 * @param string $defaultValue The default value of the FormViewItem.
+		 */
+		public function __construct($id = null, $name = null, $title = null, $defaultValue = null)
+		{
+			parent::__construct($id, $name, $title, $defaultValue);
+		}
+		
+		protected function CreateControlInternal()
+		{
+			$elem = new HTMLControl("div");
+			$elem->ID = $this->ID;
+			$elem->Name = $this->Name;
+			$elem->InnerHTML = $this->DefaultValue;
+			if (isset($this->Value)) $elem->InnerHTML = $this->Value;
+			
+			return $elem;
 		}
 	}
 	class FormViewItemText extends FormViewItem
