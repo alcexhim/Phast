@@ -76,7 +76,7 @@
 				if ($this->TargetScript != null)
 				{
 					$tag->Attributes[] = new WebControlAttribute("href", "#");
-					$this->Attributes[] = new WebControlAttribute("onclick", $this->TargetScript);
+					$tag->Attributes[] = new WebControlAttribute("onclick", $this->TargetScript);
 				}
 				
 				if ($this->IconName != null)
