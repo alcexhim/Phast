@@ -37,6 +37,11 @@
 		public $ID;
 		public $Title;
 		public $ImageURL;
+		/**
+		 * True if this ListViewColumn should be hidden on mobile devices; false if it should be displayed.
+		 * @var boolean
+		 */
+		public $MobileHidden;
 		public $Width;
 		
 		public function __construct($id = null, $title = null, $imageURL = null, $width = null)
@@ -44,6 +49,7 @@
 			$this->ID = $id;
 			$this->Title = $title;
 			$this->ImageURL = $imageURL;
+			$this->MobileHidden = false;
 			$this->Width = $width;
 
 			$this->ParseChildElements = false;
@@ -230,8 +236,10 @@
 							{
 								$attributes[] = new WebStyleSheetRule("width", $column->Width);
 							}
+							$classList = array();
+							if ($column->MobileHidden) $classList[] = "MobileHidden";
 							
-							$table->BeginHeaderCell(array("StyleRules" => $attributes));
+							$table->BeginHeaderCell(array("ClassNames" => $classList, "StyleRules" => $attributes));
 							
 							if (get_class($column) == "Phast\\WebControls\\ListViewColumnCheckBox")
 							{
@@ -271,7 +279,11 @@
 						
 						foreach ($this->Columns as $column)
 						{
-							$table->BeginHeaderCell();
+							$classList = array();
+							if ($column->MobileHidden) $classList[] = "MobileHidden";
+							
+							$table->BeginHeaderCell(array("ClassNames" => $classList));
+							
 							if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
 							{
 								$realColumn = $this->GetColumnByID($column->ID);
@@ -364,23 +376,25 @@
 									}
 								}
 								
+								$classNames = array();
+								if ($realColumn->MobileHidden) $classNames[] = "MobileHidden";
+								
 								if ($itemCol != null)
 								{
 									if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
 									{
-										$table->BeginCell();
+										$table->BeginCell(array("ClassNames" => $classNames));
 										echo("<input type=\"checkbox\" />");
 										$table->EndCell();
 									}
 									else if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumn")
 									{
-										$paramz = array();
 										if ($lvcCount == 0)
 										{
-											$paramz["ClassNames"] = array("FirstVisibleChild");
+											$classNames[] = "FirstVisibleChild";
 										}
 										
-										$table->BeginCell($paramz);
+										$table->BeginCell(array("ClassNames" => $classNames));
 										if ($item->NavigateURL != null)
 										{
 											?><a class="Wrapper" href="<?php echo(System::ExpandRelativePath($item->NavigateURL)); ?>"><?php
@@ -412,7 +426,7 @@
 								}
 								else
 								{
-									$table->BeginCell();
+									$table->BeginCell(array("ClassNames" => $classNames));
 									echo("&nbsp;");
 									$table->EndCell();
 								}
