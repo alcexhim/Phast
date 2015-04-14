@@ -14,7 +14,9 @@
 	
 	use Phast\Parser\PhastParser;
 	use Phast\Pages\ErrorPage;
-
+	
+	use Phast\Configuration\ConfigurationParser;
+	
 	/**
 	 * Provides event arguments during an error event.
 	 * @author Michael Becker
@@ -141,6 +143,9 @@
 		 */
 		public static function GetConfigurationValue($key, $defaultValue = null)
 		{
+			$value = System::$ConfigurationParser->RetrieveProperty($key, $defaultValue);
+			if ($value != null) return $value->Value;
+			
 			if (System::HasConfigurationValue($key))
 			{
 				return System::$Configuration[$key];
@@ -175,10 +180,16 @@
 		}
 		
 		/**
-		 * The Parser
+		 * The WebPageParser
 		 * @var PhastParser
 		 */
 		public static $Parser;
+		
+		/**
+		 * The ConfigurationParser
+		 * @var ConfigurationParser
+		 */
+		public static $ConfigurationParser;
 		
 		/**
 		 * The event handler that is called when an irrecoverable error occurs.
@@ -422,6 +433,12 @@
 			}
 			return true;
 		}
+		
+		public static function LoadXMLConfigurationFile($filename)
+		{
+			if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
+			System::$ConfigurationParser->LoadFile($filename);
+		}
 	}
 	
 	require_once("Enumeration.inc.php");
@@ -438,6 +455,11 @@
 	require_once("Enum.inc.php");
 	require_once("StringMethods.inc.php");
 	require_once("JH.Utilities.inc.php");
+
+	require_once("Configuration/Property.inc.php");
+	require_once("Configuration/Group.inc.php");
+	require_once("Configuration/Flavor.inc.php");
+	require_once("Configuration/ConfigurationParser.inc.php");
 
 	/**
 	 * Provides an enumeration of predefined values for horizontal alignment of content.
@@ -541,7 +563,16 @@
 	$PhastRootPath = dirname(__FILE__);
 	
 	global $RootPath;
-	require_once($RootPath . "/Include/Configuration.inc.php");
+	
+	// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
+	include_once($RootPath . "/Include/Configuration.inc.php");
+	
+	// load the xml files in Configuration directory
+	$a = glob($RootPath . "/Include/Configuration/*.xml");
+	foreach ($a as $filename)
+	{
+		System::LoadXMLConfigurationFile($filename);
+	}
 	
 	require_once("Data/DataSystem.inc.php");
 	
