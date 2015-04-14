@@ -7,15 +7,31 @@
 	use Phast\WebControlAttribute;
 	
 	use Phast\HTMLControl;
-use Phast\Phast;
-				
+	use Phast\Phast;
+	
 	class Button extends WebControl
 	{
+		public $IconName;
+		
 		public $TargetFrame;
 		public $TargetURL;
 		public $TargetScript;
 		
 		public $Text;
+		
+		/**
+		 * Determines whether this Button is rendered as an HTML Input control with type Submit.
+		 * @var boolean
+		 */
+		public $UseSubmitBehavior;
+		
+		public function __construct()
+		{
+			parent::__construct();
+			
+			$this->IconName = null;
+			$this->UseSubmitBehavior = false;
+		}
 		
 		protected function RenderContent()
 		{
