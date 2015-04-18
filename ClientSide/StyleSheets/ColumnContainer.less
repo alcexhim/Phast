@@ -1,13 +1,26 @@
-.ColumnContainer
+div.ColumnContainer
 {
-	-moz-column-count: 3;
-	-moz-column-gap: 10px;
-	-webkit-column-count: 3;
-	-webkit-column-gap: 10px;
-	column-count: 3;
-	column-gap: 10px;
-	/* width: 480px; */
-	.ColumnItem
+	&.TwoColumn
+	{
+		-moz-column-count: 2;
+		-moz-column-gap: 10px;
+		-webkit-column-count: 2;
+		-webkit-column-gap: 10px;
+		column-count: 2;
+		column-gap: 10px;
+		/* width: 480px; */
+	}
+	&.ThreeColumn
+	{
+		-moz-column-count: 3;
+		-moz-column-gap: 10px;
+		-webkit-column-count: 3;
+		-webkit-column-gap: 10px;
+		column-count: 3;
+		column-gap: 10px;
+		/* width: 480px; */
+	}
+	&> div.Column
 	{
 		/* Display inline-block, and absolutely NO FLOATS! */
 		display: inline-block;
