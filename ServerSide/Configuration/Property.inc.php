@@ -13,5 +13,11 @@
 		 * @var string
 		 */
 		public $Value;
+		
+		public function __construct($id = null, $value = null)
+		{
+			$this->ID = $id;
+			$this->Value = $value;
+		}
 	}
 ?>
