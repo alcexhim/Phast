@@ -436,7 +436,6 @@
 		
 		public static function LoadXMLConfigurationFile($filename)
 		{
-			if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
 			System::$ConfigurationParser->LoadFile($filename);
 		}
 	}
@@ -566,6 +565,9 @@
 	
 	// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
 	include_once($RootPath . "/Include/Configuration.inc.php");
+	
+	// Initialize the ConfigurationParser
+	if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
 	
 	// load the xml files in Configuration directory
 	$a = glob($RootPath . "/Include/Configuration/*.xml");
