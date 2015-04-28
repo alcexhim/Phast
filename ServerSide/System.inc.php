@@ -143,13 +143,14 @@
 		 */
 		public static function GetConfigurationValue($key, $defaultValue = null)
 		{
-			$value = System::$ConfigurationParser->RetrieveProperty($key, $defaultValue);
-			if ($value != null) return $value->Value;
-			
 			if (System::HasConfigurationValue($key))
 			{
 				return System::$Configuration[$key];
 			}
+			
+			$value = System::$ConfigurationParser->RetrieveProperty($key, $defaultValue);
+			if ($value != null) return $value->Value;
+			
 			return $defaultValue;
 		}
 		/**
