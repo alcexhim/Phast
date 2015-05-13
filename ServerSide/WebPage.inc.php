@@ -27,6 +27,12 @@
 		public $Enabled;
 		
 		/**
+		 * True if this Web page supports tenanted hosting; false otherwise.
+		 * @var boolean
+		 */
+		public $EnableTenantedHosting;
+		
+		/**
 		 * The path to this Web page, including any path variables.
 		 * @var string
 		 */
@@ -170,7 +176,12 @@
 		public static function FromMarkup($element, $parser)
 		{
 			$page = new WebPage();
-			
+
+			$attEnableTenantedHosting = $element->GetAttribute("EnableTenantedHosting");
+			if ($attEnableTenantedHosting != null)
+			{
+				$page->EnableTenantedHosting = ($attEnableTenantedHosting->Value == "true");
+			}
 			$attFileName = $element->GetAttribute("FileName");
 			if ($attFileName != null)
 			{
@@ -414,6 +425,7 @@
 		public function __construct()
 		{
 			$this->BreadcrumbItems = array();
+			$this->EnableTenantedHosting = true;
 			$this->Metadata = array();
 			$this->OpenGraph = new WebOpenGraphSettings();
 			$this->ResourceLinks = array();
