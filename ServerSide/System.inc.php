@@ -306,6 +306,11 @@
 		{
 			global $RootPath;
 			
+			if (file_exists($RootPath . "/Include/Application.inc.php"))
+			{
+				require_once($RootPath . "/Include/Application.inc.php");
+			}
+			
 			$path = System::GetVirtualPath();
 			
 			// strip path extension if there is one
