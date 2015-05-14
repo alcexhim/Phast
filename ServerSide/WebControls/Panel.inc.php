@@ -54,10 +54,17 @@
 			}
 			switch ($this->HorizontalAlignment)
 			{
+				case "Center":
 				case HorizontalAlignment::Center:
 				{
 					echo("margin-left: auto; ");
 					echo("margin-right: auto; ");
+					break;
+				}
+				case "Right":
+				case HorizontalAlignment::Right:
+				{
+					echo("margin-left: auto; ");
 					break;
 				}
 			}

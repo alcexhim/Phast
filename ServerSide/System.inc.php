@@ -143,13 +143,14 @@
 		 */
 		public static function GetConfigurationValue($key, $defaultValue = null)
 		{
-			$value = System::$ConfigurationParser->RetrieveProperty($key, $defaultValue);
-			if ($value != null) return $value->Value;
-			
 			if (System::HasConfigurationValue($key))
 			{
 				return System::$Configuration[$key];
 			}
+			
+			$value = System::$ConfigurationParser->RetrieveProperty($key, $defaultValue);
+			if ($value != null) return $value->Value;
+			
 			return $defaultValue;
 		}
 		/**
@@ -266,14 +267,14 @@
 			System::Redirect("~/account/login");
 			return;
 		}
-		public static function GetVirtualPath()
+		public static function GetVirtualPath($supportTenantedHosting = true)
 		{
 			if (isset($_GET["virtualpath"]))
 			{
 				if ($_GET["virtualpath"] != null)
 				{
 					$array = explode("/", $_GET["virtualpath"]);
-					if (System::$EnableTenantedHosting)
+					if (System::$EnableTenantedHosting && $supportTenantedHosting)
 					{
 						System::$TenantName = $array[0];
 						array_shift($array);
@@ -304,6 +305,11 @@
 		public static function Launch()
 		{
 			global $RootPath;
+			
+			if (file_exists($RootPath . "/Include/Application.inc.php"))
+			{
+				require_once($RootPath . "/Include/Application.inc.php");
+			}
 			
 			$path = System::GetVirtualPath();
 			
@@ -367,7 +373,6 @@
 			
 			$success = false;
 			
-			$actualPathParts = $path;
 			$pathVars = array();
 			
 			$actualPage = null;
@@ -375,7 +380,8 @@
 			foreach (System::$Parser->Pages as $page)
 			{
 				if (!$page->Enabled) continue;
-				
+
+				$actualPathParts = $path;
 				// try to parse the path, for example:
 				// profile/$(username)/dashboard
 				
