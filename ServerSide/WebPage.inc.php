@@ -198,12 +198,24 @@
 				foreach ($tagScripts->Elements as $elem)
 				{
 					if (get_class($elem) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
-						
+					
+					$attFileName = $elem->GetAttribute("FileName");
+					
 					$attContentType = $elem->GetAttribute("ContentType");
 					$contentType = "text/javascript";
 					if ($attContentType != null) $contentType = $attContentType->Value;
-						
-					$page->Scripts[] = new WebScript($elem->GetAttribute("FileName")->Value, $contentType);
+					
+					if ($attFileName != null)
+					{
+						$page->Scripts[] = new WebScript($elem->GetAttribute("FileName")->Value, $contentType);
+					}
+					else
+					{
+						$script = new WebScript();
+						$script->ContentType = $contentType;
+						$script->Content = $elem->GetInnerMarkup();
+						$page->Scripts[] = $script;
+					}
 				}
 			}
 			$tagStyleSheets = $element->GetElement("StyleSheets");
