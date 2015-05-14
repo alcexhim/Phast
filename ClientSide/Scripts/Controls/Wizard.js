@@ -24,6 +24,17 @@ function Wizard(parentElement)
 		});
 	}
 	
+	this.GetSelectedPageIndex = function()
+	{
+		for (var i = 0; i < this.TabContainerElement.childNodes.length; i++)
+		{
+			if (System.ClassList.Contains(this.TabContainerElement.childNodes[i], "Selected"))
+			{
+				return i;
+			}
+		}
+		return -1;
+	};
 	this.SetSelectedPageIndex = function(index)
 	{
 		for (var i = 0; i < this.TabContainerElement.childNodes.length; i++)
