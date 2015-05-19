@@ -37,7 +37,7 @@
 			$property->Name = $name;
 			$property->Value = $defaultValue;
 			$this->Properties[] = $property;
-			return null;
+			return $property;
 		}
 		
 		public function RetrievePropertyValue($name, $defaultValue = null)

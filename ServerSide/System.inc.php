@@ -267,14 +267,14 @@
 			System::Redirect("~/account/login");
 			return;
 		}
-		public static function GetVirtualPath()
+		public static function GetVirtualPath($supportTenantedHosting = true)
 		{
 			if (isset($_GET["virtualpath"]))
 			{
 				if ($_GET["virtualpath"] != null)
 				{
 					$array = explode("/", $_GET["virtualpath"]);
-					if (System::$EnableTenantedHosting)
+					if (System::$EnableTenantedHosting && $supportTenantedHosting)
 					{
 						System::$TenantName = $array[0];
 						array_shift($array);
@@ -305,6 +305,11 @@
 		public static function Launch()
 		{
 			global $RootPath;
+			
+			if (file_exists($RootPath . "/Include/Application.inc.php"))
+			{
+				require_once($RootPath . "/Include/Application.inc.php");
+			}
 			
 			$path = System::GetVirtualPath();
 			
@@ -368,7 +373,6 @@
 			
 			$success = false;
 			
-			$actualPathParts = $path;
 			$pathVars = array();
 			
 			$actualPage = null;
@@ -376,7 +380,8 @@
 			foreach (System::$Parser->Pages as $page)
 			{
 				if (!$page->Enabled) continue;
-				
+
+				$actualPathParts = $path;
 				// try to parse the path, for example:
 				// profile/$(username)/dashboard
 				
@@ -437,7 +442,6 @@
 		
 		public static function LoadXMLConfigurationFile($filename)
 		{
-			if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
 			System::$ConfigurationParser->LoadFile($filename);
 		}
 	}
@@ -567,6 +571,9 @@
 	
 	// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
 	include_once($RootPath . "/Include/Configuration.inc.php");
+	
+	// Initialize the ConfigurationParser
+	if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
 	
 	// load the xml files in Configuration directory
 	$a = glob($RootPath . "/Include/Configuration/*.xml");

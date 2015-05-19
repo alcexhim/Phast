@@ -44,7 +44,18 @@
 			$property->Name = $name;
 			$property->Value = $defaultValue;
 			$this->Properties[] = $property;
-			return null;
+			return $property;
+		}
+		
+		public function RetrievePropertyValue($name, $defaultValue = null)
+		{
+			$property = $this->RetrieveProperty($name, $defaultValue);
+			return $property->Value;
+		}
+		public function UpdatePropertyValue($name, $value)
+		{
+			$property = $this->RetrieveProperty($name, $value);
+			$property->Value = $value;
 		}
 	}
 ?>

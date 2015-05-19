@@ -41,6 +41,8 @@
 		public function RetrieveProperty($name, $defaultValue = null)
 		{
 			$flavor = $this->GetCurrentFlavor();
+			if ($flavor == null) return new Property($name, $defaultValue);
+			
 			$property = $flavor->RetrieveProperty($name, $defaultValue);
 			if ($property == null)
 			{
