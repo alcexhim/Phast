@@ -11,7 +11,7 @@
 	 * Provides an enumeration of predefined values for type of input.
 	 * @author Michael Becker
 	 */
-	abstract class HTMLControlInputType extends Enumeration
+	abstract class InputType extends Enumeration
 	{
 		/**
 		 * No type is specified
@@ -43,9 +43,14 @@
 		 * @var int 9
 		 */
 		const Hidden = 9;
+		/**
+		 * Submit
+		 * @var int 10
+		 */
+		const Submit = 10;
 	}
 	
-	class HTMLControlInput extends HTMLControl
+	class Input extends HTMLControl
 	{
 		public function __construct()
 		{
@@ -63,29 +68,40 @@
 		{
 			switch ($this->Type)
 			{
-				case HTMLControlInputType::Text:
+				case "Text":
+				case InputType::Text:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "text");
 					break;
 				}
-				case HTMLControlInputType::Password:
+				case "Password":
+				case InputType::Password:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "password");
 					break;
 				}
-				case HTMLControlInputType::CheckBox:
+				case "CheckBox":
+				case InputType::CheckBox:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "checkbox");
 					break;
 				}
-				case HTMLControlInputType::RadioButton:
+				case "RadioButton":
+				case InputType::RadioButton:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "radio");
 					break;
 				}
-				case HTMLControlInputType::Hidden:
+				case "Hidden":
+				case InputType::Hidden:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "hidden");
+					break;
+				}
+				case "Submit":
+				case InputType::Submit:
+				{
+					$this->Attributes[] = new WebControlAttribute("type", "submit");
 					break;
 				}
 			}

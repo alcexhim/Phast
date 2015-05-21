@@ -2,8 +2,8 @@
 	namespace Phast\WebControls;
 	
 	use Phast\HTMLControl;
-	use Phast\HTMLControls\HTMLControlInput;
-	use Phast\HTMLControls\HTMLControlInputType;
+	use Phast\HTMLControls\Input;
+	use Phast\HTMLControls\InputType;
 	
 	use Phast\HTMLControls\HTMLControlSelect;
 	use Phast\HTMLControls\HTMLControlSelectOption;
@@ -227,9 +227,9 @@
 		
 		protected function CreateControlInternal()
 		{
-			$elem = new HTMLControlInput();
+			$elem = new Input();
 			$elem->ID = $this->ID;
-			$elem->Type = HTMLControlInputType::Text;
+			$elem->Type = InputType::Text;
 			$elem->Name = $this->Name;
 			$elem->Value = $this->DefaultValue;
 			if (isset($this->Value)) $elem->Value = $this->Value;
@@ -254,9 +254,9 @@
 		
 		protected function CreateControlInternal()
 		{
-			$elem = new HTMLControlInput();
+			$elem = new Input();
 			$elem->ID = $this->ID;
-			$elem->Type = HTMLControlInputType::Password;
+			$elem->Type = InputType::Password;
 			$elem->Name = $this->Name;
 			$elem->Value = $this->DefaultValue;
 			if (isset($this->Value)) $elem->Value = $this->Value;
@@ -317,9 +317,9 @@
 		
 		protected function CreateControlInternal()
 		{
-			$elem = new HTMLControlInput();
+			$elem = new Input();
 			$elem->ID = $this->ID;
-			$elem->Type = HTMLControlInputType::CheckBox;
+			$elem->Type = InputType::CheckBox;
 			$elem->Name = $this->Name;
 			if ($this->DefaultValue)
 			{
@@ -399,9 +399,9 @@
 		
 		protected function CreateControlInternal()
 		{
-			$elem = new HTMLControlInput();
+			$elem = new Input();
 			$elem->ID = $this->ID;
-			$elem->Type = HTMLControlInputType::Text;
+			$elem->Type = InputType::Text;
 			$elem->Name = $this->Name;
 			return $elem;
 		}
