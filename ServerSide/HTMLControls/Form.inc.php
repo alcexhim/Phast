@@ -3,9 +3,11 @@
 	
 	use Phast\Enumeration;
 	use Phast\HTMLControl;
-	use Phast\WebControl;
+	use Phast\System;
 	
+	use Phast\WebControl;
 	use Phast\WebControlAttribute;
+	
 	
 	/**
 	 * Provides an enumeration of predefined values for method of form submission.
@@ -60,7 +62,7 @@
 		{
 			if ($this->Action != null)
 			{
-				$this->Attributes[] = new WebControlAttribute("action", $this->Action);
+				$this->Attributes[] = new WebControlAttribute("action", System::ExpandRelativePath($this->Action));
 			}
 			if ($this->EncodingType != null)
 			{
