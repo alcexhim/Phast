@@ -78,15 +78,16 @@
 		 */
 		public static function Get($name, $columnPrefix = null)
 		{
-			global $MySQL;
-			
+			$pdo = DataSystem::GetPDO();
 			$query = "SHOW COLUMNS FROM " . System::GetConfigurationValue("Database.TablePrefix") . $name;
-			$result = $MySQL->query($query);
-			$count = $result->num_rows;
+			$statement = $pdo->prepare($query);
+			$result = $statement->execute();
+			
+			$count = $statement->rowCount();
 			$columns = array();
 			for ($i = 0; $i < $count; $i++)
 			{
-				$values = $result->fetch_assoc();
+				$values = $statement->fetch(PDO::FETCH_ASSOC);
 				
 				$columnName = $values["Field"];
 				if (substr($columnName, 0, strlen($columnPrefix)) == $columnPrefix)
@@ -113,7 +114,7 @@
 		 */
 		public function Create()
 		{
-			global $MySQL;
+			$pdo = DataSystem::GetPDO();
 			$query = "CREATE TABLE " . System::$Configuration["Database.TablePrefix"] . $this->Name;
 			
 			$query .= "(";
@@ -232,13 +233,15 @@
 			
 			$query .= ")";
 			
-			$result = $MySQL->query($query);
+			$statement = $pdo->prepare($query);
+			$result = $statement->execute();
+			
 			if ($result === false)
 			{
-				trigger_error("Phast\Data error: " . $MySQL->errno . ": " . $MySQL->error);
-				trigger_error("Phast\Data query: " . $query);
-				Phast\Data::$Errors->Clear();
-				Phast\Data::$Errors->Add(new Phast\DataError($MySQL->errno, $MySQL->error, $query));
+				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				trigger_error("DataSystem query: " . $query);
+				DataSystem::$Errors->Clear();
+				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 				return false;
 			}
 			
@@ -258,11 +261,14 @@
 				}
 				$query .= ");";
 
-				$result = $MySQL->query($query);
+				$statement = $pdo->prepare($query);
+				$result = $statement->execute();
 				if ($result === false)
 				{
-					Phast\Data::$Errors->Clear();
-					Phast\Data::$Errors->Add(new Phast\DataError($MySQL->errno, $MySQL->error, $query));
+					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					trigger_error("DataSystem query: " . $query);
+					DataSystem::$Errors->Clear();
+					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 					return false;
 				}
 			}
@@ -281,15 +287,18 @@
 				}
 				$query .= ")";
 				
-				$result = $MySQL->query($query);
+				$statement = $pdo->prepare($query);
+				$result = $statement->execute();
 				if ($result === false)
 				{
-					Phast\Data::$Errors->Clear();
-					Phast\Data::$Errors->Add(new Phast\DataError($MySQL->errno, $MySQL->error, $query));
+					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					trigger_error("DataSystem query: " . $query);
+					DataSystem::$Errors->Clear();
+					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 					return false;
 				}
 			}
-				
+			
 			$result = $this->Insert($this->Records);
 			if ($result == null) return false;
 			
@@ -304,8 +313,11 @@
 		 */
 		public function Insert($records, $stopOnError = true)
 		{
-			Phast\Data::$Errors->Clear();
-			global $MySQL;
+			DataSystem::$Errors->Clear();
+			
+			$pdo = DataSystem::GetPDO();
+			$rowCount = 0;
+			$lastInsertId = 0;
 			
 			foreach ($records as $record)
 			{
@@ -361,14 +373,22 @@
 				}
 				$query .= " )";
 				
-				$result = $MySQL->query($query);
+				$statement = $pdo->prepare($query);
+				$result = $statement->execute();
+				
 				if ($result === false)
 				{
-					Phast\Data::$Errors->Add(new Phast\DataError($MySQL->errno, $MySQL->error, $query));
+					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					trigger_error("DataSystem query: " . $query);
+					DataSystem::$Errors->Clear();
+					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 					if ($stopOnError) return null;
+					
+					$rowCount += $statement->rowCount();
+					$lastInsertId = $pdo->lastInsertId();
 				}
 			}
-			return new InsertResult($MySQL->affected_rows, $MySQL->insert_id);
+			return new InsertResult($rowCount, $lastInsertId);
 		}
 		
 		/**
@@ -377,15 +397,19 @@
 		 */
 		public function Delete()
 		{
-			global $MySQL;
+			$pdo = DataSystem::GetPDO();
 			$query = "DROP TABLE " . System::$Configuration["Database.TablePrefix"] . $this->Name;
-			$result = $MySQL->query($query);
+			$statement = $pdo->prepare($query);
+			$result = $statement->execute();
 			if ($result === false)
 			{
-				Phast\Data::$Errors->Clear();
-				Phast\Data::$Errors->Add(new Phast\DataError($MySQL->errno, $MySQL->error, $query));
+				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				trigger_error("DataSystem query: " . $query);
+				DataSystem::$Errors->Clear();
+				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 				return false;
 			}
+			return true;
 		}
 		
 		/**
@@ -394,12 +418,13 @@
 		 */
 		public function Exists()
 		{
-			global $MySQL;
+			$pdo = DataSystem::GetPDO();
 			$query = "SHOW TABLES LIKE '" . System::$Configuration["Database.TablePrefix"] . $this->Name . "'";
-			$result = $MySQL->query($query);
+			$statement = $pdo->prepare($query);
+			$result = $statement->execute();
 			if ($result !== false)
 			{
-				return ($result->num_rows > 0);
+				return ($statement->rowCount() > 0);
 			}
 			return false;
 		}
