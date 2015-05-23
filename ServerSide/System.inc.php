@@ -79,6 +79,34 @@
 	 */
 	class System
 	{
+		private static $ApplicationPath;
+		public static function GetApplicationPath()
+		{
+			return System::$ApplicationPath;
+		}
+		public static function SetApplicationPath($value)
+		{
+			if (System::$ApplicationPath != null)
+			{
+				die("application path already set - cannot be set again!");
+			}
+			System::$ApplicationPath = $value;
+		}
+		
+		private static $SystemPath;
+		public static function GetSystemPath()
+		{
+			return System::$SystemPath;
+		}
+		public static function SetSystemPath($value)
+		{
+			if (System::$SystemPath != null)
+			{
+				die("system path already set - cannot be set again!");
+			}
+			System::$SystemPath = $value;
+		}
+		
 	    /**
 	     * Array of global application configuration name/value pairs. 
 	     * @var array
@@ -132,6 +160,15 @@
 		public static function GetCurrentRelativePath()
 		{
 			return $_SERVER["REQUEST_URI"];
+		}
+		
+		/**
+		 * Retrieves all key-value pairs associated with the global configuration property.
+		 * @return array:
+		 */
+		public static function GetConfigurationValues()
+		{
+			return System::$Configuration;
 		}
 		
 		/**
@@ -286,8 +323,7 @@
 		}
 		public static function IncludeFile($filename, $isRequired)
 		{
-			global $RootPath;
-			$filename = str_replace("~/", $RootPath . "/", $filename);
+			$filename = str_replace("~/", System::GetApplicationPath() . "/", $filename);
 			if ($isRequired)
 			{
 				require_once($filename);
@@ -304,7 +340,76 @@
 		 */
 		public static function Launch()
 		{
-			global $RootPath;
+			$RootPath = System::GetApplicationPath();
+			
+			// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
+			include_once($RootPath . "/Include/Configuration.inc.php");
+			
+			// load the xml files in Configuration directory
+			$a = glob($RootPath . "/Include/Configuration/*.xml");
+			foreach ($a as $filename)
+			{
+				System::LoadXMLConfigurationFile($filename);
+			}
+			
+			// Local Objects loader
+			$a = glob($RootPath . "/Include/Objects/*.inc.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			
+			// Local Controls loader
+			$a = glob($RootPath . "/Include/WebControls/*.inc.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			
+			// Local MasterPages Code-Behind loader
+			$a = glob($RootPath . "/Include/MasterPages/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Local MasterPages loader
+			$a = glob($RootPath . "/Include/MasterPages/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
+			
+			// Local Pages Code-Behind loader
+			$a = glob($RootPath . "/Include/Pages/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Local Pages loader
+			$a = glob($RootPath . "/Include/Pages/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
+			
+			// Module Objects Code-Behind loader
+			$a = glob($RootPath . "/Include/Modules/*/Objects/*.inc.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Module Pages Code-Behind loader
+			$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Module Pages loader
+			$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
 			
 			if (file_exists($RootPath . "/Include/Application.inc.php"))
 			{
@@ -563,24 +668,12 @@
 	};
 	System::$Variables = array();
 	System::$Parser = new PhastParser();
-	
-	global $PhastRootPath;
-	$PhastRootPath = dirname(__FILE__);
-	
-	global $RootPath;
-	
-	// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
-	include_once($RootPath . "/Include/Configuration.inc.php");
+
+	System::SetSystemPath(dirname(__FILE__));
+	$PhastRootPath = System::GetSystemPath();
 	
 	// Initialize the ConfigurationParser
 	if (System::$ConfigurationParser == null) System::$ConfigurationParser = new ConfigurationParser();
-	
-	// load the xml files in Configuration directory
-	$a = glob($RootPath . "/Include/Configuration/*.xml");
-	foreach ($a as $filename)
-	{
-		System::LoadXMLConfigurationFile($filename);
-	}
 	
 	require_once("Data/DataSystem.inc.php");
 	
@@ -595,65 +688,6 @@
 	foreach ($a as $filename)
 	{
 		require_once($filename);
-	}
-	
-	// Local Objects loader
-	$a = glob($RootPath . "/Include/Objects/*.inc.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	
-	// Local Controls loader
-	$a = glob($RootPath . "/Include/WebControls/*.inc.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	
-	// Local MasterPages Code-Behind loader
-	$a = glob($RootPath . "/Include/MasterPages/*.phpx.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	// Local MasterPages loader
-	$a = glob($RootPath . "/Include/MasterPages/*.phpx");
-	foreach ($a as $filename)
-	{
-		System::$Parser->LoadFile($filename);
-	}
-
-	// Local Pages Code-Behind loader
-	$a = glob($RootPath . "/Include/Pages/*.phpx.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	// Local Pages loader
-	$a = glob($RootPath . "/Include/Pages/*.phpx");
-	foreach ($a as $filename)
-	{
-		System::$Parser->LoadFile($filename);
-	}
-
-	// Module Objects Code-Behind loader
-	$a = glob($RootPath . "/Include/Modules/*/Objects/*.inc.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	// Module Pages Code-Behind loader
-	$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx.php");
-	foreach ($a as $filename)
-	{
-		require_once($filename);
-	}
-	// Module Pages loader
-	$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx");
-	foreach ($a as $filename)
-	{
-		System::$Parser->LoadFile($filename);
 	}
 	
 	session_start();
