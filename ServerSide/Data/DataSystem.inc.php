@@ -19,9 +19,11 @@
 	require_once("DatabaseOperationResult.inc.php");
 	require_once("Record.inc.php");
 	require_once("RecordColumn.inc.php");
+	require_once("SelectResult.inc.php");
 	require_once("Table.inc.php");
 	require_once("TableForeignKey.inc.php");
 	require_once("TableKey.inc.php");
+	require_once("TableSelectCriteria.inc.php");
 	
 	require_once("Traits/DataObject.inc.php");
 	

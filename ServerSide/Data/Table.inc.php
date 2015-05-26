@@ -2,7 +2,11 @@
 	namespace Phast\Data;
 	
 	use Phast\System;
+	use PDO;
 	
+	use Phast\Conditionals\ConditionalComparison;
+	use Phast\StringMethods;
+			
 	/**
 	 * Represents a table on the database.
 	 * @author Michael Becker
@@ -305,6 +309,86 @@
 			return true;
 		}
 		
+		public function Select(TableSelectCriteria $criteria)
+		{
+			$columnNames = "*";
+			if (is_array($criteria->ColumnNames))
+			{
+				$count = count($criteria->ColumnNames);
+				if ($count > 0)
+				{
+					$columnNames = "";
+					for ($i = 0; $i < $count; $i++)
+					{
+						$columnNames .= $criteria->ColumnNames[$i];
+						if ($i < $count - 1) $columnNames .= ", ";
+					}
+				}
+			}
+			
+			$query = "SELECT " . $columnNames . " FROM " . System::GetConfigurationValue("Database.TablePrefix") . $this->Name;
+			if (is_array($criteria->Conditions))
+			{
+				$count = count($criteria->Conditions);
+				if ($count > 0)
+				{
+					$query .= " WHERE ";
+					for ($i = 0; $i < $count; $i++)
+					{
+						$conditionalStatement = $criteria->Conditions[$i];
+						
+						$query .= "(";
+						$query .= $this->ColumnPrefix . $conditionalStatement->Name . " ";
+						switch ($conditionalStatement->Comparison)
+						{
+							case ConditionalComparison::Equals:
+							{
+								$query .= "=";
+								break;
+							}
+						}
+						$query .= " ";
+						$query .= $conditionalStatement->Value;
+						$query .= ")";
+						
+						if ($i < $count - 1)
+						{
+							$query .= " AND ";
+						}
+					}
+				}
+			}
+			
+			$pdo = DataSystem::GetPDO();
+			$statement = $pdo->prepare($query);
+			$result = $statement->execute();
+			if ($result === false)
+			{
+				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				trigger_error("DataSystem query: " . $query);
+				DataSystem::$Errors->Clear();
+				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+				return false;
+			}
+			
+			$count = $statement->rowCount();
+			$selectResult = new SelectResult();
+			for ($i = 0; $i < $count; $i++)
+			{
+				$record = new Record();
+				
+				$values = $statement->fetch(PDO::FETCH_ASSOC);
+				foreach ($values as $key => $value)
+				{
+					if (StringMethods::StartsWith($key, $this->ColumnPrefix)) $key = substr($key, strlen($this->ColumnPrefix));
+					$record->Columns[] = new RecordColumn($key, $value);
+				}
+				
+				$selectResult->Records[] = $record;
+			}
+			return $selectResult;
+		}
+		
 		/**
 		 * 
 		 * @param Record[] $records The record(s) to insert into the table.
@@ -318,6 +402,20 @@
 			$pdo = DataSystem::GetPDO();
 			$rowCount = 0;
 			$lastInsertId = 0;
+			
+			if (!is_array($records))
+			{
+				if (get_class($records) == "Phast\\Data\\Record")
+				{
+					// single record
+					$records = array($records);
+				}
+				else
+				{
+					trigger_error("Table::Insert() called, but $records is not an array or single Record!");
+					return false;
+				}
+			}
 			
 			foreach ($records as $record)
 			{
@@ -333,48 +431,56 @@
 				$query .= " ) VALUES ( ";
 				for ($i = 0; $i < $count; $i++)
 				{
+					$query .= ":" . $record->Columns[$i]->Name;
+					if ($i < $count - 1) $query .= ", ";
+				}
+				$query .= ")";
+				
+				$statement = $pdo->prepare($query);
+				
+				$values = array();
+				for ($i = 0; $i < $count; $i++)
+				{
 					$column = $record->Columns[$i];
+					$name = ":" . $column->Name;
 					if ($column->Value === null || $column->Value === ColumnValue::Undefined)
 					{
-						$query .= "NULL";
+						$values[$name] = "NULL";
 					}
 					else if ($column->Value === ColumnValue::Now)
 					{
-						$query .= "NOW()";
+						$values[$name] = "NOW()";
 					}
 					else if ($column->Value === ColumnValue::CurrentTimestamp)
 					{
-						$query .= "CURRENT_TIMESTAMP";
+						$values[$name] = "CURRENT_TIMESTAMP";
 					}
 					else if ($column->Value === ColumnValue::Today)
 					{
-						$query .= "TODAY()";
+						$values[$name] = "TODAY()";
 					}
 					else if (gettype($column->Value) == "string")
 					{
-						$query .= "'" . $MySQL->real_escape_string($column->Value) . "'";
+						$values[$name] = $column->Value;
 					}
 					else if (gettype($column->Value) == "object")
 					{
 						if (get_class($column->Value) == "DateTime")
 						{
-							$query .= "'" . date_format($column->Value, "Y-m-d H:i:s") . "'";
+							$values[$name] = date_format($column->Value, "Y-m-d H:i:s");
 						}
 						else
 						{
-							$query .= $column->Value;
+							$values[$name] = $column->Value;
 						}
 					}
 					else
 					{
-						$query .= $column->Value;
+						$values[$name] = $column->Value;
 					}
-					if ($i < $count - 1) $query .= ", ";
 				}
-				$query .= " )";
 				
-				$statement = $pdo->prepare($query);
-				$result = $statement->execute();
+				$result = $statement->execute($values);
 				
 				if ($result === false)
 				{
@@ -383,7 +489,9 @@
 					DataSystem::$Errors->Clear();
 					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
 					if ($stopOnError) return null;
-					
+				}
+				else
+				{
 					$rowCount += $statement->rowCount();
 					$lastInsertId = $pdo->lastInsertId();
 				}
