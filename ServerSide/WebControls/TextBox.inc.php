@@ -14,9 +14,9 @@
 	
 	use Phast\HTMLControl;
 	use Phast\HTMLControls\Anchor;
-	use Phast\HTMLControls\HTMLControlInput;
-	use Phast\HTMLControls\HTMLControlInputType;
-					
+	use Phast\HTMLControls\Input;
+	use Phast\HTMLControls\InputType;
+	
 	class TextBoxItem
 	{
 		public $Title;
@@ -119,9 +119,9 @@
 			}
 			$divTextboxContent->Controls[] = $spanTextboxSelectedItems;
 			
-			$inputText = new HTMLControlInput();
+			$inputText = new Input();
 			$inputText->ID = $this->ID . "_InputElement";
-			$inputText->Type = HTMLControlInputType::Text;
+			$inputText->Type = InputType::Text;
 			$inputText->Attributes[] = new WebControlAttribute("autocomplete", "off"); 
 			$inputText->Name = $this->Name;
 			$inputText->PlaceholderText = $this->PlaceholderText;
