@@ -71,7 +71,7 @@
 				}
 				if ($this->TargetURL != null)
 				{
-					$tag->Attributes[] = new WebControlAttribute("href", $this->TargetURL);
+					$tag->Attributes[] = new WebControlAttribute("href", System::ExpandRelativePath($this->TargetURL));
 				}
 				if ($this->TargetScript != null)
 				{
