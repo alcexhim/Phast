@@ -230,6 +230,12 @@
 		public static $ConfigurationParser;
 		
 		/**
+		 * The page that is currently being processed.
+		 * @var WebPage
+		 */
+		public static $CurrentPage;
+		
+		/**
 		 * The event handler that is called when an irrecoverable error occurs.
 		 * @var callable
 		 */
@@ -288,7 +294,14 @@
 				$serverPath = $protocol . "://" . $_SERVER["SERVER_NAME"] . $port;
 				$retval = $serverPath . $retval;
 			}
-
+			
+			if (System::$CurrentPage != null)
+			{
+				foreach (System::$CurrentPage->PathVariables as $variable)
+				{
+					$retval = str_replace("\$(Path:" . $variable->Name . ")", $variable->Value, $retval);
+				}
+			}
 			foreach (System::$Configuration as $name => $value)
 			{
 				$retval = str_replace("\$(Configuration:" . $name . ")", $value, $retval);
@@ -527,7 +540,12 @@
 				{
 					$actualPage->PathVariables[] = new WebVariable($key, $value);
 				}
+				
+				System::$CurrentPage = $actualPage;
+				
 				$actualPage->Render();
+				
+				System::$CurrentPage = null;
 				$success = true;
 			}
 			
