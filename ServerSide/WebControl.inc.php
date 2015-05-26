@@ -81,6 +81,8 @@
 		 */
 		public $ParseChildElements;
 		
+		public $OnClientClick;
+		
 		public function GetAllControls()
 		{
 			return $this->Controls;
@@ -222,6 +224,11 @@
         	}
         	if ($id != null) $this->ID = $id;
         	if ($clientid != null) $this->ClientID = $clientid;
+        	
+        	if ($this->OnClientClick != null)
+        	{
+        		$this->Attributes[] = new WebControlAttribute("onclick", $this->OnClientClick);
+        	}
         	
             $this->OnInitialize();
 			if (is_array($this->Controls))
