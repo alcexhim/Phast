@@ -626,6 +626,9 @@
 		const Bottom = 3;
 	}
 	
+	require("Conditionals/ConditionalComparison.inc.php");
+	require("Conditionals/ConditionalStatement.inc.php");
+	
 	require("WebApplication.inc.php");
 	require("WebApplicationTask.inc.php");
 	
