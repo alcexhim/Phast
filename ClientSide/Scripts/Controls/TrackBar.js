@@ -20,7 +20,7 @@ function TrackBar(parentElement)
 	this.ThumbTextElement = this.ThumbElement.childNodes[0];
 	
 	this.OnMouseWheel = function(e)
-	{ 
+	{
 		if (e.detail > 0)
 		{
 			// scrolling down
@@ -154,6 +154,8 @@ function TrackBar(parentElement)
 	});
 	
 	this.TrackElement.NativeObject = this;
+	
+	// When the user clicks the primary mouse button on the track (large change) 
 	this.TrackElement.addEventListener("mousedown", function(ee)
 	{
 		var e = MouseEventArgs.FromNativeEventArgs(ee);
@@ -191,10 +193,18 @@ function TrackBar(parentElement)
 	{
 		var elementSize = this.ParentElement.clientWidth;
 		var currentPos = e.X - this.ParentElement.offsetLeft;
+		if (this.ParentElement.getBoundingClientRect)
+		{
+			currentPos = e.X - this.ParentElement.getBoundingClientRect().x;
+		}
 		if (this.get_Orientation() == TrackBarOrientation.Vertical)
 		{
 			elementSize = this.ParentElement.clientHeight;
 			currentPos = e.Y - this.ParentElement.offsetTop;
+			if (this.ParentElement.getBoundingClientRect)
+			{
+				currentPos = e.Y - this.ParentElement.getBoundingClientRect().y;
+			}
 		}
 		
 		var decimalPos = (currentPos / elementSize);
