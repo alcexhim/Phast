@@ -255,11 +255,11 @@ System.EventHandler = function()
 	{
 		this._functions.push(func);
 	};
-	this.Execute = function()
+	this.Execute = function(sender, e)
 	{
 		for (var i = 0; i < this._functions.length; i++)
 		{
-			var retval = this._functions[i]();
+			var retval = this._functions[i](sender, e);
 			if (!retval) return false;
 		}
 		return true;
