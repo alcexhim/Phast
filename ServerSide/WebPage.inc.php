@@ -164,6 +164,8 @@
 					if ($ctl1 != null) return $ctl1;
 				}
 			}
+			
+			trigger_error("Control with ID '" . $id . "' not found");
 			return null;
 		}
 		
