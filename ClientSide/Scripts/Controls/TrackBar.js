@@ -19,8 +19,13 @@ function TrackBar(parentElement)
 	this.ThumbElement = this.TrackElement.childNodes[1];
 	this.ThumbTextElement = this.ThumbElement.childNodes[0];
 	
+	this.EventHandlers = 
+	{
+		"Change": new System.EventHandler()
+	};
+	
 	this.OnMouseWheel = function(e)
-	{ 
+	{
 		if (e.detail > 0)
 		{
 			// scrolling down
@@ -121,6 +126,10 @@ function TrackBar(parentElement)
 	this.set_CurrentValue = function(value)
 	{
 		value = parseInt(value);
+		
+		var changed = (this.get_CurrentValue() != value);
+		if (!changed) return value;
+		
 		this.ParentElement.setAttribute("data-current-value", value);
 		
 		var decimalPos = ((value - this.get_MinimumValue()) / (this.get_MaximumValue() - this.get_MinimumValue()));
@@ -141,6 +150,8 @@ function TrackBar(parentElement)
 		
 		this.ParentElement.setAttribute("data-tooltip-content", this.ParentElement.getAttribute("data-current-value"));
 		this.ThumbTextElement.innerHTML = value;
+		
+		this.EventHandlers.Change.Execute(this, null);
 		return value;
 	};
 	
@@ -154,6 +165,8 @@ function TrackBar(parentElement)
 	});
 	
 	this.TrackElement.NativeObject = this;
+	
+	// When the user clicks the primary mouse button on the track (large change) 
 	this.TrackElement.addEventListener("mousedown", function(ee)
 	{
 		var e = MouseEventArgs.FromNativeEventArgs(ee);
@@ -191,10 +204,18 @@ function TrackBar(parentElement)
 	{
 		var elementSize = this.ParentElement.clientWidth;
 		var currentPos = e.X - this.ParentElement.offsetLeft;
+		if (this.ParentElement.getBoundingClientRect)
+		{
+			currentPos = e.X - this.ParentElement.getBoundingClientRect().x;
+		}
 		if (this.get_Orientation() == TrackBarOrientation.Vertical)
 		{
 			elementSize = this.ParentElement.clientHeight;
 			currentPos = e.Y - this.ParentElement.offsetTop;
+			if (this.ParentElement.getBoundingClientRect)
+			{
+				currentPos = e.Y - this.ParentElement.getBoundingClientRect().y;
+			}
 		}
 		
 		var decimalPos = (currentPos / elementSize);

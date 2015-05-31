@@ -1,3 +1,50 @@
+function StringPadDirection(value)
+{
+	this._value = value;
+}
+StringPadDirection.Left = new StringPadDirection(1);
+StringPadDirection.Right = new StringPadDirection(2);
+StringPadDirection.Both = new StringPadDirection(3);
+
+function StringPad(str, len, pad, dir)
+{
+    if (typeof(len) == "undefined") len = 0;
+    if (typeof(pad) == "undefined") pad = ' ';
+    if (typeof(dir) == "undefined") dir = StringPadDirection.Right;
+
+    if (len + 1 >= str.length)
+    {
+        if (dir == StringPadDirection.Left)
+        {
+        	str = Array(len + 1 - str.length).join(pad) + str;
+        }
+        else if (dir == StringPadDirection.Both)
+        {
+	        var right = Math.ceil((padlen = len - str.length) / 2);
+	        var left = padlen - right;
+	        str = Array(left+1).join(pad) + str + Array(right+1).join(pad);
+        }
+        else
+        {
+        	str = str + Array(len + 1 - str.length).join(pad);
+        }
+    }
+    return str;
+}
+
+String.prototype.padLeft = function(length, value)
+{
+	return StringPad(this, length, value, StringPadDirection.Left);
+}
+String.prototype.padRight = function(length, value)
+{
+	return StringPad(this, length, value, StringPadDirection.Right);
+}
+String.prototype.pad = function(length, value)
+{
+	return StringPad(this, length, value, StringPadDirection.Both);
+}
+
 /**
  * Enumeration for mouse button values
  */
@@ -255,11 +302,11 @@ System.EventHandler = function()
 	{
 		this._functions.push(func);
 	};
-	this.Execute = function()
+	this.Execute = function(sender, e)
 	{
 		for (var i = 0; i < this._functions.length; i++)
 		{
-			var retval = this._functions[i]();
+			var retval = this._functions[i](sender, e);
 			if (!retval) return false;
 		}
 		return true;
