@@ -348,7 +348,7 @@
 							}
 						}
 						$query .= " ";
-						$query .= $conditionalStatement->Value;
+						$query .= ":conditionalStatement" . $i;
 						$query .= ")";
 						
 						if ($i < $count - 1)
@@ -359,9 +359,17 @@
 				}
 			}
 			
+			$conditionalStatementCriteria = array();
+			$count = count($criteria->Conditions);
+			for ($i = 0; $i < $count; $i++)
+			{
+				$conditionalStatement = $criteria->Conditions[$i];
+				$conditionalStatementCriteria[":conditionalStatement" . $i] = $conditionalStatement->Value;
+			}
+			
 			$pdo = DataSystem::GetPDO();
 			$statement = $pdo->prepare($query);
-			$result = $statement->execute();
+			$result = $statement->execute($conditionalStatementCriteria);
 			if ($result === false)
 			{
 				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
