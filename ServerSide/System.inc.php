@@ -79,6 +79,12 @@
 	 */
 	class System
 	{
+		private static $RequestURL;
+		public static function GetRequestURL()
+		{
+			return System::$RequestURL;
+		}
+		
 		private static $ApplicationPath;
 		public static function GetApplicationPath()
 		{
@@ -469,6 +475,11 @@
 						System::$WebPageFormat = WebPageFormat::HTML;
 						break;
 					}
+					case "js":
+					{
+						System::$WebPageFormat = WebPageFormat::JavaScript;
+						break;
+					}
 					default:
 					{
 						if ($path[count($path) - 1] != "")
@@ -555,10 +566,13 @@
 				}
 				
 				System::$CurrentPage = $actualPage;
+				System::$RequestURL = "~/" . implode("/", $path);
 				
 				$actualPage->Render();
 				
 				System::$CurrentPage = null;
+				System::$RequestURL = null;
+				
 				$success = true;
 			}
 			
