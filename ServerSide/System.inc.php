@@ -314,8 +314,21 @@
 		}
 		public static function RedirectToLoginPage()
 		{
+			$_SESSION["System.LastRedirectURL"] = $_SERVER["REQUEST_URI"];
 			System::Redirect("~/account/login");
 			return;
+		}
+		public static function RedirectFromLoginPage()
+		{
+			if ($_SESSION["System.LastRedirectURL"] != null)
+			{
+				System::Redirect($_SESSION["System.LastRedirectURL"]);
+			}
+			else
+			{
+				$url = System::GetConfigurationValue("Application.DefaultURL", "~/");
+				System::Redirect($url);
+			}
 		}
 		public static function GetVirtualPath($supportTenantedHosting = true)
 		{
