@@ -94,6 +94,10 @@
 				$li = new HTMLControl();
 				$li->TagName = "li";
 				
+				if ($menuItem->Visible)
+				{
+					$li->ClassList[] = "Visible";
+				}
 				if ($menuItem->Selected)
 				{
 					$li->ClassList[] = "Selected";
@@ -163,6 +167,10 @@
 			{
 				$li = new HTMLControl();
 				$li->TagName = "li";
+				if ($menuItem->Visible)
+				{
+					$li->ClassList[] = "Visible";
+				}
 				$li->ClassList[] = "Header";
 				
 				$spanHeader = new HTMLControl();
@@ -176,6 +184,10 @@
 			else if (get_class($menuItem) == "Phast\\WebControls\\MenuItemSeparator")
 			{
 				$hr = new HTMLControl();
+				if ($menuItem->Visible)
+				{
+					$hr->ClassList[] = "Visible";
+				}
 				$hr->TagName = "hr";
 				return $hr;
 			}
@@ -188,9 +200,12 @@
 	
 	class MenuItem extends WebControl
 	{
+		public $Visible;
+		
 		public function __construct()
 		{
 			$this->ParseChildElements = true;
+			$this->Visible = true;
 		}
 	}
 	class MenuItemHeader extends MenuItem
