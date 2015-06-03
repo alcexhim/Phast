@@ -38,6 +38,12 @@
 		 */
 		public $FileName;
 		
+		/**
+		 * The path to the physical file which defines this Web page.
+		 * @var string
+		 */
+		public $PhysicalFileName;
+		
 		public function GetCanonicalFileName()
 		{
 			$path = System::GetVirtualPath();
@@ -819,6 +825,21 @@
         	
         	switch (System::$WebPageFormat)
         	{
+        		case WebPageFormat::JavaScript:
+        		{
+        			$filename = System::$CurrentPage->PhysicalFileName . ".js";
+        			if (file_exists($filename))
+        			{
+        				header("HTTP/1.1 200 OK");
+        				header("Content-Type: text/javascript");
+        				readfile($filename);
+        			}
+        			else
+        			{
+        				header("HTTP/1.1 404 Not Found");
+        			}
+        			return;
+        		}
         		case WebPageFormat::JSON:
         		{
         			header("Content-Type: application/json; charset=utf-8");
@@ -882,7 +903,7 @@
         			return;
         		}
         	}
-
+			
         	header("Content-Type: text/html; charset=utf-8");
 			if (!$this->IsPartial)
 			{
@@ -976,6 +997,18 @@
 				
 				// Bring in Phast first
 				$items[] = new WebScript("$(Configuration:System.StaticPath)/Scripts/System.js.php", "text/javascript");
+				
+				$filename = System::$CurrentPage->PhysicalFileName . ".js";
+				echo ("<!-- does " . $filename . " exist? -->");
+				if (file_exists($filename))
+				{
+					echo("<!-- yes it does -->");
+					$items[] = new WebScript(System::GetRequestURL() . ".js");
+				}
+				else
+				{
+					echo("<!-- no it does not -->");
+				}
 				
 				// Update the Phast application base path
 				$item = new WebScript();

@@ -1,0 +1,116 @@
+@ToggleSwitchAnimationLength: 150ms; /* 250ms; */
+@ToggleSwitchSize: 20px;
+@ToggleSwitchBorderRadius: 4px;
+
+@ToggleSwitchPaddingSize: @ToggleSwitchSize / 2;
+
+div.ToggleSwitch
+{
+	cursor: pointer;
+	line-height: @ToggleSwitchSize;
+	font-size: 11px;
+	text-transform: uppercase;
+	border-radius: @ToggleSwitchBorderRadius;
+	
+	&> div.ToggleSwitchInner
+	{
+		transition: margin-left @ToggleSwitchAnimationLength ease-in 0s;
+		margin-left: -(@ToggleSwitchSize + @ToggleSwitchPaddingSize);
+		width: @ToggleSwitchSize * 4;
+		border-radius: @ToggleSwitchBorderRadius;
+
+		&> div.ToggleOff, &> div.ToggleOn
+		{
+			background-color: @ThemeColorDisabled;
+			color: #FFFFFF;
+
+			width: @ToggleSwitchSize * 2;
+			height: @ToggleSwitchSize;
+			
+			text-align: center;
+		}
+		&> div.ToggleOff
+		{
+			border-top-right-radius: @ToggleSwitchBorderRadius;
+			border-bottom-right-radius: @ToggleSwitchBorderRadius;
+
+			text-indent: @ToggleSwitchPaddingSize;
+		}
+		&> div.ToggleOn
+		{
+			border-top-left-radius: @ToggleSwitchBorderRadius;
+			border-bottom-left-radius: @ToggleSwitchBorderRadius;
+
+			text-indent: -@ToggleSwitchPaddingSize;
+		}
+		&> div.ToggleThumb
+		{
+			background-color: #FFFFFF;
+			
+			border-top-left-radius: @ToggleSwitchBorderRadius;
+			border-bottom-left-radius: @ToggleSwitchBorderRadius;
+
+			height: @ToggleSwitchSize;
+			width: @ToggleSwitchSize;
+			border: solid 1px @ThemeColorDisabled;
+		}
+
+		&> div.ToggleOff, &> div.ToggleThumb
+		{
+			margin-left: -@ToggleSwitchPaddingSize;
+		}
+	}
+	&.Checked
+	{
+		&> div.ToggleSwitchInner
+		{
+			margin-left: 0px;
+			&> div.ToggleThumb
+			{
+				border-top-left-radius: 0px;
+				border-bottom-left-radius: 0px;
+
+				border-top-right-radius: @ToggleSwitchBorderRadius;
+				border-bottom-right-radius: @ToggleSwitchBorderRadius;
+			}
+		}
+	}
+
+	height: @ToggleSwitchSize;
+	width: (@ToggleSwitchSize * 2) + @ToggleSwitchPaddingSize;
+
+	&.Vertical
+	{
+		transform: rotate(270deg);
+	}
+
+	.ToggleSwitchTheme(@color)
+	{
+		border-color: @color;
+		&.Checked > div.ToggleSwitchInner > div.ToggleThumb
+		{
+			border-color: @color;
+		}
+		&> div.ToggleSwitchInner > div.ToggleOn
+		{
+			background-color: @color;
+		}
+	}
+	
+	&.Primary
+	{
+		.ToggleSwitchTheme(@ThemeColorPrimary);
+	}
+	&.Success
+	{
+		.ToggleSwitchTheme(@ThemeColorSuccess);
+	}
+	&.Warning
+	{
+		.ToggleSwitchTheme(@ThemeColorWarning);
+	}
+	&.Danger
+	{
+		.ToggleSwitchTheme(@ThemeColorDanger);
+	}
+}

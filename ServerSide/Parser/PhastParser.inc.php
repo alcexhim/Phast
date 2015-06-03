@@ -108,7 +108,9 @@
 					if (get_class($element) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
 					if ($element->Name == "MasterPage")
 					{
-						$this->MasterPages[] = WebPage::FromMarkup($element, $this);
+						$page = WebPage::FromMarkup($element, $this);
+						$page->PhysicalFileName = $filename;
+						$this->MasterPages[] = $page;
 					}
 				}
 			}
@@ -121,7 +123,9 @@
 					if (get_class($element) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
 					if ($element->Name == "Page")
 					{
-						$this->Pages[] = WebPage::FromMarkup($element, $this);
+						$page = WebPage::FromMarkup($element, $this);
+						$page->PhysicalFileName = $filename;
+						$this->Pages[] = $page;
 					}
 				}
 			}
