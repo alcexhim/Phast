@@ -3,14 +3,42 @@ function ToggleSwitch(parentElement)
 	this.ParentElement = parentElement;
 	parentElement.addEventListener("click", function(e)
 	{
-		var changed = System.ClassList.Toggle(this, "Checked");
-		if (changed) this.NativeObject.on_Changed();
-
+		if (e.which == 1)
+		{
+			if (!this.hasAttribute("disabled"))
+			{
+				var changed = System.ClassList.Toggle(this, "Checked");
+				if (changed) this.NativeObject.on_Changed();
+			}
+		}
 		e.preventDefault();
 		e.stopPropagation();
 		return false;
 	});
-
+	
+	parentElement.addEventListener("contextmenu", function(e)
+	{
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	});
+	
+	this.get_Enabled = function()
+	{
+		return !(this.ParentElement.hasAttribute("disabled"));
+	};
+	this.set_Enabled = function(value)
+	{
+		if (value)
+		{
+			this.ParentElement.removeAttribute("disabled");
+		}
+		else
+		{
+			this.ParentElement.setAttribute("disabled", "disabled");
+		}
+	};
+	
 	this.EventHandlers =
 	{
 		"Changed": new System.EventHandler()

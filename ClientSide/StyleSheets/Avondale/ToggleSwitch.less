@@ -17,6 +17,11 @@ div.ToggleSwitch
 	position: relative;
 	width: @ToggleSwitchSize;
 	
+	&[disabled]
+	{
+		opacity: 0.5;
+	}
+	
 	.ToggleSwitchColors(@ThemeColor);
 	&.Primary
 	{
