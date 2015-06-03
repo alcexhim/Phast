@@ -22,6 +22,12 @@
 		public $Content;
 		
 		/**
+		 * True if the WebControl is enabled (does not have the "disabled" attribute set); false if it is disabled.
+		 * @var boolean
+		 */
+		public $Enabled;
+		
+		/**
 		 * True if the WebControl should render its content to the output HTML; false otherwise.
 		 * @var boolean
 		 */
@@ -156,6 +162,7 @@
 		
 		public function __construct()
 		{
+			$this->Enabled = true;
 			$this->Visible = true;
 			$this->HorizontalAlignment = HorizontalAlignment::Inherit;
 			$this->VerticalAlignment = VerticalAlignment::Inherit;
@@ -353,7 +360,7 @@
 					$found = false;
 					foreach ($this->Attributes as $attr)
 					{
-						if (!(strtolower($attr->Name) == "style" || strtolower($attr->Name) == "class"))
+						if (!(strtolower($attr->Name) == "style" || strtolower($attr->Name) == "class" || strtolower($attr->Name) == "disabled"))
 						{
 							$found = true;
 							break;
@@ -377,6 +384,12 @@
 						else if (strtolower($attr->Name) == "class")
 						{
 							$classAttributeContent .= $attr->Value;
+						}
+						else if (strtolower($attr->Name) == "disabled")
+						{
+							// we normalize the disabled attribute
+							$this->Enabled = false;
+							echo(" disabled=\"disabled\"");
 						}
 						else if (strtolower($attr->Name) == "id")
 						{
@@ -519,6 +532,11 @@
         	if ($this->EnableRender !== true) return;
         	
         	if (!$this->Initialized) $this->Initialize();
+        	
+        	if ($this->Enabled !== true)
+        	{
+        		$this->Attributes[] = new WebControlAttribute("disabled", "disabled");
+        	}
         	$this->CreateControl();
         	
             $this->BeginContent();
