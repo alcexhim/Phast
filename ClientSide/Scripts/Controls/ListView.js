@@ -4,6 +4,42 @@ var ListViewMode =
 	"Tile": 2
 };
 
+function ListViewItemColumn(parentItem)
+{
+	this.mvarParentItem = parentItem;
+	this.get_ParentItem = function()
+	{
+		return this.mvarParentItem;
+	};
+	
+	this.get_Value = function()
+	{
+	};
+}
+function ListViewItem(parentListView, index)
+{
+	this.mvarParentListView = parentListView;
+	this.get_ParentListView = function()
+	{
+		return this.mvarParentListView;
+	};
+	
+	this.mvarIndex = index;
+	this.get_Index = function()
+	{
+		return this.mvarIndex;
+	};
+	
+	this.get_ParentElement = function()
+	{
+		return this.get_ParentListView().ParentElement.tBodies[0].rows[this.get_Index()];
+	};
+	
+	this.get_Value = function()
+	{
+		return this.get_ParentElement().getAttribute("data-value");
+	};
+}
 function ListView(parentElement)
 {
 	this.ParentElement = parentElement;
@@ -32,6 +68,18 @@ function ListView(parentElement)
 				parentElement.tBodies[0].rows[i].className = "";
 			}
 		}
+	};
+	this.GetSelectedRows = function()
+	{
+		var items = new Array();
+		for (var i = 0; i < parentElement.tBodies[0].rows.length; i++)
+		{
+			if (parentElement.tBodies[0].rows[i].className == "Selected")
+			{
+				items.push(new ListViewItem(this, i));
+			}
+		}
+		return items;
 	};
 
 	if (parentElement.tagName.toUpperCase() == "TABLE")

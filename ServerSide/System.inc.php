@@ -79,6 +79,12 @@
 	 */
 	class System
 	{
+		private static $RequestURL;
+		public static function GetRequestURL()
+		{
+			return System::$RequestURL;
+		}
+		
 		private static $ApplicationPath;
 		public static function GetApplicationPath()
 		{
@@ -314,8 +320,21 @@
 		}
 		public static function RedirectToLoginPage()
 		{
+			$_SESSION["System.LastRedirectURL"] = $_SERVER["REQUEST_URI"];
 			System::Redirect("~/account/login");
 			return;
+		}
+		public static function RedirectFromLoginPage()
+		{
+			if ($_SESSION["System.LastRedirectURL"] != null)
+			{
+				System::Redirect($_SESSION["System.LastRedirectURL"]);
+			}
+			else
+			{
+				$url = System::GetConfigurationValue("Application.DefaultURL", "~/");
+				System::Redirect($url);
+			}
 		}
 		public static function GetVirtualPath($supportTenantedHosting = true)
 		{
@@ -456,6 +475,11 @@
 						System::$WebPageFormat = WebPageFormat::HTML;
 						break;
 					}
+					case "js":
+					{
+						System::$WebPageFormat = WebPageFormat::JavaScript;
+						break;
+					}
 					default:
 					{
 						if ($path[count($path) - 1] != "")
@@ -542,10 +566,13 @@
 				}
 				
 				System::$CurrentPage = $actualPage;
+				System::$RequestURL = "~/" . implode("/", $path);
 				
 				$actualPage->Render();
 				
 				System::$CurrentPage = null;
+				System::$RequestURL = null;
+				
 				$success = true;
 			}
 			

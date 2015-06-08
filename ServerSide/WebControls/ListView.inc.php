@@ -64,6 +64,8 @@
 		public $NavigateURL;
 		public $OnClientClick;
 		
+		public $Value;
+		
 		public function __construct($columns = null, $selected = false)
 		{
 			if ($columns != null)
@@ -123,6 +125,8 @@
 		
 		public $Mode;
 		
+		public $OnItemActivate;
+		
 		public function GetColumnByID($id)
 		{
 			foreach ($this->Columns as $column)
@@ -173,6 +177,7 @@
 					case ListViewMode::Detail:
 					{
 						$table = new HTMLControlTable();
+						$table->ID = $this->ID;
 						$table->ClassList[] = "ListView";
 						if ($this->ShowBorder)
 						{
@@ -345,7 +350,16 @@
 							$classNames = array();
 							if ($item->Selected) $classNames[] = "Selected";
 							
-							$table->BeginRow(array("ClassNames" => $classNames));
+							$attributes = array();
+							if ($this->OnItemActivate != null)
+							{
+								$attributes[] = new WebControlAttribute("ondblclick", $this->OnItemActivate);
+							}
+							if ($item->Value != null)
+							{
+								$attributes[] = new WebControlAttribute("data-value", $item->Value);
+							}
+							$table->BeginRow(array("ClassNames" => $classNames, "Attributes" => $attributes));
 								
 							$table->BeginHeaderCell(array("ClassNames" => array("RowCheckBoxes")));
 							echo("<input type=\"checkbox\"");

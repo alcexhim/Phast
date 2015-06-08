@@ -38,6 +38,12 @@
 		 */
 		public $FileName;
 		
+		/**
+		 * The path to the physical file which defines this Web page.
+		 * @var string
+		 */
+		public $PhysicalFileName;
+		
 		public function GetCanonicalFileName()
 		{
 			$path = System::GetVirtualPath();
@@ -473,36 +479,40 @@
         	if ($this->isInitialized) return true;
         	if ($renderingPage == null) $renderingPage = $this;
         	
-        	$ce = new CancelEventArgs();
-        	
         	if ($this->MasterPage != null)
         	{
         		if (!$this->MasterPage->Initialize($this)) return false;
         	}
+			
+        	$initializingEventArgs = new CancelEventArgs();
+        	$initializingEventArgs->RenderingPage = $renderingPage;
+        	
+        	$initializedEventArgs = new EventArgs();
+        	$initializedEventArgs->RenderingPage = $renderingPage;
         	
         	if (method_exists($this, "OnInitializing"))
         	{
-        		$ce->RenderingPage = $renderingPage;
-            	$this->OnInitializing($ce);
-            	if ($ce->Cancel) return false;
+            	$this->OnInitializing($initializingEventArgs);
+            	if ($initializingEventArgs->Cancel) return false;
         	}
+        	$initializingEventArgs->Cancel = false;
             
             if ($this->ClassReference != null)
             {
             	if (method_exists($this->ClassReference, "OnInitializing"))
             	{
-	            	$this->ClassReference->OnInitializing($ce);
-	            	if ($ce->Cancel) return false;
+	            	$this->ClassReference->OnInitializing($initializingEventArgs);
+	            	if ($initializingEventArgs->Cancel) return false;
             	}
             	if (method_exists($this->ClassReference, "OnInitialized"))
             	{
-            		$this->ClassReference->OnInitialized(EventArgs::GetEmptyInstance());
+            		$this->ClassReference->OnInitialized($initializedEventArgs);
             	}
             }
 
             if (method_exists($this, "OnInitialized"))
             {
-	            $this->OnInitialized(EventArgs::GetEmptyInstance());
+	            $this->OnInitialized($initializedEventArgs);
             }
            	$this->isInitialized = true;
             return true;
@@ -819,6 +829,21 @@
         	
         	switch (System::$WebPageFormat)
         	{
+        		case WebPageFormat::JavaScript:
+        		{
+        			$filename = System::$CurrentPage->PhysicalFileName . ".js";
+        			if (file_exists($filename))
+        			{
+        				header("HTTP/1.1 200 OK");
+        				header("Content-Type: text/javascript");
+        				readfile($filename);
+        			}
+        			else
+        			{
+        				header("HTTP/1.1 404 Not Found");
+        			}
+        			return;
+        		}
         		case WebPageFormat::JSON:
         		{
         			header("Content-Type: application/json; charset=utf-8");
@@ -882,7 +907,7 @@
         			return;
         		}
         	}
-
+			
         	header("Content-Type: text/html; charset=utf-8");
 			if (!$this->IsPartial)
 			{
@@ -976,6 +1001,18 @@
 				
 				// Bring in Phast first
 				$items[] = new WebScript("$(Configuration:System.StaticPath)/Scripts/System.js.php", "text/javascript");
+				
+				$filename = System::$CurrentPage->PhysicalFileName . ".js";
+				echo ("<!-- does " . $filename . " exist? -->");
+				if (file_exists($filename))
+				{
+					echo("<!-- yes it does -->");
+					$items[] = new WebScript(System::GetRequestURL() . ".js");
+				}
+				else
+				{
+					echo("<!-- no it does not -->");
+				}
 				
 				// Update the Phast application base path
 				$item = new WebScript();

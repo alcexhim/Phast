@@ -1,0 +1,23 @@
+div.ToggleSwitch
+{
+	box-sizing: border-box;
+	overflow: hidden;
+
+	*
+	{
+		box-sizing: border-box;
+	}
+
+	&> div.ToggleSwitchInner
+	{
+		&> div.ToggleOn, &> div.ToggleThumb, &> div.ToggleOff
+		{
+			float: left;
+		}
+		&> div.ToggleThumb
+		{
+			position: relative;
+			z-index: 99;
+		}
+	}
+}
