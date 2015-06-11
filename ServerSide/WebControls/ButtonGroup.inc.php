@@ -45,6 +45,7 @@
 			parent::__construct($id);
 			$this->Orientation = ButtonGroupOrientation::Horizontal;
 			$this->ButtonAlignment = ButtonGroupButtonAlignment::Left;
+			$this->ParseChildElements = true;
 		}
 		
 		protected function RenderContent()
@@ -52,11 +53,13 @@
 			?>
 			<div class="ButtonGroup<?php switch ($this->Orientation)
 			{
+				case "Vertical":
 				case ButtonGroupOrientation::Vertical:
 				{
 					echo(" ButtonGroupVertical");
 					break;
 				}
+				case "Horizontal":
 				case ButtonGroupOrientation::Horizontal:
 				{
 					echo(" ButtonGroupHorizontal");
@@ -64,16 +67,19 @@
 				}
 			} ?>" style="<?php switch($this->ButtonAlignment)
 			{
+				case "Left":
 				case ButtonGroupButtonAlignment::Left:
 				{
 					echo("text-align: left;");
 					break;
 				}
+				case "Center":
 				case ButtonGroupButtonAlignment::Center:
 				{
 					echo("text-align: center;");
 					break;
 				}
+				case "Right":
 				case ButtonGroupButtonAlignment::Right:
 				{
 					echo("text-align: right;");

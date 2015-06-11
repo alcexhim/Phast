@@ -479,36 +479,40 @@
         	if ($this->isInitialized) return true;
         	if ($renderingPage == null) $renderingPage = $this;
         	
-        	$ce = new CancelEventArgs();
-        	
         	if ($this->MasterPage != null)
         	{
         		if (!$this->MasterPage->Initialize($this)) return false;
         	}
+			
+        	$initializingEventArgs = new CancelEventArgs();
+        	$initializingEventArgs->RenderingPage = $renderingPage;
+        	
+        	$initializedEventArgs = new EventArgs();
+        	$initializedEventArgs->RenderingPage = $renderingPage;
         	
         	if (method_exists($this, "OnInitializing"))
         	{
-        		$ce->RenderingPage = $renderingPage;
-            	$this->OnInitializing($ce);
-            	if ($ce->Cancel) return false;
+            	$this->OnInitializing($initializingEventArgs);
+            	if ($initializingEventArgs->Cancel) return false;
         	}
+        	$initializingEventArgs->Cancel = false;
             
             if ($this->ClassReference != null)
             {
             	if (method_exists($this->ClassReference, "OnInitializing"))
             	{
-	            	$this->ClassReference->OnInitializing($ce);
-	            	if ($ce->Cancel) return false;
+	            	$this->ClassReference->OnInitializing($initializingEventArgs);
+	            	if ($initializingEventArgs->Cancel) return false;
             	}
             	if (method_exists($this->ClassReference, "OnInitialized"))
             	{
-            		$this->ClassReference->OnInitialized(EventArgs::GetEmptyInstance());
+            		$this->ClassReference->OnInitialized($initializedEventArgs);
             	}
             }
 
             if (method_exists($this, "OnInitialized"))
             {
-	            $this->OnInitialized(EventArgs::GetEmptyInstance());
+	            $this->OnInitialized($initializedEventArgs);
             }
            	$this->isInitialized = true;
             return true;
