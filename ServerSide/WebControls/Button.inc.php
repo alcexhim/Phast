@@ -54,7 +54,7 @@
 				$tag->TagName = "a";
 				
 				$tag->ClassList = $this->ClassList;
-				$tag->ClassList[] = "Button";
+				array_unshift($tag->ClassList, "pwt-Button");
 				$tag->ClassList[] = $this->CssClass;
 				if ($this->ClientID != null)
 				{

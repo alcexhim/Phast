@@ -4,22 +4,9 @@
 	use Phast\HTMLControl;
 	use Phast\WebControl;
 	use Phast\Enumeration;
-		
-	abstract class AlertType extends Enumeration
-	{
-		const None = 0;
-		const Error = 1;
-		const Warning = 2;
-		const Information = 3;
-	}
+	
 	class Alert extends WebControl
 	{
-		/**
-		 * The type of Alert to render.
-		 * @var AlertType
-		 */
-		public $AlertType;
-		
 		/**
 		 * The title of the Alert.
 		 * @var string
@@ -29,34 +16,13 @@
 		public function __construct()
 		{
 			parent::__construct();
-			$this->ClassList[] = "Alert";
+			
+			$this->ClassList[] = "pwt-Alert";
 			$this->TagName = "div";
 		}
 		
 		protected function RenderBeginTag()
 		{
-			switch ($this->AlertType)
-			{
-				case "Error":
-				case AlertType::Error:
-				{
-					$this->ClassList[] = "Error";
-					break;
-				}
-				case "Warning":
-				case AlertType::Warning:
-				{
-					$this->ClassList[] = "Warning";
-					break;
-				}
-				case "Information":
-				case AlertType::Information:
-				{
-					$this->ClassList[] = "Information";
-					break;
-				}
-			}
-			
 			$ctls = $this->Controls;
 			$this->Controls = array();
 			
