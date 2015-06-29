@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Website>
+	<Common>
+		<Configuration>
+			<Group ID="System">
+				<!-- The location of static WebFramework-related files (scripts, stylesheets, etc.) -->
+				<Property ID="StaticPath" Value="http://your-domain.net/path/to/Phast" />
+			</Group>
+			<Group ID="Application">
+				<!-- The base path of the Web site -->
+				<Property ID="BasePath" Value="//www.your-domain.com/path/to/your/application" />
+				
+				<Property ID="Title" Value="Your Application Name" />
+				<Property ID="Copyright" Value="Copyright (c)2015 Your Company Name" />
+				<Property ID="ThemeName" Value="YourThemeName" />
+			</Group>
+			<Group ID="Database">
+				<!-- Database connection information -->
+				<Property ID="ServerName" Value="Database_ServerName" />
+				<Property ID="UserName" Value="Database_UserName" />
+				<Property ID="Password" Value="Database_Password" />
+				<Property ID="DatabaseName" Value="Database_DatabaseName" />
+				<Property ID="TablePrefix" Value="Database_TablePrefix" />
+			</Group>
+			<Property ID="DefaultResourceBundle" Value="YourResourceBundleName" />
+		</Configuration>
+	</Common>
+</Website>

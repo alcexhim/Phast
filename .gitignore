@@ -24,6 +24,9 @@ Sandbox/*
 # also ignore test PHP which is sometimes used to ... well, test stuff
 test.php
 
+# allow example files
+!SampleApplication
+
 # ignore Eclipse IDE stuff
 .buildpath
 .project
