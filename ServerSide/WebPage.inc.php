@@ -1003,15 +1003,13 @@
 				$items[] = new WebScript("$(Configuration:System.StaticPath)/Scripts/System.js.php", "text/javascript");
 				
 				$filename = System::$CurrentPage->PhysicalFileName . ".js";
-				echo ("<!-- does " . $filename . " exist? -->");
 				if (file_exists($filename))
 				{
-					echo("<!-- yes it does -->");
 					$items[] = new WebScript(System::GetRequestURL() . ".js");
 				}
 				else
 				{
-					echo("<!-- no it does not -->");
+					// echo("<!-- could not find script file '" . $filename . "' -->");
 				}
 				
 				// Update the Phast application base path
