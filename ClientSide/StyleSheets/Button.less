@@ -1,3 +1,51 @@
+div.pwt-Button
+{
+	display: inline-block;
+	
+	&.pwt-DropDownButton
+	{
+		position: relative;
+		&> a.pwt-Button:not(.pwt-DropDownButton)
+		{
+			padding-right: 28px;
+		}
+		&::before
+		{
+			position: absolute;
+			top: 6px;
+			right: 10px;
+		}
+	}
+	&:not(.pwt-DropDownButton) > a.pwt-DropDownButton
+	{
+		display: none;
+	}
+	
+	&> div.pwt-DropDownContent
+	{
+		position: fixed;
+	}
+	
+	&.pwt-DropDownRequired > a.pwt-DropDownButton
+	{
+		display: none;
+	}
+	
+	&.pwt-DropDownButton.pwt-DropDownRequired, &:not(.pwt-DropDownRequired) > a.pwt-DropDownButton
+	{
+		&::before
+		{
+			content: "";
+			font-family: FontAwesome;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: normal;
+			text-decoration: inherit;
+			pointer-events: none;
+		}
+	}
+}
+
 input[type=submit], input[type=reset], input[type=button], a.pwt-Button, button
 {
 	color: inherit;

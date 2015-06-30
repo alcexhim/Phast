@@ -7,10 +7,15 @@
 	use Phast\WebControlAttribute;
 	
 	use Phast\HTMLControl;
-	use Phast\Phast;
-	
+	use Phast\HTMLControls\Anchor;
+	use Phast\HTMLControls\Input;
+	use Phast\HTMLControls\InputType;
+		
 	class Button extends WebControl
 	{
+		public $DropDownControls;
+		public $DropDownRequired;
+		
 		public $IconName;
 		
 		public $TargetFrame;
@@ -29,33 +34,43 @@
 		{
 			parent::__construct();
 			
+			$this->TagName = "div";
+			$this->ClassList[] = "pwt-Button";
+			
+			$this->DropDownControls = array();
+			$this->DropDownRequired = false;
+			
 			$this->IconName = null;
 			$this->UseSubmitBehavior = false;
+			$this->ParseChildElements = true;
 		}
 		
-		protected function RenderContent()
+		protected function RenderBeginTag()
 		{
 			if ($this->UseSubmitBehavior)
 			{
-				$tag = new HTMLControl();
-				$tag->TagName = "input";
-				$tag->HasContent = false;
+				$tag = new Input();
+				
+				foreach ($this->ClassList as $className)
+				{
+					if ($className == "pwt-Button") continue;
+					$tag->ClassList[] = $className;
+				}
 				
 				$tag->ClassList = $this->ClassList;
 				$tag->ClassList[] = $this->CssClass;
 				$tag->Attributes[] = new WebControlAttribute("id", $this->ClientID);
-				$tag->Attributes[] = new WebControlAttribute("type", "submit");
+				$tag->Type = InputType::Submit;
 				$tag->Attributes[] = new WebControlAttribute("value", $this->Text);
-				$tag->Render();
+				
+				$this->Controls[] = $tag;
 			}
 			else
 			{
-				$tag = new HTMLControl();
-				$tag->TagName = "a";
-				
+				$tag = new Anchor();
 				$tag->ClassList = $this->ClassList;
-				array_unshift($tag->ClassList, "pwt-Button");
 				$tag->ClassList[] = $this->CssClass;
+				
 				if ($this->ClientID != null)
 				{
 					$tag->Attributes[] = new WebControlAttribute("id", $this->ClientID);
@@ -64,20 +79,10 @@
 				{
 					$tag->Attributes[] = new WebControlAttribute("id", $this->ID);
 				}
-				
-				if ($this->TargetFrame != null)
-				{
-					$tag->Attributes[] = new WebControlAttribute("target", $this->TargetFrame);
-				}
-				if ($this->TargetURL != null)
-				{
-					$tag->Attributes[] = new WebControlAttribute("href", System::ExpandRelativePath($this->TargetURL));
-				}
-				if ($this->TargetScript != null)
-				{
-					$tag->Attributes[] = new WebControlAttribute("href", "#");
-					$tag->Attributes[] = new WebControlAttribute("onclick", $this->TargetScript);
-				}
+
+				$tag->TargetFrame = $this->TargetFrame;
+				$tag->TargetURL = $this->TargetURL;
+				$tag->TargetScript = $this->TargetScript;
 				
 				if ($this->IconName != null)
 				{
@@ -92,9 +97,30 @@
 				$spanText->InnerHTML = $this->Text;
 				
 				$tag->Controls[] = $spanText;
-				
-				$tag->Render();
+
+				$this->Controls[] = $tag;
 			}
+
+			if (count($this->DropDownControls) > 0)
+			{
+				$this->ClassList[] = "pwt-DropDownButton";
+			}
+			if ($this->DropDownRequired)
+			{
+				$this->ClassList[] = "pwt-DropDownRequired";
+			}
+			
+			$aDropDown = new Anchor();
+			$aDropDown->ClassList[] = "pwt-Button pwt-DropDownButton";
+			$aDropDown->InnerHTML = "&nbsp;";
+			$this->Controls[] = $aDropDown;
+			
+			$divDropDown = new HTMLControl("div");
+			$divDropDown->ClassList[] = "pwt-DropDownContent Popup";
+			$divDropDown->Controls = $this->DropDownControls;
+			$this->Controls[] = $divDropDown;
+			
+			parent::RenderBeginTag();
 		}
 	}
 ?>
