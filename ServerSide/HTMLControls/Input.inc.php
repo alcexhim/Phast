@@ -6,7 +6,7 @@
 	use Phast\WebControl;
 	
 	use Phast\WebControlAttribute;
-
+	
 	/**
 	 * Provides an enumeration of predefined values for type of input.
 	 * @author Michael Becker
