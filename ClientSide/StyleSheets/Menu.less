@@ -1,6 +1,9 @@
 ul.Menu
 {
 	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	
 	&.Popup
 	{
 		position: fixed;
@@ -18,6 +21,23 @@ ul.Menu
 			display: block;
 			text-decoration: none;
 			position: relative;
+			span.Title
+			{
+				display: inline-block;
+			}
+			span.Subtitle
+			{
+				display: inline-block;
+				padding-left: 32px;
+				padding-right: 8px;
+				text-align: right;
+				float: right;
+			}
+			span.Description
+			{
+				padding: 2px;
+				padding-left: 8px;
+			}
 		}
 	}
 }
