@@ -3,6 +3,12 @@ var ListViewMode =
 	"Detail": 1,
 	"Tile": 2
 };
+function ListViewItemActivationMode(value)
+{
+	this._value = value;
+}
+ListViewItemActivationMode.SingleClick = new ListViewItemActivationMode(1);
+ListViewItemActivationMode.DoubleClick = new ListViewItemActivationMode(2);
 
 function ListViewItemColumn(parentItem)
 {
@@ -47,29 +53,102 @@ function ListView(parentElement)
 	this.EmptyMessageElement = this.ParentElement.children[1];
 	this.ItemsElement = this.ParentElement.children[2];
 	
+	this.mvarItemActivationMode = ListViewItemActivationMode.DoubleClick;
+	this.get_ItemActivationMode = function()
+	{
+		return this.mvarItemActivationMode;
+	};
+	this.set_ItemActivationMode = function(value)
+	{
+		this.mvarItemActivationMode = value;
+	};
+	
+	if (this.ParentElement.hasAttribute("data-item-activation-mode"))
+	{
+		switch (this.ParentElement.getAttribute("data-item-activation-mode").toLowerCase())
+		{
+			case "singleclick":
+			{
+				this.set_ItemActivationMode(ListViewItemActivationMode.SingleClick);
+				break;
+			}
+			case "doubleclick":
+			{
+				this.set_ItemActivationMode(ListViewItemActivationMode.DoubleClick);
+				break;
+			}
+		}
+	}
+	
+	this.EventHandlers = 
+	{
+		"ItemActivated": new System.EventHandler(),
+		"SelectionChanging": new System.EventHandler(),
+		"SelectionChanged": new System.EventHandler()
+	};
+	
 	this.SelectedRows =
 	{
 		"NativeObject": null,
 		"Clear": function()
 		{
+			var changed = false;
+			for (var i = 0; i < this.NativeObject.ItemsElement.children.length; i++)
+			{
+				if (System.ClassList.Contains(this.NativeObject.ItemsElement.children[i], "Selected"))
+				{
+					changed = true;
+					break;
+				}
+			}
+			if (!changed) return;
+			
+			this.NativeObject.EventHandlers.SelectionChanging.Execute();
 			for (var i = 0; i < this.NativeObject.ItemsElement.children.length; i++)
 			{
 				System.ClassList.Remove(this.NativeObject.ItemsElement.children[i], "Selected");
 			}
+			this.NativeObject.EventHandlers.SelectionChanged.Execute();
 		},
 		"AddRange": function(indices)
 		{
+			var changed = false;
+			for (var i = 0; i < indices.length; i++)
+			{
+				if (!System.ClassList.Contains(this.NativeObject.ItemsElement.children[indices[i]], "Selected"))
+				{
+					changed = true;
+					break;
+				}
+			}
+			if (!changed) return;
+			
+			this.NativeObject.EventHandlers.SelectionChanging.Execute();
 			for (var i = 0; i < indices.length; i++)
 			{
 				System.ClassList.Add(this.NativeObject.ItemsElement.children[indices[i]], "Selected");
 			}
+			this.NativeObject.EventHandlers.SelectionChanged.Execute();
 		},
 		"RemoveRange": function(indices)
 		{
+			var changed = false;
+			for (var i = 0; i < indices.length; i++)
+			{
+				if (System.ClassList.Contains(this.NativeObject.ItemsElement.children[indices[i]], "Selected"))
+				{
+					changed = true;
+					break;
+				}
+			}
+			if (!changed) return;
+			
+			this.NativeObject.EventHandlers.SelectionChanging.Execute();
 			for (var i = 0; i < indices.length; i++)
 			{
 				System.ClassList.Remove(this.NativeObject.ItemsElement.children[indices[i]], "Selected");
 			}
+			this.NativeObject.EventHandlers.SelectionChanged.Execute();
 		},
 		"Add": function(index)
 		{
@@ -78,6 +157,10 @@ function ListView(parentElement)
 		"Remove": function(index)
 		{
 			this.RemoveRange([index]);
+		},
+		"Count": function()
+		{
+			return this.Get().length;
 		},
 		"Get": function()
 		{
@@ -165,12 +248,22 @@ function ListView(parentElement)
 			}
 			else
 			{
-				this.NativeObject.SelectedRows.Clear();
-				this.NativeObject.SelectedRows.Add(this.m_Index);
+				if (!(this.NativeObject.SelectedRows.Count() == 1 && this.NativeObject.SelectedRows.ContainsIndex(this.m_Index)))
+				{
+					this.NativeObject.SelectedRows.Clear();
+					this.NativeObject.SelectedRows.Add(this.m_Index);
+				}
 			}
 			e.preventDefault();
 			e.stopPropagation();
 			return false;
+		});
+		row.addEventListener("dblclick", function(e)
+		{
+			if (this.NativeObject.get_ItemActivationMode() == ListViewItemActivationMode.DoubleClick)
+			{
+				this.NativeObject.EventHandlers.ItemActivated.Execute();
+			}
 		});
 		row.addEventListener("contextmenu", function(e)
 		{
