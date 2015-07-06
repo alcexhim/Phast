@@ -173,7 +173,7 @@ use Phast\HTMLControls\Literal;
 			$div->ClassList[] = "ListView";
 			if (count($this->Items) <= 0) $div->ClassList[] = "Empty";
 			
-			$div->ClientID = $this->ClientID;
+			$div->ID = $this->ID;
 			
 			// set up CSS classes for properties
 			if ($this->ShowBorder) $div->ClassList[] = "HasBorder";
