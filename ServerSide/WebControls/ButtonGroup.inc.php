@@ -4,6 +4,7 @@
 	use Phast\Enumeration;
 	use Phast\System;
 	use Phast\WebControl;
+	use Phast\HorizontalAlignment;
 	
 	class ButtonGroupImagePosition extends Enumeration
 	{
@@ -14,13 +15,6 @@
 	{
 		const Horizontal = 1;
 		const Vertical = 2;
-	}
-	
-	class ButtonGroupButtonAlignment extends Enumeration
-	{
-		const Left = 1;
-		const Center = 2;
-		const Right = 3;
 	}
 	
 	class ButtonGroupButtonAspectRatioPreservationMode extends Enumeration
@@ -34,7 +28,6 @@
 	class ButtonGroup extends WebControl
 	{
 		public $Orientation;
-		public $ButtonAlignment;
 		public $ButtonSize;
 		public $ButtonWidth;
 		public $ButtonHeight;
@@ -44,7 +37,6 @@
 		{
 			parent::__construct($id);
 			$this->Orientation = ButtonGroupOrientation::Horizontal;
-			$this->ButtonAlignment = ButtonGroupButtonAlignment::Left;
 			$this->ParseChildElements = true;
 		}
 		
@@ -65,22 +57,22 @@
 					echo(" ButtonGroupHorizontal");
 					break;
 				}
-			} ?>" style="<?php switch($this->ButtonAlignment)
+			} ?>" style="<?php switch($this->HorizontalAlignment)
 			{
 				case "Left":
-				case ButtonGroupButtonAlignment::Left:
+				case HorizontalAlignment::Left:
 				{
 					echo("text-align: left;");
 					break;
 				}
 				case "Center":
-				case ButtonGroupButtonAlignment::Center:
+				case HorizontalAlignment::Center:
 				{
 					echo("text-align: center;");
 					break;
 				}
 				case "Right":
-				case ButtonGroupButtonAlignment::Right:
+				case HorizontalAlignment::Right:
 				{
 					echo("text-align: right;");
 					break;
