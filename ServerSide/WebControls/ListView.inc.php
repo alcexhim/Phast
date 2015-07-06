@@ -14,12 +14,17 @@
 	use Phast\HTMLControls\HTMLControlFormMethod;
 	
 	use Phast\Enumeration;
-	
+use Phast\HTMLControl;
+use Phast\HTMLControls\Input;
+use Phast\HTMLControls\InputType;
+use Phast\HTMLControls\Literal;
+					
 	abstract class ListViewMode extends Enumeration
 	{
 		const Icon = 1;
 		const Tile = 2;
 		const Detail = 3;
+		const Thumbnail = 4;
 	}
 	
 	class ListViewColumnCheckBox extends ListViewColumn
@@ -42,6 +47,7 @@
 		 * @var boolean
 		 */
 		public $MobileHidden;
+		public $Visible;
 		public $Width;
 		
 		public function __construct($id = null, $title = null, $imageURL = null, $width = null)
@@ -50,6 +56,7 @@
 			$this->Title = $title;
 			$this->ImageURL = $imageURL;
 			$this->MobileHidden = false;
+			$this->Visible = true;
 			$this->Width = $width;
 
 			$this->ParseChildElements = false;
@@ -162,396 +169,162 @@
 		
 		protected function RenderContent()
 		{
-			if (count($this->Items) <= 0)
-			{
-?>
-<div class="ListView" style="display: table; margin-left: auto; margin-right: auto;">
-	There are no items
-</div>
-<?php
-			}
-			else
-			{
-				switch ($this->Mode)
-				{
-					case ListViewMode::Detail:
-					{
-						$table = new HTMLControlTable();
-						$table->ID = $this->ID;
-						$table->ClassList[] = "ListView";
-						if ($this->ShowBorder)
-						{
-							$table->ClassList[] = "HasBorder";
-						}
-						if ($this->EnableHotTracking)
-						{
-							$table->ClassList[] = "HotTracking";
-						}
-						if ($this->ShowGridLines)
-						{
-							$table->ClassList[] = "GridLines";
-						}
-						if ($this->HighlightAlternateRows)
-						{
-							$table->ClassList[] = "AlternateRowHighlight";
-						}
-						if ($this->AllowFiltering)
-						{
-							$table->ClassList[] = "AllowFiltering";
-						}
-						if ($this->EnableRowCheckBoxes)
-						{
-							$table->ClassList[] = "RowCheckBoxes";
-						}
-						if ($this->EnableMultipleSelection)
-						{
-							$table->ClassList[] = "MultiSelect";
-						}
-						
-						$table->StyleRules = array
-						(
-							new WebStyleSheetRule("margin-left", "auto"),
-							new WebStyleSheetRule("margin-right", "auto")
-						);
-						if ($this->Width != null)
-						{
-							$table->StyleRules[] = new WebStyleSheetRule("width", $this->Width);
-						}
-						
-						$table->BeginContent();
-						$table->BeginHeader();
-						$table->BeginRow();
-						
-						
-						if ($this->EnableAddRemoveRows)
-						{
-							$table->BeginHeaderCell();
-							echo("<!-- edit buttons go here -->");
-							$table->EndHeaderCell();
-						}
-						
-						$table->BeginHeaderCell(array("ClassNames" => array("RowCheckBoxes")));
-						echo("<input type=\"checkbox\" />");
-						$table->EndHeaderCell();
-						
-						foreach ($this->Columns as $column)
-						{
-							$attributes = array();
-							if ($column->Width != null)
-							{
-								$attributes[] = new WebStyleSheetRule("width", $column->Width);
-							}
-							$classList = array();
-							if ($column->MobileHidden) $classList[] = "MobileHidden";
-							
-							$table->BeginHeaderCell(array("ClassNames" => $classList, "StyleRules" => $attributes));
-							
-							if (get_class($column) == "Phast\\WebControls\\ListViewColumnCheckBox")
-							{
-								echo("<input type=\"checkbox\" />");
-							}
-							else if (get_class($column) == "Phast\\WebControls\\ListViewColumn")
-							{
-								$link = new Anchor();
-								$link->TargetScript = "lvListView.Sort('" . $column->ID . "'); return false;";
-								$link->InnerHTML = $column->Title;
-								$link->Render();
-							}
-							else
-							{
-								echo("<!-- Undefined column class: " . get_class($column) . " -->");
-							}
-							
-							$table->EndHeaderCell();
-						}
-						$table->EndRow();
-		
-						$table->BeginRow(array
-						(
-							"ClassNames" => array ("Filter")
-						));
-						
-						if ($this->EnableAddRemoveRows)
-						{
-							$table->BeginCell();
-							echo("<!-- unused cell for edit buttons -->");
-							$table->EndCell();
-						}
-						
-						$table->BeginHeaderCell(array("ClassNames" => array("RowCheckBoxes")));
-						echo("<!-- unused cell for row check boxes -->");
-						$table->EndHeaderCell();
-						
-						foreach ($this->Columns as $column)
-						{
-							$classList = array();
-							if ($column->MobileHidden) $classList[] = "MobileHidden";
-							
-							$table->BeginHeaderCell(array("ClassNames" => $classList));
-							
-							if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
-							{
-								$realColumn = $this->GetColumnByID($column->ID);
-								if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
-								{
-								}
-								else
-								{
-									$form = new HTMLControlForm(null, HTMLControlFormMethod::Post);
-									$form->BeginContent();
-									
-									$input = new TextBox();
-									$input->Name = "ListView_" . $this->ID . "_Filter_" . $column->ID;
-									$input->PlaceholderText = "Filter by " . $column->Title;
-									$input->Text = $_POST["ListView_" . $this->ID . "_Filter_" . $column->ID];
-									$input->Render();
-									
-									$form->EndContent();
-								}
-							}
-							$table->EndHeaderCell();
-						}
-						
-						$table->EndRow();
-						
-						$table->EndHeader();
-						$table->BeginBody();
-						
-						foreach ($this->Items as $item)
-						{
-							$continueItem = false;
-							if ($this->AllowFiltering)
-							{
-								foreach ($item->Columns as $column)
-								{
-									if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
-									{
-										$realColumn = $this->GetColumnByID($column->ID);
-										if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
-										{
-										}
-										else
-										{
-											if (isset($_POST["ListView_" . $this->ID . "_Filter_" . $column->ID]))
-											{
-												$vps = $_POST["ListView_" . $this->ID . "_Filter_" . $column->ID];
-												if ($vps != "" && (mb_stripos($column->Text, $vps) === false))
-												{
-													$continueItem = true;
-													break;
-												}
-											}
-										}
-									}
-								}
-								if ($continueItem) continue;
-							}
-							
-							$classNames = array();
-							if ($item->Selected) $classNames[] = "Selected";
-							
-							$attributes = array();
-							if ($this->OnItemActivate != null)
-							{
-								$attributes[] = new WebControlAttribute("ondblclick", $this->OnItemActivate);
-							}
-							if ($item->Value != null)
-							{
-								$attributes[] = new WebControlAttribute("data-value", $item->Value);
-							}
-							$table->BeginRow(array("ClassNames" => $classNames, "Attributes" => $attributes));
-								
-							$table->BeginHeaderCell(array("ClassNames" => array("RowCheckBoxes")));
-							echo("<input type=\"checkbox\"");
-							if ($item->Checked)
-							{
-								echo(" checked=\"checked\"");
-							}
-							echo(" />");
-							$table->EndHeaderCell();
-							
-							if ($this->EnableAddRemoveRows)
-							{
-								$table->BeginCell();
-								echo("<!-- edit buttons go here -->");
-								$table->EndCell();
-							}
-
-							$lvcCount = 0;
-							foreach ($this->Columns as $realColumn)
-							{
-								$itemCol = null;
-								foreach ($item->Columns as $itemColumn)
-								{
-									if ($itemColumn->ID == $realColumn->ID)
-									{
-										$itemCol = $itemColumn;
-										break;
-									}
-								}
-								
-								$classNames = array();
-								if ($realColumn->MobileHidden) $classNames[] = "MobileHidden";
-								
-								if ($itemCol != null)
-								{
-									if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
-									{
-										$table->BeginCell(array("ClassNames" => $classNames));
-										echo("<input type=\"checkbox\" />");
-										$table->EndCell();
-									}
-									else if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumn")
-									{
-										if ($lvcCount == 0)
-										{
-											$classNames[] = "FirstVisibleChild";
-										}
-										
-										$table->BeginCell(array("ClassNames" => $classNames));
-										if ($item->NavigateURL != null)
-										{
-											?><a class="Wrapper" href="<?php echo(System::ExpandRelativePath($item->NavigateURL)); ?>"><?php
-										}
-										if ($itemCol->OnRetrieveContent != null)
-										{
-											call_user_func($itemCol->OnRetrieveContent, $itemCol->UserData);
-										}
-										else
-										{
-											if ($itemCol->Content == null)
-											{
-												echo($itemCol->Text);
-											}
-											else
-											{
-												echo($itemCol->Content);
-											}
-										}
-										
-										if ($item->NavigateURL != null)
-										{
-											?></a><?php
-										}
-										$table->EndCell();
-										
-										$lvcCount++;
-									}
-								}
-								else
-								{
-									$table->BeginCell(array("ClassNames" => $classNames));
-									echo("&nbsp;");
-									$table->EndCell();
-								}
-							}
-							
-							/*
-							foreach ($item->Columns as $column)
-							{
-								if (get_class($column) == "Phast\\WebControls\\ListViewItemColumn")
-								{
-									$realColumn = $this->GetColumnByID($column->ID);
-									if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumnCheckBox")
-									{
-										$table->BeginCell();
-										echo("<input type=\"checkbox\" />");
-										$table->EndCell();
-									}
-									else if (get_class($realColumn) == "Phast\\WebControls\\ListViewColumn")
-									{
-										$table->BeginCell();
-										if ($item->NavigateURL != null)
-										{
-											?><a class="Wrapper" href="<?php echo(System::ExpandRelativePath($item->NavigateURL)); ?>"><?php
-										}
-										if ($column->OnRetrieveContent != null)
-										{
-											call_user_func($column->OnRetrieveContent, $column->UserData);
-										}
-										else
-										{
-											if ($column->Content == null)
-											{
-												echo($column->Text);
-											}
-											else
-											{
-												echo($column->Content);
-											}
-										}
-										
-										if ($item->NavigateURL != null)
-										{
-											?></a><?php
-										}
-										$table->EndCell();
-									}
-								}
-							}
-							*/
-							
-							$table->EndRow();
-						}
-						
-						$table->EndBody();
-						$table->EndContent();
-						break;
-					}
-					case ListViewMode::Tile:
-					{
-?>
-<div class="ListView TileView" id="ListView_<?php echo($this->ID); ?>">
-<?php
-	foreach ($this->Items as $item)
-	{
-		?>
-		<a id="ListView_<?php echo($this->ID); ?>_<?php echo($item->ID); ?>" href="<?php
-		if ($item->NavigateURL != null)
-		{
-			echo($item->NavigateURL);
-		}
-		else
-		{
-			echo("#");
-		}
-		?>" onclick="<?php
-		if ($item->OnClientClick != null)
-		{
-			echo($item->OnClientClick);
-		}
-		else
-		{
-			echo("return false;");
-		}
-		?>">
-		<?php
-			$max = count($item->Columns);
+			$div = new HTMLControl("div");
+			$div->ClassList[] = "ListView";
+			if (count($this->Items) <= 0) $div->ClassList[] = "Empty";
 			
-			for ($i = 0; $i < $max; $i++)
+			$div->ClientID = $this->ClientID;
+			
+			// set up CSS classes for properties
+			if ($this->ShowBorder) $div->ClassList[] = "HasBorder";
+			if ($this->EnableHotTracking) $div->ClassList[] = "HotTracking";
+			if ($this->ShowGridLines) $div->ClassList[] = "GridLines";
+			if ($this->HighlightAlternateRows) $div->ClassList[] = "AlternateRowHighlight";
+			if ($this->AllowFiltering) $div->ClassList[] = "AllowFiltering";
+			if ($this->EnableRowCheckBoxes) $div->ClassList[] = "RowCheckBoxes";
+			if ($this->EnableMultipleSelection) $div->ClassList[] = "MultiSelect";
+			if ($this->EnableAddRemoveRows) $div->ClassList[] = "EnableAddRemoveRows";
+			if ($this->Width != null) $div->StyleRules[] = new WebStyleSheetRule("width", $this->Width);
+			
+			switch ($this->Mode)
 			{
-				if ($i == 0)
+				case "Detail":
+				case ListViewMode::Detail:
 				{
-					?><span class="ItemText"><?php
+					$div->Attributes[] = new WebControlAttribute("data-mode", "Detail");
+					break;
+				}
+				case "Thumbnail":
+				case ListViewMode::Thumbnail:
+				{
+					$div->Attributes[] = new WebControlAttribute("data-mode", "Thumbnail");
+					break;
+				}
+				case "Icon":
+				case ListViewMode::Icon:
+				{
+					$div->Attributes[] = new WebControlAttribute("data-mode", "Icon");
+					break;
+				}
+				case "Tile":
+				case ListViewMode::Tile:
+				{
+					$div->Attributes[] = new WebControlAttribute("data-mode", "Tile");
+					break;
+				}
+			}
+			
+			$divColumnHeaders = new HTMLControl("div");
+			$divColumnHeaders->ClassList[] = "ListViewColumnHeaders";
+			
+			$lvcCount = 0;
+			foreach ($this->Columns as $column)
+			{
+				$divColumnHeader = new HTMLControl("div");
+				$divColumnHeader->ClassList[] = "ListViewColumnHeader";
+				
+				if ($column->Width != null)
+				{
+					$divColumnHeader->StyleRules[] = new WebStyleSheetRule("width", $column->Width);
+				}
+				$classList = array();
+				if ($column->MobileHidden) $divColumnHeader->ClassList[] = "MobileHidden";
+				
+				if (get_class($column) == "Phast\\WebControls\\ListViewColumnCheckBox")
+				{
+					$input = new Input();
+					$input->Type = InputType::CheckBox;
+					$divColumnHeader->Controls[] = $input;
+				}
+				else if (get_class($column) == "Phast\\WebControls\\ListViewColumn")
+				{
+					$link = new Anchor();
+					$link->TargetScript = "lvListView.Sort('" . $column->ID . "'); return false;";
+					$link->InnerHTML = $column->Title;
+					$divColumnHeader->Controls[] = $link;
 				}
 				else
 				{
-					?><span class="ItemDetail"><?php
+					$literal = new Literal();
+					$literal->Value = "<!-- Undefined column class: " . get_class($column) . " -->";
+					$divColumnHeader->Controls[] = $literal;
 				}
-				echo($item->Columns[$i]->Text);
-				?></span><?php
+				
+				if (!$column->Visible)
+				{
+					$divColumnHeader->ClassList[] = "Hidden";
+				}
+				else
+				{
+					$lvcCount++;
+				}
+
+				if ($lvcCount == 1)
+				{
+					$divColumnHeader->ClassList[] = "FirstVisibleChild";
+				}
+				else if ($lvcCount == count($this->Columns))
+				{
+					$divColumnHeader->ClassList[] = "LastVisibleChild";
+				}
+				
+				$divColumnHeaders->Controls[] = $divColumnHeader;
 			}
-		?>
-		</a>
-		<?php
-	}
-?>
-</div>
-<?php
-						break;
+			
+			$div->Controls[] = $divColumnHeaders;
+			
+			$divEmptyMessage = new HTMLControl("div");
+			$divEmptyMessage->ClassList[] = "ListViewEmptyMessage";
+			$divEmptyMessage->InnerHTML = "There are no items";
+			$div->Controls[] = $divEmptyMessage;
+			
+			$divItems = new HTMLControl("div");
+			$divItems->ClassList[] = "ListViewItems";
+			
+			foreach ($this->Items as $item)
+			{
+				$divItem = new HTMLControl("div");
+				$divItem->ClassList[] = "ListViewItem";
+				if ($item->Value != null)
+				{
+					$divItem->Attributes[] = new WebControlAttribute("data-value", $item->Value);
+				}
+				
+				$max = max([count($item->Columns), count($this->Columns)]);
+				
+				$lvcCount = 0;
+				for ($i = 0; $i < $max; $i++)
+				{
+					$column = $this->Columns[$i];
+					$divItemColumn = new HTMLControl("div");
+					
+					if (!$column->Visible)
+					{
+						$divItemColumn->ClassList[] = "Hidden";
 					}
+					else
+					{
+						$lvcCount++;
+					}
+
+					if ($lvcCount == 1)
+					{
+						$divItemColumn->ClassList[] = "FirstVisibleChild";
+					}
+					else if ($lvcCount == $max)
+					{
+						$divItemColumn->ClassList[] = "LastVisibleChild";
+					}
+					
+					$divItemColumn->ClassList[] = "ListViewItemColumn";
+					$divItemColumn->InnerHTML = $item->Columns[$i]->Content;
+					$divItem->Controls[] = $divItemColumn;
 				}
+				
+				$divItems->Controls[] = $divItem;
 			}
+			$div->Controls[] = $divItems;
+			$div->Render();
 		}
 	}
 ?>

@@ -2,82 +2,81 @@
 @TableGridLineColor: #F5F5F5;
 
 @TableRowHoverBackgroundColor: @TableGridLineColor;
+@TableRowHoverForegroundColor: #000000;
 
 @TableRowSelectedBackgroundColor: darken(@ThemeColor, 5%); /* #E2E7E9; */
 @TableRowSelectedForegroundColor: #FFFFFF;
 
 @TableRowSelectedHoverBackgroundColor: lighten(@TableRowSelectedBackgroundColor, 5%);
+@TableRowSelectedHoverForegroundColor: @TableRowSelectedForegroundColor;
 
-table.ListView
+div.ListView
 {
 	background-color: #FFFFFF;
 	border-collapse: collapse;
 	font-size: 12px;
 	
-	&> thead
+	&> div.ListViewColumnHeaders
 	{
 		border-bottom-color: @TableGridLineColor;
-		tr
+		&> div.ListViewColumnHeader
 		{
-			th
+			border-bottom: solid 2px @TableBorderColor;
+			color: #242A30;
+			font-weight: 600;
+			a
 			{
-				border-bottom: solid 2px @TableBorderColor;
-				color: #242A30;
-				font-weight: 600;
-				a
+				color: inherit;
+				display: block;
+				text-align: left;
+				&:hover
 				{
-					color: inherit;
-					display: block;
-					text-align: left;
-					&:hover
-					{
-						text-decoration: none;
-					}
+					text-decoration: none;
 				}
 			}
 		}
 	}
 	
-	tr
+	&> div.ListViewColumnHeaders > div.ListViewColumnHeader > a,
+	&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
 	{
-		th a, td
-		{
-			padding: 10px 15px;
-		}
+		padding: 10px 15px;
+	}
+	&> div.ListViewItems > div.ListViewItem
+	{
 		&.Selected
 		{
-			th, td
-			{
-				background-color: @TableRowSelectedBackgroundColor;
-				color: @TableRowSelectedForegroundColor;
-			}
-			&:hover
-			{
-				th, td
-				{
-					background-color: @TableRowSelectedHoverBackgroundColor;
-				}
-			}
+			background-color: @TableRowSelectedBackgroundColor;
+			color: @TableRowSelectedForegroundColor;
 		}
 	}
 	&.HasBorder
 	{
 		border-color: @TableBorderColor;
 	}
-	&.GridLines tr
+	&[data-mode="Detail"]
 	{
-		td, th
+		&.GridLines
 		{
-			border-color: @TableGridLineColor;
+			&> div.ListViewColumnHeaders > div.ListViewColumnHeader, &> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
+			{
+				border: solid 1px @TableGridLineColor;
+			}
 		}
 	}
 	&.HotTracking
 	{
-		&> tbody
+		&> div.ListViewItems
 		{
-			tr:hover
+			&> div.ListViewItem:hover
 			{
 				background-color: @TableRowHoverBackgroundColor;
+				color: @TableRowHoverForegroundColor;
+				&.Selected
+				{
+					background-color: @TableRowSelectedHoverBackgroundColor;
+					color: @TableRowSelectedHoverForegroundColor;
+				}
 			}
 		}
 	}

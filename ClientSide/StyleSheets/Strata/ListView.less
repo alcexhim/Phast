@@ -1,80 +1,37 @@
-table.ListView
+div.ListView
 {
 	border-collapse: collapse;
 	
-	th
+	&> div.ListViewColumnHeaders
 	{
-		a
+		&> div.ListViewColumnHeader
 		{
-			color: #888888;
-			text-decoration: none;
-			padding: 14px 8px;
-			display: block;
-			
-			font-weight: normal;
-			text-align: left;
-			
-			&:hover
+			&> a
 			{
-				background-color: #FAFBFC;
+				color: #888888;
+				text-decoration: none;
+				padding: 14px 8px;
+				display: block;
+				
+				font-weight: normal;
+				text-align: left;
+				
+				&:hover
+				{
+					background-color: #FAFBFC;
+				}
 			}
 		}
 	}
 	
-	&> tbody > tr
+	&> div.ListViewItems
 	{
-		&:hover
+		&> div.ListViewItem
 		{
-			background-color: #FAFBFC;
-		}
-	}
-	
-	tr
-	{
-		&> td, th
-		{
-			&.FirstVisibleChild
+			&> div.ListViewItemColumn
 			{
-				border-left: solid 3px transparent;
+				padding: 8px;
 			}
-			&.LastVisibleChild
-			{
-				border-right: solid 1px transparent;
-			}
-		}
-		&.Selected
-		{
-			&> td, th
-			{
-				background-color: lighten(@ThemeColor, 45%) !important;
-				border-top: double 1px @ThemeColor !important;
-				border-bottom: double 1px @ThemeColor !important;
-				&.FirstVisibleChild
-				{
-					box-shadow: 3px 0 0 @ThemeColor inset;
-				}
-				&.LastVisibleChild
-				{
-					border-right: solid 1px @ThemeColor;
-				}
-			}
-		}
-		/*
-		&.Selected
-		{
-			&> td
-			{
-				background-color: #F1F2F3;
-			}
-			&:hover > td
-			{
-				background-color: #EDEEEF;
-			}
-		}
-		*/
-		&> td
-		{
-			padding: 8px;
 			
 			&> input.Filter
 			{
@@ -91,27 +48,111 @@ table.ListView
 				font-size: 18px;
 				font-weight: 700;
 			}
+			&:hover
+			{
+				background-color: #FAFBFC;
+			}
 		}
+	}
+	
+	&[data-mode="Detail"]
+	{
+		&> div.ListViewItems
+		{
+			&> div.ListViewItem
+			{
+				&.Selected
+				{
+					background-color: lighten(@ThemeColor, 45%) !important;
+					border-top: double 1px @ThemeColor !important;
+					border-bottom: double 1px @ThemeColor !important;
+					&> div.ListViewItemColumn.FirstVisibleChild
+					{
+						box-shadow: 3px 0 0 @ThemeColor inset;
+					}
+					&> div.ListViewItemColumn.LastVisibleChild
+					{
+						border-right: solid 1px @ThemeColor;
+					}
+				}
+			}
+		}
+	}
+	&[data-mode="Thumbnail"]
+	{
+		&> div.ListViewItems
+		{
+			&> div.ListViewItem
+			{
+				border: double 1px transparent;
+				&.Selected
+				{
+					background-color: lighten(@ThemeColor, 45%) !important;
+					border-color: @ThemeColor;
+				}
+			}
+		}
+	}
+	
+	tr
+	{
+		&> td, th
+		{
+			&.FirstVisibleChild
+			{
+				border-left: solid 3px transparent;
+			}
+			&.LastVisibleChild
+			{
+				border-right: solid 1px transparent;
+			}
+		}
+		/*
+		&.Selected
+		{
+			&> td
+			{
+				background-color: #F1F2F3;
+			}
+			&:hover > td
+			{
+				background-color: #EDEEEF;
+			}
+		}
+		*/
 	}
 	
 	&.HasBorder
 	{
 		border: solid 1px #EEEEEE;
 	}
-	&.GridLines
+	
+	&[data-mode="Detail"]
 	{
-		&> thead, &>tbody
+		&.GridLines
 		{
-			&> tr
+			&> div.ListViewColumnHeaders
 			{
-				&:not(:last-child)
-				{
-					border-bottom: solid 1px #EEEEEE;
-				}
-				&> td, &> th
+				border-bottom: solid 1px #EEEEEE;
+				&> div.ListViewColumnHeader
 				{
 					border-left: solid 1px #EEEEEE;
 					border-right: solid 1px #EEEEEE;
+				}
+			}
+			&> div.ListViewItems
+			{
+				&> div.ListViewItem
+				{
+					&:not(:last-child)
+					{
+						border-bottom: solid 1px #EEEEEE;
+					}
+					&> div.ListViewItemColumn
+					{
+						border-left: solid 1px #EEEEEE;
+						border-right: solid 1px #EEEEEE;
+					}
 				}
 			}
 		}

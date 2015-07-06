@@ -14,85 +14,10 @@ table.ListView tr td
 	}
 }
 
-table.ListView
-{
-	position: relative;
-	-moz-user-select: none;
-	
-	&:not(.RowCheckBoxes) th.RowCheckBoxes *, &:not(.RowCheckBoxes) td.RowCheckBoxes *
-	{
-		display: none;
-	}
-	th
-	{
-		&.RowCheckBoxes
-		{
-			width: 64px;
-		}
-	}
-	&:not(.RowCheckBoxes) th.RowCheckBoxes
-	{
-		display: none;
-	}
-	
-	a.NavigateURL
-	{
-		cursor: pointer;
-		position: absolute;
-		right: 0px;
-	}
-	&:not(.AllowFiltering) > thead > tr.Filter
-	{
-		display: none;
-	}
-	&> thead
-	{
-		border-bottom-style: solid;
-		border-bottom-width: 1px;
-	}
-	&.HasBorder
-	{
-		border-style: solid;
-		border-width: 1px;
-	}
-	&.GridLines tr
-	{
-		td, th
-		{
-			border-style: solid;
-			border-width: 1px;
-			&:first-child
-			{
-				border-left: none;
-			}
-			&:last-child
-			{
-				border-right: none;
-			}
-		}
-		&:first-child td, th
-		{
-			border-top: none;
-		}
-		&:last-child td, th
-		{
-			border-bottom: none;
-		}
-	}
-	&:not(.RowCheckBoxes).GridLines tr td,th
-	{
-		&:nth-child(2)
-		{
-			border-left: none !important;
-		}
-	}
-}
-
 /* ListView (as DIV) */
 div.ListView
 {
 	position: relative;
-	
 	a
 	{
 		cursor: default;
@@ -106,18 +31,193 @@ div.ListView
 		background-color: Highlight;
 		color: HighlightText;
 	}
-	&.TileView a
+	&> div.ListViewColumnHeaders
 	{
-		display: block;
-		padding: 8px;
-		color: #000000;
-		text-decoration: none;
-		span
+		&> div.ListViewColumnHeader
+		{
+			&> a
+			{
+				display: block;
+			}
+		}
+	}
+	&> div.ListViewEmptyMessage
+	{
+		display: none;
+		padding: 16px;
+		text-align: center;
+	}
+	&.Empty
+	{
+		&> div.ListViewEmptyMessage
 		{
 			display: block;
-			&.ItemText
+		}
+		&> div.ListViewItems
+		{
+			display: none;
+		}
+	}
+	&> div.ListViewItems
+	{
+		&> div.ListViewItem
+		{
+			cursor: default;
+			&> a
 			{
-				font-weight: bold;
+				display: block;
+				height: 100%;
+			}
+		}
+	}
+	&[data-mode="Detail"]
+	{
+		display: table;
+		position: relative;
+		-moz-user-select: none;
+		
+		&> div.ListViewColumnHeaders
+		{
+			display: table-row;
+			&> div.ListViewColumnHeader
+			{
+				display: table-cell;
+			}
+		}
+		&> div.ListViewItems
+		{
+			display: table-row-group;
+			&> div.ListViewItem
+			{
+				display: table-row;
+				&> div.ListViewItemColumn
+				{
+					display: table-cell;
+				}
+			}
+		}
+		
+		&:not(.RowCheckBoxes) th.RowCheckBoxes *, &:not(.RowCheckBoxes) td.RowCheckBoxes *
+		{
+			display: none;
+		}
+		th
+		{
+			&.RowCheckBoxes
+			{
+				width: 64px;
+			}
+		}
+		&:not(.RowCheckBoxes) th.RowCheckBoxes
+		{
+			display: none;
+		}
+		
+		a.NavigateURL
+		{
+			cursor: pointer;
+			position: absolute;
+			right: 0px;
+		}
+		&:not(.AllowFiltering) > thead > tr.Filter
+		{
+			display: none;
+		}
+		&> thead
+		{
+			border-bottom-style: solid;
+			border-bottom-width: 1px;
+		}
+		&.HasBorder
+		{
+			border-style: solid;
+			border-width: 1px;
+		}
+		&.GridLines tr
+		{
+			td, th
+			{
+				border-style: solid;
+				border-width: 1px;
+				&:first-child
+				{
+					border-left: none;
+				}
+				&:last-child
+				{
+					border-right: none;
+				}
+			}
+			&:first-child td, th
+			{
+				border-top: none;
+			}
+			&:last-child td, th
+			{
+				border-bottom: none;
+			}
+		}
+		&:not(.RowCheckBoxes).GridLines tr td,th
+		{
+			&:nth-child(2)
+			{
+				border-left: none !important;
+			}
+		}
+	}
+	&:not([data-mode="Detail"]), &.HideColumnHeaders
+	{
+		&> div.ListViewColumnHeaders
+		{
+			display: none;
+		}
+	}
+	&[data-mode="Tile"]
+	{
+		&> a
+		{
+			display: block;
+			padding: 8px;
+			color: #000000;
+			text-decoration: none;
+			span
+			{
+				display: block;
+				&.ItemText
+				{
+					font-weight: bold;
+				}
+			}
+		}
+	}
+	&[data-mode="Thumbnail"]
+	{
+		&> div.ListViewItems
+		{
+			&> div.ListViewItem
+			{
+				display: inline-block;
+				width: 128px;
+				height: 128px;
+				position: relative;
+				
+				&> div.ListViewItemColumn
+				{
+					&:first-child
+					{
+						display: block;
+						text-align: center;
+						position: absolute;
+						
+						left: 0px;
+						right: 0px;
+						bottom: 0px;
+					}
+					&:not(:first-child)
+					{
+						display: none;
+					}
+				}
 			}
 		}
 	}
