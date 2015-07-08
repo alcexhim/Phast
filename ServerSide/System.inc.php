@@ -675,6 +675,8 @@
 	require("Conditionals/ConditionalComparison.inc.php");
 	require("Conditionals/ConditionalStatement.inc.php");
 	
+	require_once("Compilers/StyleSheet/Internal/LessStyleSheetCompiler.inc.php");
+	
 	require("WebApplication.inc.php");
 	require("WebApplicationTask.inc.php");
 	
@@ -734,6 +736,12 @@
 	}
 	// Global HTMLControls loader
 	$a = glob($PhastRootPath . "/HTMLControls/*.inc.php");
+	foreach ($a as $filename)
+	{
+		require_once($filename);
+	}
+	
+	$a = glob($PhastRootPath . "/Compilers/StyleSheet/Internal/Formatters/*.inc.php");
 	foreach ($a as $filename)
 	{
 		require_once($filename);
