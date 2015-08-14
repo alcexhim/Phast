@@ -1,0 +1,54 @@
+input[type=submit], input[type=reset], input[type=button], a.pwt-Button
+{
+	background: #FFFFFF;
+	border-radius: 3px;
+	color: #687075;
+	cursor: pointer;
+	font-size: 13px;
+	line-height: 18px;
+	min-width: 80px;
+	
+	&:hover
+	{
+		box-shadow: 0px 2px 0px 0px #D3D8DB;
+	}
+	
+	&+ &
+	{
+		margin: 0px 0px 0px 15px;
+	}
+	
+	.WD25TwoColorGradient(@topColor, @bottomColor)
+	{
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f8b354+5,f59f1a+95 */
+		background: @topColor; /* Old browsers */
+		background: -moz-linear-gradient(top, @topColor 5%, @bottomColor 95%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(5%,@topColor), color-stop(95%,@bottomColor)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, @topColor 5%,@bottomColor 95%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, @topColor 5%,@bottomColor 95%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top, @topColor 5%,@bottomColor 95%); /* IE10+ */
+		background: linear-gradient(to bottom, @topColor 5%,@bottomColor 95%); /* W3C */
+		filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr='@topColor', endColorstr='@bottomColor',GradientType=0 );"; /* IE6-9 */
+	}
+	.WD25ButtonColor(@normalTopColor, @normalBottomColor, @hoverTopColor, @hoverBottomColor, @focusTopColor, @focusBottomColor)
+	{
+		.WD25TwoColorGradient(@normalTopColor, @normalBottomColor);
+		&:hover
+		{
+			.WD25TwoColorGradient(@hoverTopColor, @hoverBottomColor);
+		}
+		&:focus
+		{
+			.WD25TwoColorGradient(@focusTopColor, @focusBottomColor);
+		}
+	}
+	
+	&.Primary
+	{
+		.WD25ButtonColor(#F8B354, #F59F1A, #F59B1E, #E38925, #F59F1A, #F8B354);
+	}
+	&.Success
+	{
+		.WD25ButtonColor(#9DCE71, #7AC142, #81C348, #58B046, #9DCE71, #7AC142);
+	}
+}

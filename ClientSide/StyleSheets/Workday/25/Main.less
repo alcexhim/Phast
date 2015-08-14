@@ -1,16 +1,19 @@
 /* bring in stylesheet v24 */
 @import "../24/Main.less";
 
+/* !!! EMBEDDED FONT FILE PATHS ARE RELATIVE TO IMPORTED .CSS FILE (../Main.less) !!! */
 @font-face
 {
     font-family: "WorkdaySans";
-    src: url('Fonts/WorkdaySans.eot');
-    src: url('Fonts/WorkdaySans.eot?#iefix') format('embedded-opentype'),
-    url('Fonts/WorkdaySans.woff') format('woff'),
-    url('Fonts/WorkdaySans.ttf') format('truetype'),
-    url('Fonts/WorkdaySans.svg') format('svg');
+    src: url('25/Fonts/WorkdaySans.eot');
+    src: url('25/Fonts/WorkdaySans.eot?#iefix') format('embedded-opentype'),
+    url('25/Fonts/WorkdaySans.woff') format('woff'),
+    url('25/Fonts/WorkdaySans.ttf') format('truetype'),
+    url('25/Fonts/WorkdaySans.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
+@import "Button.less";
+@import "Menu.less";
 @import "TextBox.less";
