@@ -301,22 +301,97 @@
 				$retval = $serverPath . $retval;
 			}
 			
-			if (System::$CurrentPage != null)
+			// parse the string for variables
+			$retval_len = strlen($retval);
+			$ret = "";
+			for ($i = 0; $i < $retval_len; $i++)
 			{
-				foreach (System::$CurrentPage->PathVariables as $variable)
+				$c = substr($retval, $i, 1);
+				
+				if ($c == "\$")
 				{
-					$retval = str_replace("\$(Path:" . $variable->Name . ")", $variable->Value, $retval);
+					if ($i > 0 && substr($retval, $i - 1, 1) == "\\")
+					{
+						// literal $
+						$ret .= "$";
+					}
+					else if ($i < $retval_len - 2)
+					{
+						$x = stripos($retval, ")", $i + 1);
+						if ($x === false) $x = strlen($retval);
+						
+						$varString = substr($retval, $i + 2, $x - ($i + 2));
+						
+						$category = null;
+						$variable = $varString;
+						$defaultValue = null;
+						
+						$posCategoryValueSeparator = stripos($varString, ":");
+						if ($posCategoryValueSeparator !== false)
+						{
+							$category = substr($varString, 0, $posCategoryValueSeparator);
+							$variable = substr($varString, $posCategoryValueSeparator + 1);
+						}
+						
+						$posValueDefaultSeparator = stripos($varString, "|");
+						if ($posValueDefaultSeparator !== false)
+						{
+							$defaultValue = substr($varString, $posValueDefaultSeparator + 1);
+						}
+						
+						$handled = false;
+						switch ($category)
+						{
+							case "Path":
+							{
+								if (System::$CurrentPage != null)
+								{
+									$ret .= System::$CurrentPage->GetPathVariableValue($variable, $defaultValue);
+									$handled = true;
+								}
+								break;
+							}
+							case "Configuration":
+							{
+								if (array_key_exists($variable, System::$Configuration))
+								{
+									$ret .= System::$Configuration[$variable];
+									$handled = true;
+								}
+								break;
+							}
+							case "Variables":
+							{
+								if (array_key_exists($variable, System::$Variables))
+								{
+									foreach (System::$Variables as $varr)
+									{
+										if ($varr->Name == $variable)
+										{
+											$ret .= $varr->Value;
+											$handled = true;
+											break;
+										}
+									}
+								}
+								break;
+							}
+						}
+						if (!$handled) $ret .= $defaultValue;
+						$i += strlen($varString) + 2; // '(' + varString + ')'; the preceding '$' is taken care of by $i++ in the next loop iteration
+						continue;
+					}
+					else
+					{
+						$ret .= $c;
+					}
+				}
+				else
+				{
+					$ret .= $c;
 				}
 			}
-			foreach (System::$Configuration as $name => $value)
-			{
-				$retval = str_replace("\$(Configuration:" . $name . ")", $value, $retval);
-			}
-			foreach (System::$Variables as $variable)
-			{
-				$retval = str_replace("\$(" . $variable->Name . ")", $variable->Value, $retval);
-			}
-			return $retval;
+			return $ret;
 		}
 		public static function RedirectToLoginPage()
 		{
