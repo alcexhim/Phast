@@ -12,7 +12,7 @@
 	
 	use Phast\WebControlAttribute;
 	use Phast\Enumeration;
-	use Phast\Phast;
+	use Phast\System;
 		
 	class FormViewLabelStyle extends Enumeration
 	{
@@ -200,7 +200,7 @@
 			$elem->ID = $this->ID;
 			$elem->Name = $this->Name;
 			$elem->InnerHTML = $this->DefaultValue;
-			if (isset($this->Value)) $elem->InnerHTML = $this->Value;
+			if (isset($this->Value)) $elem->InnerHTML = System::ExpandRelativePath($this->Value);
 			
 			return $elem;
 		}
@@ -231,8 +231,8 @@
 			$elem->ID = $this->ID;
 			$elem->Type = InputType::Text;
 			$elem->Name = $this->Name;
-			$elem->Value = $this->DefaultValue;
-			if (isset($this->Value)) $elem->Value = $this->Value;
+			$elem->Value = System::ExpandRelativePath($this->DefaultValue);
+			if (isset($this->Value)) $elem->Value = System::ExpandRelativePath($this->Value);
 			
 			if (isset($this->PlaceholderText))
 			{
@@ -258,8 +258,8 @@
 			$elem->ID = $this->ID;
 			$elem->Type = InputType::Password;
 			$elem->Name = $this->Name;
-			$elem->Value = $this->DefaultValue;
-			if (isset($this->Value)) $elem->Value = $this->Value;
+			$elem->Value = System::ExpandRelativePath($this->DefaultValue);
+			if (isset($this->Value)) $elem->Value = System::ExpandRelativePath($this->Value);
 			if (isset($this->PlaceholderText))
 			{
 				$elem->PlaceholderText = $this->PlaceholderText;
@@ -285,8 +285,8 @@
 			$elem->Name = $this->Name;
 			if (isset($this->Rows)) $elem->Rows = $this->Rows;
 			if (isset($this->Columns)) $elem->Columns = $this->Columns;
-			$elem->Value = $this->DefaultValue;
-			if (isset($this->Value)) $elem->Value = $this->Value;
+			$elem->Value = System::ExpandRelativePath($this->DefaultValue);
+			if (isset($this->Value)) $elem->Value = System::ExpandRelativePath($this->Value);
 			if (isset($this->PlaceholderText)) $elem->PlaceholderText = $this->PlaceholderText;
 			return $elem;
 		}
@@ -368,7 +368,7 @@
 			$elem->ClearOnFocus = $elem->RequireSelectionFromChoices;
 			foreach ($this->Items as $item)
 			{
-				$elem->Items[] = new TextBoxItem($item->Title, $item->Value, $item->Selected);
+				$elem->Items[] = new TextBoxItem($item->Title, System::ExpandRelativePath($item->Value), $item->Selected);
 			}
 			return $elem;
 		}
