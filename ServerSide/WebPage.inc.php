@@ -627,12 +627,12 @@
 		/**
 		 * Retrieves the string value for the WebPageVariable with the given name associated with this WebPage.
 		 * @param string $name The name of the WebPageVariable whose value is to be returned.
-		 * @return string The value of the WebPageVariable with the given name, or the empty string ("") if no WebPageVariable with the given name is defined for this WebPage.
+		 * @return string The value of the WebPageVariable with the given name, or $defaultValue (default: null) if no WebPageVariable with the given name is defined for this WebPage.
 		 */
-		public function GetPathVariableValue($name)
+		public function GetPathVariableValue($name, $defaultValue = null)
 		{
 			$variable = $this->GetPathVariable($name);
-			if ($variable == null) return null;
+			if ($variable == null) return $defaultValue;
 			return $variable->Value;
 		}
 		
