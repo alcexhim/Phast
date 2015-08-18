@@ -1061,6 +1061,10 @@
 				$tagBODY = new HTMLControl();
 				$tagBODY->TagName = "body";
 				
+				$divThrobber = new HTMLControl("div");
+				$divThrobber->CssClass = "Throbber";
+				$tagBODY->Controls[] = $divThrobber;
+				
 				$classList = array();
 				if (is_array($this->ClassList))
 				{
