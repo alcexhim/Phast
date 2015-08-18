@@ -47,6 +47,17 @@ function Wizard(parentElement)
 			{
 				System.ClassList.Remove(this.TabContainerElement.childNodes[i], "Selected");
 			}
+			
+			if (i < index)
+			{
+				System.ClassList.Add(this.TabContainerElement.childNodes[i], "BeforeSelected");
+				System.ClassList.Remove(this.TabContainerElement.childNodes[i], "AfterSelected");
+			}
+			else if (i > index)
+			{
+				System.ClassList.Add(this.TabContainerElement.childNodes[i], "AfterSelected");
+				System.ClassList.Remove(this.TabContainerElement.childNodes[i], "BeforeSelected");
+			}
 		}
 		for (var i = 0; i < this.TabPageContainerElement.childNodes.length; i++)
 		{
