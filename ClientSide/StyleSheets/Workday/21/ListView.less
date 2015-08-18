@@ -1,54 +1,50 @@
-table.ListView
+div.ListView
 {
 	border: solid 1px #c6c6c5;
 	
 	border-spacing: 0px;
 	border-collapse: collapse;
-	&> thead > tr
+	&> div.ListViewColumnHeaders > div.ListViewColumnHeader
 	{
-		&> th
+		background-color: #f9f9f9;
+		border: none 0px;
+		border-right: solid 1px #dcdddf;
+		border-bottom: solid 1px #dcdddf;
+		font-size: 9pt;
+		a
 		{
-			background-color: #f9f9f9;
-			border: none 0px;
-			border-right: solid 1px #dcdddf;
-			border-bottom: solid 1px #dcdddf;
-			font-size: 9pt;
-			a
+			font-weight: bold;
+			color: #323232;
+			text-align: left;
+			text-decoration: none;
+			display: block;
+			padding: 8px 9px 8px 9px;
+		}
+		&.ActionColumn
+		{
+			width: 52px;
+			a.Add
 			{
-				color: #000000;
-				text-align: left;
-				text-decoration: none;
-				display: block;
-				padding: 8px 9px 8px 9px;
+				background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAACJ0lEQVQ4y6VUuapiQRA9LQb63LgIIuKC4IZGMqAomggv8wtEMBDmB8Tf0HgSEUGMxMB0xEQDcYlcQDDQ65KIgetVwZ5guPc9x+uMw6voUN11uupUVxE8sdlsRgeDAWazGU6nEwBALpfDZDLB4/HAYrEQsThRZ6FQoP1+H5RS0ccIIfB4PEgkEuSvhJPJhBaLRex2O7xiCoUC8XgcNptN4JHwgGXZTT6ff5kMAA6HA/L5PFiW3fA+KQ8qlQrDcZxoedFoFIQQVKvVBxnO5zPK5TJzl2G73aYsy4pmoVar4ff74fP5wDCM6J3FYoFWq0UFwk6n87QsiUQiiv+0brf7keF0OsVXjeeQrlar75lM5kEzo9H4+4JUkBmxWAzX61Uo87Omt9sN8/m8I+U47sfnl+RyOXw+Hwh5/KI6nU7ABoMBtVoNh8NB8HEc901qtVpJOp0WWnc8HlEqlaDVagEAb29vCIfDAIBms4n9fg8A2Gw2d2QAoFQq36V8Vvx4AcBwOBQwwzACYbvdxnq9FtVQJpNBr9f/lACAw+H4clPsdvtHlwOBgKhmAHC5XEApBaUUl8vl6WwHg8H7WS6VSrTX64kGuN1uEEIwGAxEz71eL2KxGHlYDtlsli6Xy/8qVa/XI5VKkafrK5fL0dFo9BKZy+VCMpkk/9yHjUaD1ut1bLdbUSKVSoVIJIJQKEReWrC8jcdjOp1Osd1uQSmFRqOB2WyG0+l8GvcLljXcll8b0zMAAAAASUVORK5CYII=');
 			}
-			&.ActionColumn
-			{
-				width: 52px;
-				a.Add
-				{
-					background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAACJ0lEQVQ4y6VUuapiQRA9LQb63LgIIuKC4IZGMqAomggv8wtEMBDmB8Tf0HgSEUGMxMB0xEQDcYlcQDDQ65KIgetVwZ5guPc9x+uMw6voUN11uupUVxE8sdlsRgeDAWazGU6nEwBALpfDZDLB4/HAYrEQsThRZ6FQoP1+H5RS0ccIIfB4PEgkEuSvhJPJhBaLRex2O7xiCoUC8XgcNptN4JHwgGXZTT6ff5kMAA6HA/L5PFiW3fA+KQ8qlQrDcZxoedFoFIQQVKvVBxnO5zPK5TJzl2G73aYsy4pmoVar4ff74fP5wDCM6J3FYoFWq0UFwk6n87QsiUQiiv+0brf7keF0OsVXjeeQrlar75lM5kEzo9H4+4JUkBmxWAzX61Uo87Omt9sN8/m8I+U47sfnl+RyOXw+Hwh5/KI6nU7ABoMBtVoNh8NB8HEc901qtVpJOp0WWnc8HlEqlaDVagEAb29vCIfDAIBms4n9fg8A2Gw2d2QAoFQq36V8Vvx4AcBwOBQwwzACYbvdxnq9FtVQJpNBr9f/lACAw+H4clPsdvtHlwOBgKhmAHC5XEApBaUUl8vl6WwHg8H7WS6VSrTX64kGuN1uEEIwGAxEz71eL2KxGHlYDtlsli6Xy/8qVa/XI5VKkafrK5fL0dFo9BKZy+VCMpkk/9yHjUaD1ut1bLdbUSKVSoVIJIJQKEReWrC8jcdjOp1Osd1uQSmFRqOB2WyG0+l8GvcLljXcll8b0zMAAAAASUVORK5CYII=');
-				}
-			}
-		}		
+		}
 	}
-	&> tbody > tr
+	&> div.ListViewItems > div.ListViewItem
 	{
 		&:nth-child(2n+1) > td
 		{
 			background-color: #FCFCFC;
 		}
-		&> th, td
+		&> div.ListViewItemColumn
 		{
-			padding: 0px;
 			margin: 0px;
-		}
-		&> td
-		{
+			
 			vertical-align: top;
 			border: none 0px;
 			border-right: solid 1px #dcdddf;
 			border-bottom: solid 1px #dcdddf;
 			padding: 7px 8px 4px;
+			
 			&.ActionColumn
 			{
 				width: 52px;
@@ -67,7 +63,7 @@ table.ListView
 			border-bottom: double 1px rgba(53, 171, 237, 1);
 			border-top: double 1px rgba(53, 171, 237, 1);
 			
-			&> td
+			&> div.ListViewItemColumn
 			{
 				background-color: #EBF8FC;
 				border-collapse: collapse;
@@ -80,7 +76,7 @@ table.ListView
 		}
 		&:hover
 		{
-			&> td
+			&> div.ListViewItemColumn
 			{
 				background-color: #f5f5f5;
 				&.FirstVisibleChild
