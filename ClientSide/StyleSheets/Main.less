@@ -49,6 +49,28 @@
 @import "../../../fonts/FontAwesome/FontAwesome.css";
 @import "../../../../fonts/SourceSansPro/SourceSansPro.less";
 
+body
+{
+	&> div.Throbber
+	{
+		display: none;
+		left: 50%;
+		position: absolute;
+		top: 50%;
+	}
+	&.Loading
+	{
+		&> *
+		{
+			display: none;
+		}
+		&> div.Throbber
+		{
+			display: block;
+		}
+	}
+}
+
 div.ImageAndMessage
 {
 	&> div.Image, &> div.Message
