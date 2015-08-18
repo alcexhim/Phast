@@ -1,0 +1,78 @@
+div.Wizard
+{
+	&> ol
+	{
+		background-color: #F7F7F7;
+		font-size: 14px;
+		
+		&> li
+		{
+			padding: 16px;
+			&> span.Number
+			{
+				display: none;
+			}
+			&> span.Title
+			{
+				color: #999999;
+			}
+			&> span.Description
+			{
+				color: #CCCCCC;
+			}
+			&> span.Title, &> span.Description
+			{
+				display: block;
+			}
+			&.Selected, &.BeforeSelected
+			{
+				background-color: #FFFFFF;
+				border-bottom: solid 1px #C0D3DD;
+				border-top: solid 1px #C0D3DD;
+			}
+			&.BeforeSelected
+			{
+				&> span.Title, &> span.Description
+				{
+					color: #CCCCCC;
+				}
+			}
+			&.Selected
+			{
+				&> span.Title
+				{
+					color: #35ABED;
+					font-weight: bold;
+				}
+				&> span.Description
+				{
+					color: #999999;
+				}
+				
+				&::after, &::before 
+				{
+					left: 100%;
+					top: 50%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+				}
+				&::after
+				{
+					border-left-color: #C0D3DD;
+					border-width: 25px;
+					margin-top: -25px;
+				}
+				&::before
+				{
+					border-left-color: #C0D3DD;
+					border-width: 26px;
+					margin-top: -26px;
+				}
+			}
+		}
+	}
+}
