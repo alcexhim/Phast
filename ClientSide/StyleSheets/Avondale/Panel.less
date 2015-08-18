@@ -1,0 +1,41 @@
+div.Panel
+{
+	background-color: #FFFFFF;
+	border-radius: 3px;
+	
+	&> div.Header, &> div.Content, &> div.Footer
+	{
+		padding: 10px 15px;
+	}
+	&> div.Header
+	{
+		background-color: #DDDDDD;
+		
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		
+		color: #333333;
+		
+		font-size: 12px;
+		font-weight: 500;
+		
+		line-height: 20px;
+	}
+	&> div.Footer
+	{
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+	
+	&.Inverse > div.Header
+	{
+		background-color: #242A30;
+	}
+	&.Danger, &.Info, &.Inverse, &.Primary, &.Success, &.Warning
+	{
+		&> div.Header
+		{
+			color: #FFFFFF;
+		}
+	}
+}
