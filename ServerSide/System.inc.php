@@ -16,7 +16,12 @@
 	use Phast\Pages\ErrorPage;
 	
 	use Phast\Configuration\ConfigurationParser;
-	
+
+	use Phast\Configuration\V1\ConfigurationComment;
+	use Phast\Configuration\V1\ConfigurationProperty;
+	use Phast\Configuration\V1\ConfigurationSpacer;
+	use Phast\Configuration\V1\Phast\Configuration\V1;
+		
 	/**
 	 * Provides event arguments during an error event.
 	 * @author Michael Becker
@@ -221,6 +226,67 @@
 		public static function HasConfigurationValue($key)
 		{
 			return isset(System::$Configuration[$key]);
+		}
+		
+		public static function SaveConfigurationFile()
+		{
+			$filename = System::GetApplicationPath() . "/Include/Configuration.inc.php";
+			$file = fopen($filename, "w");
+			if ($file === false) return false;
+			
+			$properties = array
+			(
+				new ConfigurationComment("Whether we should enable users to run the setup application"),
+				new ConfigurationProperty("Setup.Enabled", "true"),
+				new ConfigurationSpacer(),
+				new ConfigurationComment("The base path of the Web site"),
+				new ConfigurationProperty("Application.BasePath", ""),
+				new ConfigurationSpacer(),
+				// new ConfigurationComment("The default tenant for the Web site"),
+				// new ConfigurationProperty("Application.DefaultTenant", "default"),
+				// new ConfigurationSpacer(),
+				new ConfigurationComment("The location of static Phast-related files (scripts, stylesheets, etc.)"),
+				new ConfigurationProperty("System.StaticPath", "http://static.alcehosting.net/dropins/Phast")
+			);
+			
+			$hasExtraProperties = false;
+			foreach (System::$Configuration as $key => $value)
+			{
+				if ($key == "Setup.Enabled" || $key == "Application.BasePath" || $key == "System.StaticPath")
+				{
+					continue;
+				}
+				
+				if (!$hasExtraProperties)
+				{
+					$hasExtraProperties = true;
+					$properties[] = new ConfigurationSpacer();
+				}
+				$properties[] = new ConfigurationProperty($key, $value);
+			}
+			
+			fwrite($file, "<?php\r\n");
+			fwrite($file, "\tuse Phast\\System;\r\n");
+			fwrite($file, "\r\n");
+			foreach ($properties as $item)
+			{
+				if (get_class($item) == "Phast\\Configuration\\V1\\ConfigurationProperty")
+				{
+					fwrite($file, "\tSystem::SetConfigurationValue(\"" . $item->ID . "\", \"" . $item->Value . "\");\r\n");
+				}
+				else if (get_class($item) == "Phast\\Configuration\\V1\\ConfigurationComment")
+				{
+					fwrite($file, "\t// " . $item->Value . "\r\n");
+				}
+				else if (get_class($item) == "Phast\\Configuration\\V1\\ConfigurationSpacer")
+				{
+					fwrite($file, "\t\r\n");
+				}
+			}
+			fwrite($file, "?>\r\n");
+			fclose($file);
+			
+			return true;
 		}
 		
 		/**
@@ -779,6 +845,12 @@
 
 	require("Parser/ControlLoader.inc.php");
 	require("Parser/PhastParser.inc.php");
+
+	require("Configuration/V1/ConfigurationItem.inc.php");
+	
+	require("Configuration/V1/ConfigurationComment.inc.php");
+	require("Configuration/V1/ConfigurationProperty.inc.php");
+	require("Configuration/V1/ConfigurationSpacer.inc.php");
 	
 	System::$Configuration = array();
 	System::$EnableTenantedHosting = false;
