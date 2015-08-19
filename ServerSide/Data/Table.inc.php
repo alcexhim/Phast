@@ -303,8 +303,14 @@
 				}
 			}
 			
-			$result = $this->Insert($this->Records);
-			if ($result == null) return false;
+			if ($this->Records != null)
+			{
+				$result = $this->Insert($this->Records);
+				if ($result == null)
+				{
+					return false;
+				}
+			}
 			
 			return true;
 		}
