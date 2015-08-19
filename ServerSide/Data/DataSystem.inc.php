@@ -29,6 +29,9 @@
 	
 	class DataSystem
 	{
+		/**
+		 * @var DataErrorCollection
+		 */
 		public static $Errors;
 		
 		private static $_PDO = null;
@@ -75,6 +78,10 @@
 			$this->Clear();
 		}
 		
+		/**
+		 * 
+		 * @var DataError[]
+		 */
 		public $Items;
 		public function Add($item)
 		{
