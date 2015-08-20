@@ -5,11 +5,11 @@
 	
 	use Phast\HorizontalAlignment;
 	use Phast\WebControl;
+	use Phast\WebStyleSheetRule;
 		
 	class Panel extends WebControl
 	{
 		public $FooterContent;
-		public $Width;
 		public $Title;
 		
 		public $HeaderControls;
@@ -43,32 +43,35 @@
 			$this->HeaderControls = array();
 			$this->ContentControls = array();
 			$this->FooterControls = array();
+			
+			$this->TagName = "div";
+			$this->ClassList[] = "Panel";
 		}
 		
-		protected function BeforeContent()
+		protected function RenderBeginTag()
 		{
-			echo("<div class=\"Panel\" style=\"");
-			if ($this->Width != null)
-			{
-				echo("width: " . $this->Width . "; ");
-			}
 			switch ($this->HorizontalAlignment)
 			{
 				case "Center":
 				case HorizontalAlignment::Center:
 				{
-					echo("margin-left: auto; ");
-					echo("margin-right: auto; ");
+					$this->StyleRules[] = new WebStyleSheetRule("margin-left", "auto");
+					$this->StyleRules[] = new WebStyleSheetRule("margin-right", "auto");
 					break;
 				}
 				case "Right":
 				case HorizontalAlignment::Right:
 				{
-					echo("margin-left: auto; ");
+					$this->StyleRules[] = new WebStyleSheetRule("margin-left", "auto");
 					break;
 				}
 			}
-			echo("\">");
+			
+			parent::RenderBeginTag();
+		}
+		
+		protected function BeforeContent()
+		{
 			if ($this->Title != "")
 			{
 				echo("<div class=\"Header\">" . $this->Title . "</div>");
@@ -119,8 +122,6 @@
 				}
 				$this->EndFooter();
 			}
-			
-			echo("</div>");
 		}
 	}
 ?>
