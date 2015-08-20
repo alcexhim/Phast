@@ -47,17 +47,6 @@ div.ListView
 		padding: 16px;
 		text-align: center;
 	}
-	&.Empty
-	{
-		&> div.ListViewEmptyMessage
-		{
-			display: block;
-		}
-		&> div.ListViewItems
-		{
-			display: none;
-		}
-	}
 	&> div.ListViewItems
 	{
 		&> div.ListViewItem
@@ -219,6 +208,26 @@ div.ListView
 					}
 				}
 			}
+		}
+	}
+	&.Empty
+	{
+		&[data-mode="Detail"]
+		{
+			display: inline-block;
+			&> div.ListViewColumnHeaders
+			{
+				display: table;
+				width: 100%;
+			}
+		}
+		&> div.ListViewEmptyMessage
+		{
+			display: block;
+		}
+		&> div.ListViewItems
+		{
+			display: none;
 		}
 	}
 }
