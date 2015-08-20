@@ -10,21 +10,22 @@
 @ListView_Item_BackgroundColor_Secondary_Hover: #F3FAFB;
 @ListView_Item_BackgroundColor_Secondary_Selected: #B6E2EA;
 
-table tr td
+div.ListView *
 {
 	font-family: Arial, sans-serif;
 	font-size: 10pt;
 }
-table:not(.Borderless)
+div.ListView:not(.Borderless)
 {
 	@ListView_Item_BackgroundColor_Normal: @ListView_Item_BackgroundColor_Primary_Normal;
 	@ListView_Item_BackgroundColor_Alternate: @ListView_Item_BackgroundColor_Primary_Alternate;
 	@ListView_Item_BackgroundColor_Hover: @ListView_Item_BackgroundColor_Primary_Hover;
 	@ListView_Item_BackgroundColor_Selected: @ListView_Item_BackgroundColor_Primary_Selected;
-
+	
 	background-color: #FFFFFF;
 	
-	tr, th, td
+	&> div.ListViewColumnHeaders > div.ListViewColumnHeader,
+	&> div.ListViewItems > div.ListViewItem
 	{
 		border: solid 1px @ListView_BorderColor;
 	}
@@ -41,112 +42,90 @@ table:not(.Borderless)
 		border-right: solid 1px @ListView_BorderColor;
 	}
 	
-	tr
+	&> div.ListViewColumnHeaders > div.ListViewColumnHeader
+	{
+		border-top: solid 1px #B7BABC;
+		border-bottom: solid 1px #B7BABC;
+		
+		background: #daf1f5; /* Old browsers */
+		background: -moz-linear-gradient(top, #daf1f5 0%, #ffffff 40%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#daf1f5), color-stop(40%,#ffffff)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* IE10+ */
+		background: linear-gradient(to bottom, #daf1f5 0%,#ffffff 40%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#daf1f5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+		
+		font-weight: bold;
+		text-align: left;
+		font-size: 9pt;
+		
+		&:first-child
+		{
+			border-left: none;
+		}
+		&:last-child
+		{
+			border-right: none;
+		}
+		
+		a
+		{
+			color: #003767;
+		}
+	}
+	
+	&> div.ListViewItems > div.ListViewItem
 	{
 		border-left: none;
 		border-right: none;
 		
-		&:last-child td
+		&:last-child div.ListViewItemColumn
 		{
 			border-bottom: solid 1px #B7BABC;
 		}
 		
-		th, td
+		padding: 4px;
+		
+		vertical-align: top;
+		transition: background-color 0.3s;
+		
+		&:first-child
 		{
-			padding: 4px;
+			border-left: none;
 		}
-		th
+		&:last-child
 		{
-			border-top: solid 1px #B7BABC;
-			border-bottom: solid 1px #B7BABC;
-			
-			background: #daf1f5; /* Old browsers */
-			background: -moz-linear-gradient(top, #daf1f5 0%, #ffffff 40%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#daf1f5), color-stop(40%,#ffffff)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top, #daf1f5 0%,#ffffff 40%); /* IE10+ */
-			background: linear-gradient(to bottom, #daf1f5 0%,#ffffff 40%); /* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#daf1f5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-			
-			font-weight: bold;
-			text-align: left;
-			font-size: 9pt;
-			
-			&:first-child
-			{
-				border-left: none;
-			}
-			&:last-child
-			{
-				border-right: none;
-			}
-			
-			a
-			{
-				color: #003767;
-			}
-		}
-		td
-		{
-			vertical-align: top;
-			transition: background-color 0.3s;
-			
-			&:first-child
-			{
-				border-left: none;
-			}
-			&:last-child
-			{
-				border-right: none;
-			}
+			border-right: none;
 		}
 		
 		&.Alternate
 		{
-			td
-			{
-				background-color: @ListView_Item_BackgroundColor_Primary_Alternate;
-			}
+			background-color: @ListView_Item_BackgroundColor_Primary_Alternate;
 		}
 		&:hover
 		{
-			td, th
-			{
-				background-color: @ListView_Item_BackgroundColor_Primary_Hover;
-			}
+			background-color: @ListView_Item_BackgroundColor_Primary_Hover;
 		}
 		&:active, &:focus, &.Selected
 		{
-			td
-			{
-				background-color: @ListView_Item_BackgroundColor_Primary_Selected;
-			}
+			background-color: @ListView_Item_BackgroundColor_Primary_Selected;
 		}
 	
-		&.Secondary tr
+		&.Secondary
 		{
 			&.Alternate
 			{
-				td
-				{
-					background-color: @ListView_Item_BackgroundColor_Secondary_Alternate;
-				}
+				background-color: @ListView_Item_BackgroundColor_Secondary_Alternate;
 			}
 			
 			&:hover
 			{
-				td, th
-				{
-					background-color: @ListView_Item_BackgroundColor_Secondary_Hover;
-				}
+				background-color: @ListView_Item_BackgroundColor_Secondary_Hover;
 			}
 			&:active, &:focus, &.Selected
 			{
-				td
-				{
-					background-color: @ListView_Item_BackgroundColor_Secondary_Selected;
-				}
+				background-color: @ListView_Item_BackgroundColor_Secondary_Selected;
 			}
 		}
 	}
