@@ -1,0 +1,32 @@
+div.Panel
+{
+	background-color: #FFFFFF;
+	border-radius: 4px;
+	border: solid 1px #CCCCCC;
+	padding: 15px 30px;
+	
+	&> div.Header
+	{
+		color: #444444;
+		font-size: 18px;
+		margin-bottom: 15px;
+		text-align: center;
+	}
+	
+	&.Primary, &.Auto:nth-child(1)
+	{
+		box-shadow: 0px 4px 0px 0px #35ABED inset, 5px 0px 0px 0px #F2F4F5, -5px 0px 0px 0px #F2F4F5;
+	}
+	&.Success, &.Auto:nth-child(2)
+	{
+		box-shadow: 0px 4px 0px 0px @ThemeColorSuccess inset, 5px 0px 0px 0px #F2F4F5, -5px 0px 0px 0px #F2F4F5;
+	}
+	&.Warning, &.Auto:nth-child(3)
+	{
+		box-shadow: 0px 4px 0px 0px @ThemeColorWarning inset, 5px 0px 0px 0px #F2F4F5, -5px 0px 0px 0px #F2F4F5;
+	}
+	&.Info, &.Auto:nth-child(4)
+	{
+		box-shadow: 0px 4px 0px 0px @ThemeColorInfo inset, 5px 0px 0px 0px #F2F4F5, -5px 0px 0px 0px #F2F4F5;
+	}
+}
