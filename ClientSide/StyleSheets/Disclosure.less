@@ -23,6 +23,13 @@ div.Disclosure
 	}
 	&> div.Title
 	{
+		position: relative;
+		&> div.Chevron
+		{
+			background-repeat: no-repeat;
+			background-position: center center;
+			position: absolute;
+		}
 		&> a
 		{
 			display: block;
@@ -36,7 +43,7 @@ div.Disclosure
 			background-size: 19px 19px;
 			background-repeat: no-repeat;
 			background-position: 8px center;
-			cursor: default;
+			cursor: inherit;
 			
 			color: #000000;
 		}
