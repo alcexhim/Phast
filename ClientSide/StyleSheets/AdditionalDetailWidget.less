@@ -4,7 +4,7 @@ div.AdditionalDetailWidget
 	&> div.Content
 	{
 		display: block;
-		position: fixed;
+		position: absolute;
 		z-index: 5;
 
 		padding: 8px;
@@ -17,6 +17,10 @@ div.AdditionalDetailWidget
 				
 		opacity: 0;
 		visibility: hidden;
+		width: -moz-max-content;
+		
+		left: 100%;
+		top: 0px;
 
 		transition: opacity linear 0.3s, visibility linear 0.3s;
 		
