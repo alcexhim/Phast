@@ -127,6 +127,7 @@ use Phast\HTMLControls\Literal;
 		public $HighlightAlternateRows;
 		
 		public $EnableRowCheckBoxes;
+		public $PlaceholderText;
 		
 		public $Mode;
 		
@@ -157,6 +158,7 @@ use Phast\HTMLControls\Literal;
 			$this->EnableMultipleSelection = false;
 			
 			$this->ParseChildElements = true;
+			$this->PlaceholderText = "There are no items";
 		}
 		
 		protected function OnInitialize()
@@ -273,7 +275,7 @@ use Phast\HTMLControls\Literal;
 			
 			$divEmptyMessage = new HTMLControl("div");
 			$divEmptyMessage->ClassList[] = "ListViewEmptyMessage";
-			$divEmptyMessage->InnerHTML = "There are no items";
+			$divEmptyMessage->InnerHTML = $this->PlaceholderText;
 			$div->Controls[] = $divEmptyMessage;
 			
 			$divItems = new HTMLControl("div");
