@@ -25,6 +25,11 @@ div.Disclosure
 			color: inherit;
 		}
 	}
+	&> div.Content
+	{
+		visibility: hidden;
+		opacity: 0;
+	}
 	&.Expanded
 	{
 		&> div.Title
@@ -35,23 +40,7 @@ div.Disclosure
 				transform: rotate(90deg);
 			}
 		}
-	}
-	div.Content
-	{
-		visibility: hidden;
-		opacity: 0;
-	}
-	
-	&.Expanded
-	{
-		div.Title
-		{
-			span.DisclosureButton
-			{
-				transform: rotate(90deg);
-			}
-		}
-		div.Content
+		&> div.Content
 		{
 			visibility: visible;
 			opacity: 1;
