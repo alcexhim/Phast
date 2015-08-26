@@ -4,14 +4,17 @@ div.AdditionalDetailWidget
 	&> div.Content
 	{
 		display: block;
-		position: absolute;
+		position: fixed;
 		z-index: 5;
 
 		padding: 8px;
 
+		/* for when position is absolute */
+		/*
 		left: 100%;
 		width: 100%;
-		
+		*/
+				
 		opacity: 0;
 		visibility: hidden;
 
@@ -23,13 +26,44 @@ div.AdditionalDetailWidget
 			margin-bottom: 8px;
 			padding-right: 16px;
 		}
+		&> div.MenuItems
+		{
+			&.Empty
+			{
+				display: none;
+			}
+			&> div.Content
+			{
+				&> ul.Menu
+				{
+					border: none;
+					
+					&> li
+					{
+						position: relative;
+						&> ul.Menu
+						{
+							border: none;
+							display: none;
+							position: absolute;
+							left: 100%;
+							top: 0px;
+							width: -moz-max-content;
+						}
+						&:hover
+						{
+							&> ul.Menu
+							{
+								display: block;
+							}
+						}
+					}
+				}
+			}
+		}
 		&> div.MenuItems, &> div.PreviewContent
 		{
 			display: table-cell;
-		}
-		&> div.MenuItems.Empty
-		{
-			display: none;
 		}
 		&> div.PreviewContent > div.Header
 		{

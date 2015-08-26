@@ -3,37 +3,31 @@ function AdditionalDetailWidget(parent)
 	this.Parent = parent;
 	this.Show = function ()
 	{
-		this.Parent.classList.add("Visible");
+		System.ClassList.Add(this.Parent, "Visible");
 	};
 	this.Hide = function ()
 	{
-		this.Parent.classList.remove("Visible");
+		System.ClassList.Remove(this.Parent, "Visible");
 	};
 
-	this.TextLink = null;
-	this.ButtonLink = null;
+	this.TextLink = parent.childNodes[0];
+	this.ButtonLink = parent.childNodes[1];
+	
+	this.ButtonLink.NativeObject = this;
+	this.ButtonLink.addEventListener("click", function (e)
+	{
+		if (e.which == MouseButtons.Primary)
+		{
+			this.NativeObject.Show();
+		}
+	});
 }
 window.addEventListener("load", function(e)
 {
 	var items = document.getElementsByClassName("AdditionalDetailWidget");
 	for (var i = 0; i < items.length; i++)
 	{
-		var obj = new AdditionalDetailWidget(items[i]);
-		items[i].ObjectReference = obj;
-
-		obj.TextLink = items[i].childNodes[0];
-		obj.ButtonLink = items[i].childNodes[1];
-
-		(function(itm)
-		{
-			itm.ButtonLink.addEventListener("click", function (e)
-			{
-				if (e.button == System.MouseButtons.Left)
-				{
-					itm.Show();
-				}
-			});
-		})(obj);
+		items[i].NativeObject = new AdditionalDetailWidget(items[i]);
 	}
 });
 window.addEventListener("mousedown", function (e)
@@ -53,7 +47,7 @@ window.addEventListener("mousedown", function (e)
 		var items = document.getElementsByClassName("AdditionalDetailWidget");
 		for (var i = 0; i < items.length; i++)
 		{
-			items[i].ObjectReference.Hide();
+			items[i].NativeObject.Hide();
 		}
 	}
 });

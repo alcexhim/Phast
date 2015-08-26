@@ -5,6 +5,10 @@
 	use Phast\WebControl;
 	use Phast\Enumeration;
 	
+	use Phast\HTMLControl;
+	
+	use Phast\WebControls\Menu;
+	
 	abstract class AdditionalDetailWidgetDisplayStyle extends Enumeration
 	{
 		const Magnify = 1;
@@ -42,7 +46,7 @@
 		
 		private function RenderMenuItem($mi)
 		{
-			if (get_class($mi) == "Phast\\WebControls\\MenuItemText")
+			if (get_class($mi) == "Phast\\WebControls\\MenuItemCommand")
 			{
 				echo("<a href=\"");
 				if ($mi->PostBackUrl == "")
@@ -59,7 +63,7 @@
 					echo(" onclick=\"" . $mi->OnClientClick . "\"");
 				}
 				echo(">");
-				echo($mi->Text);
+				echo($mi->Title);
 				echo("</a>");
 			}
 			else if (get_class($mi) == "Phast\\WebControls\\MenuItemSeparator")
@@ -129,12 +133,17 @@
 			}
 			echo("\">");
 			echo("<div class=\"Header\">" . $this->MenuItemHeaderText . "</div>");
-			echo("<div class=\"Content\">");
+			
+			$divContent = new HTMLControl("div");
+			$divContent->ClassList[] = "Content";
+			$menu = new Menu();
 			foreach ($this->MenuItems as $mi)
 			{
-				$this->RenderMenuItem($mi);
+				$menu->Items[] = $mi;
 			}
-			echo("</div>");
+			$divContent->Controls[] = $menu;
+			$divContent->Render();
+			
 			echo("</div>");
 
 			echo("<div class=\"PreviewContent\">");

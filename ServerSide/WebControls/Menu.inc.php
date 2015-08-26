@@ -10,7 +10,8 @@
 	
 	use Phast\HTMLControl;
 	use Phast\HTMLControls\Anchor;
-	
+use Phast\Phast;
+		
 	/**
 	 * Provides an enumeration of predefined values for orientation of a menu.
 	 * @author Michael Becker
@@ -80,6 +81,11 @@
 			}
 			
 			$this->Controls = array();
+			
+			$liArrow = new HTMLControl("li");
+			$liArrow->ClassList[] = "Arrow";
+			$this->Controls[] = $liArrow;
+			
 			foreach ($this->Items as $menuItem)
 			{
 				$this->Controls[] = Menu::CreateMenuItemControl($menuItem);
@@ -122,7 +128,7 @@
 					$iIcon->ClassList[] = "fa-" . $menuItem->IconName;
 					$a->Controls[] = $iIcon;
 				}
-					
+				
 				if ($menuItem->Description != null)
 				{
 					$spanTitle = new HTMLControl();
@@ -150,16 +156,12 @@
 					
 				if (count($menuItem->Items) > 0)
 				{
-					$ul = new HTMLControl();
-					$ul->TagName = "ul";
-					$ul->ClassList[] = "Menu";
-					
+					$menu = new Menu();
 					foreach ($menuItem->Items as $item1)
 					{
-						$ul->Controls[] = Menu::CreateMenuItemControl($item1);
+						$menu->Items[] = $item1;
 					}
-					
-					$li->Controls[] = $ul;
+					$li->Controls[] = $menu;
 				}
 				return $li;
 			}
@@ -238,13 +240,15 @@
 			return null;
 		}
 		
-		public function __construct($title = null, $targetURL = null, $onClientClick = null, $description = null)
+		public function __construct($title = null, $targetURL = null, $onClientClick = null, $description = null, $items = null)
 		{
 			parent::__construct();
 			$this->Title = $title;
 			$this->TargetURL = $targetURL;
 			$this->OnClientClick = $onClientClick;
 			$this->Description = $description;
+			if ($items == null) $items = array();
+			$this->Items = $items;
 		}
 	}
 	class MenuItemSeparator extends MenuItem
