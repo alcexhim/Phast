@@ -35,9 +35,14 @@ div.ListView
 	{
 		&> div.ListViewColumnHeader
 		{
+			vertical-align: top;
 			&> a
 			{
 				display: block;
+			}
+			&> div.ItemTemplate
+			{
+				display: none;
 			}
 		}
 	}
@@ -228,6 +233,27 @@ div.ListView
 		&> div.ListViewItems
 		{
 			display: none;
+		}
+	}
+	
+	&:not(.EnableAddRemoveRows)
+	{
+		&> div.ListViewColumnHeaders
+		{
+			&> div.ListViewColumnHeader.AddRemoveRowColumnHeader
+			{
+				display: none;
+			}
+		}
+		&> div.ListViewItems
+		{
+			&> div.ListViewItem
+			{
+				&> div.ListViewItemColumn.AddRemoveRowItemColumn
+				{
+					display: none;
+				}
+			}
 		}
 	}
 }

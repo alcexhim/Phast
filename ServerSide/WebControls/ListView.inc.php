@@ -14,11 +14,11 @@
 	use Phast\HTMLControls\HTMLControlFormMethod;
 	
 	use Phast\Enumeration;
-use Phast\HTMLControl;
-use Phast\HTMLControls\Input;
-use Phast\HTMLControls\InputType;
-use Phast\HTMLControls\Literal;
-					
+	use Phast\HTMLControl;
+	use Phast\HTMLControls\Input;
+	use Phast\HTMLControls\InputType;
+	use Phast\HTMLControls\Literal;
+						
 	abstract class ListViewMode extends Enumeration
 	{
 		const Icon = 1;
@@ -49,6 +49,8 @@ use Phast\HTMLControls\Literal;
 		public $MobileHidden;
 		public $Visible;
 		public $Width;
+		
+		public $Template;
 		
 		public function __construct($id = null, $title = null, $imageURL = null, $width = null)
 		{
@@ -227,9 +229,22 @@ use Phast\HTMLControls\Literal;
 			$divColumnHeaders->ClassList[] = "ListViewColumnHeaders";
 			
 			$lvcCount = 0;
+			
+			$divItemColumn = new HTMLControl("div");
+			$divItemColumn->ClassList[] = "ListViewColumnHeader";
+			$divItemColumn->ClassList[] = "AddRemoveRowColumnHeader";
+			
+			$aAdd = new HTMLControl("a");
+			$aAdd->ClassList[] = "Add";
+			$divItemColumn->Controls[] = $aAdd;
+			
+			$divColumnHeaders->Controls[] = $divItemColumn;
+			$lvcCount++;
+			
 			foreach ($this->Columns as $column)
 			{
 				$divColumnHeader = new HTMLControl("div");
+				$divColumnHeader->Attributes[] = new WebControlAttribute("data-id", $column->ID);
 				$divColumnHeader->ClassList[] = "ListViewColumnHeader";
 				
 				if ($column->Width != null)
@@ -276,6 +291,11 @@ use Phast\HTMLControls\Literal;
 				{
 					$divColumnHeader->ClassList[] = "LastVisibleChild";
 				}
+
+				$divItemTemplate = new HTMLControl("div");
+				$divItemTemplate->ClassList[] = "ItemTemplate";
+				$divItemTemplate->Content = $column->Template;
+				$divColumnHeader->Controls[] = $divItemTemplate;
 				
 				$divColumnHeaders->Controls[] = $divColumnHeader;
 			}
@@ -302,6 +322,22 @@ use Phast\HTMLControls\Literal;
 				$count = count($this->Columns);
 				
 				$lvcCount = 0;
+				
+				$divItemColumn = new HTMLControl("div");
+				$divItemColumn->ClassList[] = "ListViewItemColumn";
+				$divItemColumn->ClassList[] = "AddRemoveRowItemColumn";
+				
+				$aAdd = new HTMLControl("a");
+				$aAdd->ClassList[] = "Add";
+				$divItemColumn->Controls[] = $aAdd;
+				
+				$aRemove = new HTMLControl("a");
+				$aRemove->ClassList[] = "Remove";
+				$divItemColumn->Controls[] = $aRemove;
+				
+				$divItem->Controls[] = $divItemColumn;
+				$lvcCount++;
+				
 				for ($i = 0; $i < $count; $i++)
 				{
 					$column = $this->Columns[$i];

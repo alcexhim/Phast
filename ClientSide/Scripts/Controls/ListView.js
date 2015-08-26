@@ -46,12 +46,157 @@ function ListViewItem(parentListView, index)
 		return this.get_ParentElement().getAttribute("data-value");
 	};
 }
+function ListViewColumn()
+{
+	this.Title = null;
+	this.ItemTemplate = null;
+}
 function ListView(parentElement)
 {
 	this.ParentElement = parentElement;
 	this.ColumnHeaderElement = this.ParentElement.children[0];
 	this.EmptyMessageElement = this.ParentElement.children[1];
 	this.ItemsElement = this.ParentElement.children[2];
+	
+	this.AddRemoveColumnHeaderElement = this.ColumnHeaderElement.children[0];
+	this.AddRemoveColumnHeaderAddColumnButton = this.AddRemoveColumnHeaderElement.children[0];
+	
+	this.AddRemoveColumnHeaderAddColumnButton.NativeObject = this;
+	this.AddRemoveColumnHeaderAddColumnButton.addEventListener("click", function(e)
+	{
+		this.NativeObject.InsertRowAfter(-1);
+	});
+	
+	/**
+	 * Inserts a row after the row at the specified index.
+	 */
+	this.InsertRowAfter = function(index)
+	{
+		var rw = document.createElement("div");
+		rw.className = "ListViewItem";
+		
+		var col = document.createElement("div");
+		col.className = "ListViewItemColumn AddRemoveRowItemColumn";
+		
+		var aAdd = document.createElement("a");
+		aAdd.className = "Add";
+		col.appendChild(aAdd);
+		
+		var aRemove = document.createElement("a");
+		aRemove.className = "Remove";
+		col.appendChild(aRemove);
+		
+		rw.appendChild(col);
+		
+		for (var i = 0; i < this.Columns.Count(); i++)
+		{
+			var column = this.Columns.GetByIndex(i);
+			var col = document.createElement("div");
+			col.className = "ListViewItemColumn";
+			
+			col.innerHTML = column.ItemTemplate;
+			
+			if (col.children.length > 0)
+			{
+				col.children[0].id = "ListView_" + this.ParentElement.id + "_Rows_" + this.ItemsElement.children.length + "_Columns_" + column.ID + "_Value";
+			}
+			
+			rw.appendChild(col);
+		}
+		
+		if ((index + 1) > this.ItemsElement.children.length)
+		{
+			this.ItemsElement.appendChild(rw);
+		}
+		else
+		{
+			this.ItemsElement.insertBefore(rw, this.ItemsElement.children[index + 1]);
+		}
+		this.Refresh();
+	};
+	
+	this.Refresh = function()
+	{
+		if (this.Rows.Count() > 0)
+		{
+			System.ClassList.Remove(this.ParentElement, "Empty");
+		}
+		else
+		{
+			System.ClassList.Add(this.ParentElement, "Empty");
+		}
+		
+		for (var i = 0; i < this.ItemsElement.children.length; i++)
+		{
+			var row = this.ItemsElement.children[i];
+
+			row.m_Index = i;
+			
+			var AddRemoveRowItemColumnElement = row.children[0];
+			var AddRowButton = AddRemoveRowItemColumnElement.children[0];
+			AddRowButton.m_Index = i;
+			
+			var RemoveRowButton = AddRemoveRowItemColumnElement.children[1];
+			RemoveRowButton.m_Index = i;
+			
+			// if it has already been processed, skip it
+			if (row.NativeObject) continue;
+			
+			row.NativeObject = this;
+			
+			AddRowButton.NativeObject = this;
+			AddRowButton.addEventListener("click", function(e)
+			{
+				this.NativeObject.InsertRowAfter(this.m_Index);
+			});
+			
+			RemoveRowButton.NativeObject = this;
+			RemoveRowButton.addEventListener("click", function(e)
+			{
+				this.NativeObject.Rows.RemoveAt(this.m_Index);
+			});
+			
+			row.addEventListener("mousedown", function(e)
+			{
+				if (e.ctrlKey && System.ClassList.Contains(this.NativeObject.ParentElement, "MultiSelect"))
+				{
+					this.NativeObject.SelectedRows.Toggle(this.m_Index);
+				}
+				else if (e.shiftKey && System.ClassList.Contains(this.NativeObject.ParentElement, "MultiSelect"))
+				{
+					
+				}
+				else
+				{
+					if (!(this.NativeObject.SelectedRows.Count() == 1 && this.NativeObject.SelectedRows.ContainsIndex(this.m_Index)))
+					{
+						this.NativeObject.SelectedRows.Clear();
+						this.NativeObject.SelectedRows.Add(this.m_Index);
+					}
+				}
+
+				// WARNING: this messes with input elements and other controls - don't uncomment unless you KNOW WHAT YOU'RE DOING
+				// e.preventDefault();
+				e.stopPropagation();
+				return false;
+			});
+			row.addEventListener("dblclick", function(e)
+			{
+				if (this.NativeObject.get_ItemActivationMode() == ListViewItemActivationMode.DoubleClick)
+				{
+					this.NativeObject.EventHandlers.ItemActivated.Execute();
+				}
+			});
+			row.addEventListener("contextmenu", function(e)
+			{
+				this.NativeObject.SelectedRows.Clear();
+				this.NativeObject.SelectedRows.Add(this.m_Index);
+				// e.preventDefault();
+				e.stopPropagation();
+				return false;
+			});
+		}
+	};
 	
 	this.mvarItemActivationMode = ListViewItemActivationMode.DoubleClick;
 	this.get_ItemActivationMode = function()
@@ -86,6 +231,48 @@ function ListView(parentElement)
 		"SelectionChanging": new System.EventHandler(),
 		"SelectionChanged": new System.EventHandler()
 	};
+	
+	this.Columns =
+	{
+		"NativeObject": null,
+		
+		// # of predefined columns; e.g. add/remove column, row ordering column, etc.
+		"_predefinedColumnsCount": 1,
+		
+		"Count": function()
+		{
+			return this.NativeObject.ColumnHeaderElement.children.length - this._predefinedColumnsCount;
+		},
+		"GetByIndex": function(index)
+		{
+			var col = this.NativeObject.ColumnHeaderElement.children[index + this._predefinedColumnsCount];
+			var column = new ListViewColumn();
+			column.ID = col.getAttribute("data-id");
+			column.Title = col.children[0].innerHTML;
+			column.ItemTemplate = col.children[1].innerHTML;
+			return column;
+		}
+	};
+	this.Columns.NativeObject = this;
+	
+	this.Rows =
+	{
+		"NativeObject": null,
+		"Count": function()
+		{
+			return this.NativeObject.ItemsElement.children.length;
+		},
+		"Remove": function(row)
+		{
+			this.NativeObject.ItemsElement.removeChild(row.ParentElement);
+		},
+		"RemoveAt": function(index)
+		{
+			this.NativeObject.ItemsElement.removeChild(this.NativeObject.ItemsElement.children[index]);
+			this.NativeObject.Refresh();
+		}
+	};
+	this.Rows.NativeObject = this;
 	
 	this.SelectedRows =
 	{
@@ -226,54 +413,12 @@ function ListView(parentElement)
 	this.ParentElement.addEventListener("mousedown", function(e)
 	{
 		this.NativeObject.SelectedRows.Clear();
-		e.preventDefault();
-		e.stopPropagation();
+		// e.preventDefault();
+		// e.stopPropagation();
 		return false;
 	});
 	
-	for (var i = 0; i < this.ItemsElement.children.length; i++)
-	{
-		var row = this.ItemsElement.children[i];
-		row.m_Index = i;
-		row.NativeObject = this;
-		row.addEventListener("mousedown", function(e)
-		{
-			if (e.ctrlKey && System.ClassList.Contains(this.NativeObject.ParentElement, "MultiSelect"))
-			{
-				this.NativeObject.SelectedRows.Toggle(this.m_Index);
-			}
-			else if (e.shiftKey && System.ClassList.Contains(this.NativeObject.ParentElement, "MultiSelect"))
-			{
-				
-			}
-			else
-			{
-				if (!(this.NativeObject.SelectedRows.Count() == 1 && this.NativeObject.SelectedRows.ContainsIndex(this.m_Index)))
-				{
-					this.NativeObject.SelectedRows.Clear();
-					this.NativeObject.SelectedRows.Add(this.m_Index);
-				}
-			}
-			e.preventDefault();
-			e.stopPropagation();
-			return false;
-		});
-		row.addEventListener("dblclick", function(e)
-		{
-			if (this.NativeObject.get_ItemActivationMode() == ListViewItemActivationMode.DoubleClick)
-			{
-				this.NativeObject.EventHandlers.ItemActivated.Execute();
-			}
-		});
-		row.addEventListener("contextmenu", function(e)
-		{
-			this.NativeObject.SelectedRows.Clear();
-			this.NativeObject.SelectedRows.Add(this.m_Index);
-			e.preventDefault();
-			e.stopPropagation();
-			return false;
-		});
-	}
+	this.Refresh();
 }
 window.addEventListener("load", function(e)
 {
