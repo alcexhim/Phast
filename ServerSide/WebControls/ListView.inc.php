@@ -88,18 +88,16 @@ use Phast\HTMLControls\Literal;
 		public $ID;
 		public $Text;
 		public $Content;
-		public $OnRetrieveContent;
 		public $UserData;
 		
 		public $ParseChildElements;
 		
-		public function __construct($id = null, $content = null, $text = null, $onRetrieveContent = null, $userData = null)
+		public function __construct($id = null, $content = null, $text = null, $userData = null)
 		{
 			$this->ID = $id;
 			$this->Content = $content;
 			if ($text == null) $text = $content;
 			$this->Text = $text;
-			$this->OnRetrieveContent = $onRetrieveContent;
 			$this->UserData = $userData;
 			
 			$this->ParseChildElements = true;
@@ -317,7 +315,8 @@ use Phast\HTMLControls\Literal;
 					}
 					
 					$divItemColumn->ClassList[] = "ListViewItemColumn";
-					$divItemColumn->InnerHTML = $item->Columns[$i]->Content;
+					$divItemColumn->ExtraData = $item->Columns[$i]->UserData;
+					$divItemColumn->Content = $item->Columns[$i]->Content;
 					$divItem->Controls[] = $divItemColumn;
 				}
 				
