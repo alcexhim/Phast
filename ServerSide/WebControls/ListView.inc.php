@@ -73,6 +73,15 @@ use Phast\HTMLControls\Literal;
 		
 		public $Value;
 		
+		public function GetColumnByID($id)
+		{
+			foreach ($this->Columns as $column)
+			{
+				if ($column->ID == $id) return $column;
+			}
+			return null;
+		}
+		
 		public function __construct($columns = null, $selected = false)
 		{
 			if ($columns != null)
@@ -290,10 +299,10 @@ use Phast\HTMLControls\Literal;
 					$divItem->Attributes[] = new WebControlAttribute("data-value", $item->Value);
 				}
 				
-				$max = max([count($item->Columns), count($this->Columns)]);
+				$count = count($this->Columns);
 				
 				$lvcCount = 0;
-				for ($i = 0; $i < $max; $i++)
+				for ($i = 0; $i < $count; $i++)
 				{
 					$column = $this->Columns[$i];
 					$divItemColumn = new HTMLControl("div");
@@ -317,8 +326,13 @@ use Phast\HTMLControls\Literal;
 					}
 					
 					$divItemColumn->ClassList[] = "ListViewItemColumn";
-					$divItemColumn->ExtraData = $item->Columns[$i]->UserData;
-					$divItemColumn->Content = $item->Columns[$i]->Content;
+					
+					$col = $item->GetColumnByID($this->Columns[$i]->ID);
+					if ($col != null)
+					{
+						$divItemColumn->ExtraData = $col->UserData;
+						$divItemColumn->Content = $col->Content;
+					}
 					$divItem->Controls[] = $divItemColumn;
 				}
 				
