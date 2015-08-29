@@ -287,7 +287,7 @@
 		{
 			$this->mvarOutput = array();
 			
-			$input = utf8_encode(html_entity_decode($input));
+			$input = html_entity_decode($input);
 			
 			$this->resParser = xml_parser_create ();
 			xml_parser_set_option($this->resParser, XML_OPTION_CASE_FOLDING, 0);
@@ -296,7 +296,7 @@
 			xml_set_element_handler($this->resParser, "tagOpen", "tagClosed");
 			
 			xml_set_character_data_handler($this->resParser, "tagData");
-	   
+	   		
 			$this->strXmlData = xml_parse($this->resParser, $input);
 			if(!$this->strXmlData)
 			{
@@ -309,7 +309,7 @@
 		   
 			return MarkupObjectModel::FromArray($this->mvarOutput);
 		}
-			
+		
 		private function tagOpen($parser, $name, $attrs)
 		{
 			$tag = array("Type" => "MarkupTagElement", "Name" => $name, "Attributes" => $attrs);
@@ -319,6 +319,8 @@
 		private function tagData($parser, $value)
 		{
 			if ($this->RemoveWhitespace && trim($value) == "") return;
+			$value = htmlentities($value);
+			
 			$tag = array("Type" => "MarkupLiteralElement", "Value" => $value);
 			array_push($this->mvarOutput, $tag);
 			$this->mvarOutput[count($this->mvarOutput) - 2]['Elements'][] = $this->mvarOutput[count($this->mvarOutput) - 1];
