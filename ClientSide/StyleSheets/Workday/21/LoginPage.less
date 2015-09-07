@@ -13,14 +13,19 @@ body.LoginPage
 		position: relative;
 		width: 660px;
 		
-		&> div.Panel > div.Content
+		&> div.Panel
 		{
-			display: table;
-			div.LoginCredentials, div.LoginBranding
+			border: none;
+			
+			&> div.Content
 			{
-				display: table-cell;
-				padding: 8px;
-				vertical-align: top;
+				display: table;
+				div.LoginCredentials, div.LoginBranding
+				{
+					display: table-cell;
+					padding: 8px;
+					vertical-align: top;
+				}
 			}
 		}
 	}
