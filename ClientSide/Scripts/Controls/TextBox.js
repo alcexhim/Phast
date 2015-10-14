@@ -17,16 +17,19 @@ function TextBoxItem(parent, value, title)
 	}
 	this.SetSelected = function(value)
 	{
+		var changed = false;
 		for (var i = 0; i < this.NativeObject.SelectElement.childNodes.length; i++)
 		{
 			if (this.NativeObject.SelectElement.childNodes[i].value == this.Value)
 			{
 				if (value)
 				{
+					changed = changed || !this.NativeObject.SelectElement.childNodes[i].hasAttribute("selected");
 					this.NativeObject.SelectElement.childNodes[i].setAttribute("selected", "selected");
 				}
 				else
 				{
+					changed = changed || !this.NativeObject.SelectElement.childNodes[i].hasAttribute("selected");
 					this.NativeObject.SelectElement.childNodes[i].removeAttribute("selected", "selected");
 				}
 			}
@@ -34,11 +37,17 @@ function TextBoxItem(parent, value, title)
 			{
 				if (!this.NativeObject.IsMultiSelect())
 				{
+					changed = changed || this.NativeObject.SelectElement.childNodes[i].hasAttribute("selected");
 					this.NativeObject.SelectElement.childNodes[i].removeAttribute("selected");
 				}
 			}
 		}
 		this.NativeObject.UpdateSelectedItems();
+		
+		if (changed)
+		{
+			this.NativeObject.EventHandlers.SelectionChanged.Execute();
+		}
 	};
 }
 function TextBox(parentElement)
@@ -47,7 +56,12 @@ function TextBox(parentElement)
 	this.TextBoxElement = parentElement.childNodes[0].childNodes[1];
 	this.DropDownElement = parentElement.childNodes[1];
 	this.SelectElement = parentElement.childNodes[2];
-
+	
+	this.EventHandlers =
+	{
+		"SelectionChanged": new System.EventHandler()
+	};
+	
 	this.ShouldClearOnFocus = function()
 	{
 		return System.ClassList.Contains(this.ParentElement, "ClearOnFocus");
