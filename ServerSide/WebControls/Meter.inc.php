@@ -125,6 +125,10 @@
 			$divContent->ClassList[] = "Content";
 			
 			$decimalValue = (($this->MinimumValue + $this->CurrentValue) / ($this->MaximumValue - $this->MinimumValue));
+			if (($this->MaximumValue - $this->MinimumValue) <= 0)
+			{
+				$decimalValue = 0;
+			}
 			$printedValue = round(($decimalValue * ($this->MaximumValue - $this->MinimumValue)), 0);
 			$percentValue = round(($decimalValue * 100), 0) . "%";
 			

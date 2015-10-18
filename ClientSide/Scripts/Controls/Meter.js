@@ -147,6 +147,8 @@ function Meter(parentElement)
 	    var currentValue = this.ParentElement.getAttribute("data-current-value");
 	    
 	    var decimalValue = ((minimumValue + currentValue) / (maximumValue - minimumValue));
+	    if ((maximumValue - minimumValue) <= 0) decimalValue = 0;
+	    
 	    var percentValue = (decimalValue * 100).toString() + "%";
 	    
 	    switch (this.get_DisplayStyle())
