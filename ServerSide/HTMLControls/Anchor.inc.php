@@ -31,12 +31,21 @@
 		 * @var string
 		 */
 		public $TargetScript;
+		/**
+		 * The frame in which to open the associated TargetURL.
+		 * @var string
+		 */
+		public $TargetFrame;
 		
 		protected function RenderBeginTag()
 		{
 			if ($this->TargetURL != null)
 			{
 				$this->Attributes[] = new WebControlAttribute("href", System::ExpandRelativePath($this->TargetURL));
+				if ($this->TargetFrame != null)
+				{
+					$this->Attributes[] = new WebControlAttribute("target", $this->TargetFrame);
+				}
 			}
 			else
 			{
