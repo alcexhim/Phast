@@ -16,4 +16,6 @@
 			echo($this->InnerHTML);
 		}
 	}
+	
+	require_once("HTMLControls/Literal.inc.php");
 ?>
