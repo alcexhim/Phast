@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Website xmlns="http://www.alceproject.net/xmlns/Phast/Parser"
+	xmlns:wfx="http://www.alceproject.net/xmlns/Phast/WebControls"
+	xmlns:html="http://www.alceproject.net/xmlns/Phast/HTMLControls"
+>
+	<Controls>
+		<Control NamespacePath="Phast\WebControls" TagName="Blockquote">
+			<References>
+				<Reference TagPrefix="wfx" NamespacePath="Phast\WebControls" />
+				<Reference TagPrefix="html" NamespacePath="Phast\HTMLControls" />
+			</References>
+			<Content>
+				<blockquote>
+					<p><html:Literal Value="$(Control:Content)" /></p>
+					<small>
+						<html:Literal Value="$(Control:Author)" />, <cite title="$(Control:Source)"><html:Literal Value="$(Control:Source)" /></cite>
+					</small>
+				</blockquote>
+			</Content>
+		</Control>
+	</Controls>
+</Website>
