@@ -9,6 +9,7 @@
 		public $DomainBlockedMessage;
 		public $EmailAddressInvalidMessage;
 		
+		public $CheckDNSRecords;
 		public $PreventThrowawayAddresses;
 		public $ThrowawayAddresses;
 		
@@ -19,9 +20,10 @@
 		
 		public function __construct()
 		{
+			$this->CheckDNSRecords = false;
 			$this->PreventThrowawayAddresses = false;
 			
-			$this->DomainBlockedMessage = EmailAddressValidator::DefaultDomainBlockedMessage;
+			$this->DomainBlockedMessage = EmailAddressValidator::$DefaultDomainBlockedMessage;
 			$this->EmailAddressInvalidMessage = EmailAddressValidator::$DefaultEmailAddressInvalidMessage;
 			
 			$this->ThrowawayAddresses = array();
@@ -33,11 +35,11 @@
 		
 		protected function ValidateInternal($value)
 		{
-			$domainPos = stripos($value, "@") + 1;
+			$domainPos = stripos($value, "@");
 			$domain = $value;
 			if ($domainPos !== false)
 			{
-				$domain = substr($value, $domainPos);
+				$domain = substr($value, $domainPos + 1);
 			}
 			else
 			{
@@ -45,17 +47,26 @@
 				return false;
 			}
 			
-			if ($this->PreventThrowawayAddresses)
+			if ($this->PreventThrowawayAddresses || $this->CheckDNSRecords)
 			{
 				// determine if domain is in the blacklist
-				if (in_array($domain, $this->ThrowawayAddresses))
+				if ($this->PreventThrowawayAddresses)
 				{
-					$this->Message = $this->DomainBlockedMessage;
-					return false;
+					if (in_array($domain, $this->ThrowawayAddresses))
+					{
+						$this->Message = $this->DomainBlockedMessage;
+						return false;
+					}
 				}
 				
 				// domain isn't, check DNS and see if the IP is blocked
 				$recs = dns_get_record($domain);
+				
+				if (count($recs) === 0)
+				{
+					$this->Message = $this->EmailAddressInvalidMessage;
+					return false;
+				}
 				
 				$ips = array();
 				foreach ($recs as $rec)
