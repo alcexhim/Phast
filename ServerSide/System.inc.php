@@ -758,6 +758,8 @@
 	require_once("Configuration/Flavor.inc.php");
 	require_once("Configuration/ConfigurationParser.inc.php");
 
+	require_once("Validator.inc.php");
+
 	/**
 	 * Provides an enumeration of predefined values for horizontal alignment of content.
 	 * @author Michael Becker
@@ -889,6 +891,12 @@
 	}
 	
 	$a = glob($PhastRootPath . "/Compilers/StyleSheet/Internal/Formatters/*.inc.php");
+	foreach ($a as $filename)
+	{
+		require_once($filename);
+	}
+	
+	$a = glob($PhastRootPath . "/Validators/*.inc.php");
 	foreach ($a as $filename)
 	{
 		require_once($filename);
