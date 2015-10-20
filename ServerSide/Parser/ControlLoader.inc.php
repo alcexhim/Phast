@@ -124,6 +124,53 @@
 				}
 			}
 		}
+		
+		public static function GetPHPXAttributes($elem)
+		{
+			$attrs = array();
+			if (is_array($elem->Attributes))
+			{
+				foreach ($elem->Attributes as $attr)
+				{
+					$attrs[$attr->Name] = $attr->Value;
+				}
+			}
+			if (count($elem->Elements) == 1 && get_class($elem->Elements[0]) == "UniversalEditor\\ObjectModels\\Markup\\MarkupLiteralElement")
+			{
+				$attrs["Content"] = $elem->Elements[0]->Value;
+				$elem->Elements = array();
+			}
+			return $attrs;
+		}
+		public static function LoadPHPXControlAttributes($attrs, &$obj)
+		{
+			foreach ($obj->Attributes as $att)
+			{
+				foreach ($attrs as $name => $value)
+				{
+					if ($att->Value == "\$(Control:" . $name . ")")
+					{
+						$att->Value = $value;
+					}
+				}
+			}
+			
+			foreach ($obj as $key => $val)
+			{
+				foreach ($attrs as $name => $value)
+				{
+					if ($val === "\$(Control:" . $name . ")")
+					{
+						$obj->{$key} = $value;
+					}
+				}
+			}
+			
+			foreach ($obj->Controls as $ctl)
+			{
+				ControlLoader::LoadPHPXControlAttributes($attrs, $ctl);
+			}
+		}
 		/**
 		 * Creates a WebControl from markup in a MarkupElement.
 		 * @param MarkupElement $elem The MarkupElement to parse.
@@ -147,18 +194,35 @@
 					{
 						$realname = $name;
 					}
-						
+					
 					if (class_exists($realname))
 					{
 						$obj = new $realname();
 					}
 					else
 					{
-						ControlLoader::$Messages[] = new WebPageMessage("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")", WebPageMessageSeverity::Error);
-						return;
+						$basectl = System::$Parser->GetControlByVirtualTagPath($realname);
+						if ($basectl !== null)
+						{
+							$ctl = clone $basectl;
+							$obj = $ctl;
+						}
+						else
+						{
+							ControlLoader::$Messages[] = new WebPageMessage("Unknown class " . $realname . " (" . $prefix . ":" . $name . ")", WebPageMessageSeverity::Error);
+							return;
+						}
 					}
-					ControlLoader::LoadAttributes($elem, $obj);
-						
+
+					if ($obj->VirtualTagPath == null)
+					{
+						ControlLoader::LoadAttributes($elem, $obj);
+					}
+					else
+					{
+						$attrs = ControlLoader::GetPHPXAttributes($elem);
+					}
+					
 					if (is_subclass_of($obj, "Phast\\WebControl") && $obj->ParseChildElements)
 					{
 						ControlLoader::ParseChildren($elem, $obj);
@@ -172,6 +236,11 @@
 								ControlLoader::LoadControl($elem1, $obj);
 							}
 						}
+					}
+					
+					if ($obj->VirtualTagPath != null)
+					{
+						ControlLoader::LoadPHPXControlAttributes($attrs, $obj);
 					}
 						
 					$obj->ParentObject = $parent;

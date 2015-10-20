@@ -1,7 +1,10 @@
 <?php
 	namespace Phast;
 	
-    class WebControl
+    use UniversalEditor\ObjectModels\Markup\MarkupElement;
+	use Phast\Parser\ControlLoader;
+	
+	class WebControl
     {
     	/**
     	 * The unique identifier of this WebControl on a WebPage.
@@ -563,6 +566,100 @@
 				}
 			}
             $this->EndContent();
+        }
+        
+        
+        
+        /**
+         * Parses an XML representation of a WebControl MarkupElement
+         * @param MarkupElement $element
+         * @param PhastParser $parser
+         * @return WebPage
+         */
+        public static function FromMarkup($element, $parser)
+        {
+        	$ctl = new WebControl();
+	        
+        	$attNamespacePath = $element->GetAttribute("NamespacePath");
+        	$attTagName = $element->GetAttribute("TagName");
+        	
+        	$virtualTagPath = "";
+        	if ($attNamespacePath != null) $virtualTagPath .= $attNamespacePath->Value . "\\";
+        	if ($attTagName != null) $virtualTagPath .= $attTagName->Value;
+        	if ($virtualTagPath != "")
+        	{
+        		$ctl->VirtualTagPath = $virtualTagPath;
+        	}
+			
+        	$references = array();
+			$tagReferences = $element->GetElement("References");
+			if ($tagReferences != null)
+			{
+				foreach ($tagReferences->Elements as $elem)
+				{
+					if (get_class($elem) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
+						
+					$attTagPrefix = $elem->GetAttribute("TagPrefix");
+					if ($attTagPrefix == null) continue;
+						
+					$attNamespacePath = $elem->GetAttribute("NamespacePath");
+					if ($attNamespacePath == null) continue;
+						
+					$attNamespaceURL = $elem->GetAttribute("NamespaceURL");
+					$namespaceURL = "";
+					if ($attNamespaceURL != null) $namespaceURL = $attNamespaceURL->Value;
+						
+					$references[] = new WebNamespaceReference($attTagPrefix->Value, $attNamespacePath->Value, $namespaceURL);
+				}
+			}
+			foreach ($references as $reference)
+			{
+				ControlLoader::$Namespaces[$reference->TagPrefix] = $reference->NamespacePath;
+			}
+			
+        	$tagContent = $element->GetElement("Content");
+        	if ($tagContent != null)
+        	{
+        		foreach ($tagContent->Elements as $elem)
+        		{
+        			ControlLoader::LoadControl($elem, $ctl);
+        		}
+        	}
+        	
+        	$attrCssClass = $element->GetAttribute("CssClass");
+        	if ($attrCssClass != null)
+        	{
+        		$ctl->ClassList[] = $attrCssClass->Value;
+        	}
+        	
+        	/*
+        	$attrCodeBehindClassName = $element->GetAttribute("CodeBehindClassName");
+        	if ($attrCodeBehindClassName != null)
+        	{
+        		$ctl->CodeBehindClassName = $attrCodeBehindClassName->Value;
+        
+        		if (class_exists($page->CodeBehindClassName))
+        		{
+        			$page->ClassReference = new $page->CodeBehindClassName();
+        			$page->ClassReference->Page = $page;
+        			$page->IsPostback = ($_SERVER["REQUEST_METHOD"] == "POST");
+        				
+        			if (method_exists($page->ClassReference, "OnClassLoaded"))
+        			{
+        				$page->ClassReference->OnClassLoaded(EventArgs::GetEmptyInstance());
+        			}
+        			else
+        			{
+        				System::WriteErrorLog("Code-behind for '" . $page->CodeBehindClassName . "' does not define an 'OnClassLoaded' entry point");
+        			}
+        		}
+        		else
+        		{
+        			System::WriteErrorLog("Code-behind for '" . $page->CodeBehindClassName . "' not found");
+        		}
+        	}
+        	*/
+        	return $ctl;
         }
     }
 ?>

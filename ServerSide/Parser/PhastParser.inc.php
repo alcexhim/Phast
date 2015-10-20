@@ -5,6 +5,7 @@
 	
 	use Phast\System;
 	
+	use Phast\WebControl;
 	use Phast\WebPage;
 	use Phast\WebNamespaceReference;
 	use Phast\WebScript;
@@ -57,9 +58,18 @@
 	
 	class PhastParser
 	{
+		public $Controls;
 		public $MasterPages;
 		public $Pages;
 		
+		public function GetControlByVirtualTagPath($path)
+		{
+			foreach ($this->Controls as $ctl)
+			{
+				if ($ctl->VirtualTagPath == $path) return $ctl;
+			}
+			return null;
+		}
 		public function GetMasterPageByFileName($filename)
 		{
 			foreach ($this->MasterPages as $page)
@@ -84,6 +94,7 @@
 		
 		public function Clear()
 		{
+			$this->Controls = array();
 			$this->MasterPages = array();
 			$this->Pages = array();
 		}
@@ -99,8 +110,22 @@
 			$tagWebsite = $markup->GetElement("Website");
 			if ($tagWebsite == null) return;
 			
-			$tagMasterPages = $tagWebsite->GetElement("MasterPages");
+			$tagControls = $tagWebsite->GetElement("Controls");
+			if ($tagControls != null)
+			{
+				foreach ($tagControls->Elements as $element)
+				{
+					if (get_class($element) != "UniversalEditor\\ObjectModels\\Markup\\MarkupTagElement") continue;
+					if ($element->Name == "Control")
+					{
+						$ctl = WebControl::FromMarkup($element, $this);
+						$ctl->PhysicalFileName = $filename;
+						$this->Controls[] = $ctl;
+					}
+				}
+			}
 			
+			$tagMasterPages = $tagWebsite->GetElement("MasterPages");
 			if ($tagMasterPages != null)
 			{
 				foreach ($tagMasterPages->Elements as $element)

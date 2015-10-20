@@ -535,6 +535,19 @@
 				require_once($filename);
 			}
 				
+			// Local WebControls PHPX Code-Behind loader
+			$a = glob($RootPath . "/Include/WebControls/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Local WebControls PHPX loader
+			$a = glob($RootPath . "/Include/WebControls/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
+				
 			// Local MasterPages Code-Behind loader
 			$a = glob($RootPath . "/Include/MasterPages/*.phpx.php");
 			foreach ($a as $filename)
@@ -543,19 +556,6 @@
 			}
 			// Local MasterPages loader
 			$a = glob($RootPath . "/Include/MasterPages/*.phpx");
-			foreach ($a as $filename)
-			{
-				System::$Parser->LoadFile($filename);
-			}
-				
-			// Local Controls Code-Behind loader
-			$a = glob($RootPath . "/Include/Controls/*.phpx.php");
-			foreach ($a as $filename)
-			{
-				require_once($filename);
-			}
-			// Local Controls loader
-			$a = glob($RootPath . "/Include/Controls/*.phpx");
 			foreach ($a as $filename)
 			{
 				System::$Parser->LoadFile($filename);
@@ -581,14 +581,14 @@
 				require_once($filename);
 			}
 				
-			// Module Controls Code-Behind loader
-			$a = glob($RootPath . "/Include/Modules/*/Controls/*.phpx.php");
+			// Module WebControls PHPX Code-Behind loader
+			$a = glob($RootPath . "/Include/Modules/*/WebControls/*.phpx.php");
 			foreach ($a as $filename)
 			{
 				require_once($filename);
 			}
-			// Module Controls loader
-			$a = glob($RootPath . "/Include/Modules/*/Controls/*.phpx");
+			// Module WebControls PHPX loader
+			$a = glob($RootPath . "/Include/Modules/*/WebControls/*.phpx");
 			foreach ($a as $filename)
 			{
 				System::$Parser->LoadFile($filename);
@@ -926,6 +926,19 @@
 	{
 		require_once($filename);
 	}
+	// Global WebControls PHPX Code-Behind loader
+	$a = glob($PhastRootPath . "/WebControls/*.phpx.php");
+	foreach ($a as $filename)
+	{
+		require_once($filename);
+	}
+	// Global WebControls PHPX loader
+	$a = glob($PhastRootPath . "/WebControls/*.phpx");
+	foreach ($a as $filename)
+	{
+		System::$Parser->LoadFile($filename);
+	}
+	
 	// Global HTMLControls loader
 	$a = glob($PhastRootPath . "/HTMLControls/*.inc.php");
 	foreach ($a as $filename)
