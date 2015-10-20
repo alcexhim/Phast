@@ -62,7 +62,7 @@
 			return null;
 		}
 		
-		public function __construct($id, $title, $imageURL = null, $targetURL = null, $targetScript = null, $visible = true)
+		public function __construct($id = null, $title = null, $imageURL = null, $targetURL = null, $targetScript = null, $visible = true)
 		{
 			$this->ID = $id;
 			$this->Title = $title;
@@ -87,9 +87,9 @@
 		
 		public $OnClientTabChanged;
 		
-		public function __construct($id)
+		public function __construct()
 		{
-			parent::__construct($id);
+			parent::__construct();
 			$this->TagName = "div";
 			$this->ParseChildElements = true;
 			$this->TabPosition = TabContainerTabPosition::Top;
