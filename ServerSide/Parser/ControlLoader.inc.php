@@ -148,9 +148,9 @@
 			{
 				foreach ($attrs as $name => $value)
 				{
-					if ($att->Value == "\$(Control:" . $name . ")")
+					if (is_string($att->Value) && stripos($att->Value, "\$(Control:" . $name . ")") !== false)
 					{
-						$att->Value = $value;
+						$att->Value = str_replace("\$(Control:" . $name . ")", $value, $att->Value);
 					}
 				}
 			}
@@ -159,9 +159,9 @@
 			{
 				foreach ($attrs as $name => $value)
 				{
-					if ($val === "\$(Control:" . $name . ")")
+					if (is_string($val) && stripos($val, "\$(Control:" . $name . ")") !== false)
 					{
-						$obj->{$key} = $value;
+						$obj->{$key} = str_replace("\$(Control:" . $name . ")", $value, $val);
 					}
 				}
 			}
