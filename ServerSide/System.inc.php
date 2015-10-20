@@ -507,38 +507,34 @@
 			}
 		}
 		
-		/**
-		 * Starts the Phast application.
-		 * @return boolean True if the launch succeeded; false if a failure occurred.
-		 */
-		public static function Launch()
+		public static function Initialize()
 		{
 			$RootPath = System::GetApplicationPath();
-			
+				
 			// require_once changed to include_once to ensure that PHP configuration is not required for Phast 2.0 (Website.xml) sites
 			include_once($RootPath . "/Include/Configuration.inc.php");
-			
+				
 			// load the xml files in Configuration directory
 			$a = glob($RootPath . "/Include/Configuration/*.xml");
 			foreach ($a as $filename)
 			{
 				System::LoadXMLConfigurationFile($filename);
 			}
-			
+				
 			// Local Objects loader
 			$a = glob($RootPath . "/Include/Objects/*.inc.php");
 			foreach ($a as $filename)
 			{
 				require_once($filename);
 			}
-			
+				
 			// Local Controls loader
 			$a = glob($RootPath . "/Include/WebControls/*.inc.php");
 			foreach ($a as $filename)
 			{
 				require_once($filename);
 			}
-			
+				
 			// Local MasterPages Code-Behind loader
 			$a = glob($RootPath . "/Include/MasterPages/*.phpx.php");
 			foreach ($a as $filename)
@@ -551,7 +547,20 @@
 			{
 				System::$Parser->LoadFile($filename);
 			}
-			
+				
+			// Local Controls Code-Behind loader
+			$a = glob($RootPath . "/Include/Controls/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Local Controls loader
+			$a = glob($RootPath . "/Include/Controls/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
+				
 			// Local Pages Code-Behind loader
 			$a = glob($RootPath . "/Include/Pages/*.phpx.php");
 			foreach ($a as $filename)
@@ -564,13 +573,27 @@
 			{
 				System::$Parser->LoadFile($filename);
 			}
-			
+				
 			// Module Objects Code-Behind loader
 			$a = glob($RootPath . "/Include/Modules/*/Objects/*.inc.php");
 			foreach ($a as $filename)
 			{
 				require_once($filename);
 			}
+				
+			// Module Controls Code-Behind loader
+			$a = glob($RootPath . "/Include/Modules/*/Controls/*.phpx.php");
+			foreach ($a as $filename)
+			{
+				require_once($filename);
+			}
+			// Module Controls loader
+			$a = glob($RootPath . "/Include/Modules/*/Controls/*.phpx");
+			foreach ($a as $filename)
+			{
+				System::$Parser->LoadFile($filename);
+			}
+				
 			// Module Pages Code-Behind loader
 			$a = glob($RootPath . "/Include/Modules/*/Pages/*.phpx.php");
 			foreach ($a as $filename)
@@ -583,11 +606,31 @@
 			{
 				System::$Parser->LoadFile($filename);
 			}
-			
+				
+			// Application code-behind (V2 style)
 			if (file_exists($RootPath . "/Include/Application.inc.php"))
 			{
 				require_once($RootPath . "/Include/Application.inc.php");
 			}
+				
+			// Application PHPX and code-behind (V3 style)
+			if (file_exists($RootPath . "/Include/Application.phpx"))
+			{
+				System::$Parser->LoadFile($RootPath . "/Include/Application.phpx");
+			}
+			if (file_exists($RootPath . "/Include/Application.phpx.php"))
+			{
+				require_once($RootPath . "/Include/Application.phpx.php");
+			}
+		}
+		
+		/**
+		 * Starts the Phast application.
+		 * @return boolean True if the launch succeeded; false if a failure occurred.
+		 */
+		public static function Launch()
+		{
+			System::Initialize();
 			
 			$path = System::GetVirtualPath();
 			
