@@ -831,12 +831,31 @@
         	{
         		case WebPageFormat::JavaScript:
         		{
+        			$filenames = array();
+        			
         			$filename = System::$CurrentPage->PhysicalFileName . ".js";
-        			if (file_exists($filename))
+        			if (file_exists($filename)) $filenames[] = $filename;
+        			
+        			$mp = System::$CurrentPage->MasterPage;
+        			while ($mp != null)
+        			{
+        				if (file_exists($mp->PhysicalFileName . ".js"))
+        				{
+        					array_unshift($filenames, $mp->PhysicalFileName . ".js");
+        				}
+        				$mp = $mp->MasterPage;
+        			}
+        			
+        			if (count($filenames) > 0)
         			{
         				header("HTTP/1.1 200 OK");
         				header("Content-Type: text/javascript");
-        				readfile($filename);
+        				
+        				foreach ($filenames as $filen)
+        				{
+        					readfile($filen);
+        					echo("\r\n\r\n");
+        				}
         			}
         			else
         			{
