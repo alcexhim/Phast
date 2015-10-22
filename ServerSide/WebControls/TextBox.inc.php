@@ -104,7 +104,7 @@
 				$spanSelectedItem = new HTMLControl("span");
 				$spanSelectedItem->ClassList[] = "SelectedItem";
 				
-				$spanText = new HTMLControl("Text");
+				$spanText = new HTMLControl("span");
 				$spanText->ClassList[] = "Text";
 				$spanText->InnerHTML = $item->Title;
 				$spanSelectedItem->Controls[] = $spanText;
@@ -153,7 +153,7 @@
 				$aSuggestionListItem->Controls[] = $iCheckmark;
 				
 				$spanText = new HTMLControl("span");
-				$spanText->InnerHTML = $item->Title;
+				$spanText->Content = $item->Title;
 				$aSuggestionListItem->Controls[] = $spanText;
 				
 				$aSuggestionListItem->Attributes[] = new WebControlAttribute("data-value", $item->Value);
@@ -170,7 +170,7 @@
 			{
 				$option = new HTMLControl("option");
 				$option->Attributes[] = new WebControlAttribute("value", $item->Value);
-				$option->InnerHTML = $item->Title;
+				$option->Content = $item->Title;
 				if ($item->Selected)
 				{
 					$option->Attributes[] = new WebControlAttribute("selected", "selected");
