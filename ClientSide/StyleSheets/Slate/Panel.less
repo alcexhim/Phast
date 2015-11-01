@@ -1,0 +1,61 @@
+div.Panel
+{
+	background-color: #FFFFFF;
+	border: solid 1px #DDDDDD;
+	margin: 0px 0px 20px;
+	
+	&> div.Header, &> div.Footer, &> div.Content
+	{
+		padding: 20px;
+	}
+	&> div.Header, &> div.Footer
+	{
+		background-color: #F7F8FA;
+	}
+	&> div.Header
+	{
+		border-bottom: solid 1px #DDDDDD;	
+	}
+	&> div.Footer
+	{
+		border-top: solid 1px #DDDDDD;	
+	}
+	
+	&.Danger
+	{
+		border-top: solid 2px @ThemeColorDanger;
+	}
+	&.Primary
+	{
+		border-top: solid 2px @ThemeColorPrimary;
+	}
+	&.Success
+	{
+		border-top: solid 2px @ThemeColorSuccess;
+	}
+	&.Info
+	{
+		border-top: solid 2px @ThemeColorInfo;
+	}
+	&.Warning
+	{
+		border-top: solid 2px @ThemeColorWarning;
+	}
+	
+	&.color-Brown
+	{
+		border-top: solid 2px @ThemeColorBrown;
+	}
+	&.color-Green
+	{
+		border-top: solid 2px @ThemeColorGreen;
+	}
+	&.color-Orange
+	{
+		border-top: solid 2px @ThemeColorOrange;
+	}
+	&.color-Purple
+	{
+		border-top: solid 2px @ThemeColorPurple;
+	}
+}

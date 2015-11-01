@@ -1,0 +1,49 @@
+div.ListView
+{
+	border-collapse: collapse;
+	
+	&.HasBorder
+	{
+		border: solid 1px #E6E7E8;
+	}
+	
+	&[data-mode="Detail"]
+	{
+		&> div.ListViewColumnHeaders > div.ListViewColumnHeader > a,
+		&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
+		{
+			padding: 10px;
+		}
+		&.GridLines
+		{
+			&> div.ListViewColumnHeaders > div.ListViewColumnHeader,
+			&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
+			{
+				border: solid 1px #E6E7E8;
+			}		
+		}
+		&.HotTracking
+		{
+			&> div.ListViewItems > div.ListViewItem:hover > div.ListViewItemColumn
+			{
+				background-color: #F7F8FA;
+			}
+		}
+		
+		&> div.ListViewItems > div.ListViewItem.Selected:nth-child(2n+1) > div.ListViewItemColumn
+		{
+			background-color: #017EBC;
+			color: #FFFFFF;
+		}
+		&> div.ListViewItems > div.ListViewItem.Selected > div.ListViewItemColumn
+		{
+			background-color: #08C;
+			color: #FFFFFF;
+		}
+		&> div.ListViewItems > div.ListViewItem.Selected:hover > div.ListViewItemColumn
+		{
+			background-color: #0075B0;
+			color: #FFFFFF;
+		}
+	}
+}
