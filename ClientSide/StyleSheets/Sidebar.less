@@ -10,20 +10,26 @@ body > nav.Sidebar
 	
 	display: none;
 }
-body.EnableHeader > nav.Sidebar
+body.EnableSidebar
 {
-	top: @HeaderHeight;
+	&> nav.Sidebar
+	{
+		display: block;
+	}
+	&> div.Content
+	{
+		margin-left: @SidebarWidth;
+	}	
 }
-body.EnableSidebar > nav.Sidebar
+body.EnableHeader
 {
-	display: block;
-}
-body.EnableSidebar > div.Content
-{
-	margin-left: @SidebarWidth;
-}
-body.EnableHeader > div.Content
-{
-	margin-top: @HeaderHeight;
-	margin-bottom: @HeaderHeight;
+	&> div.Content
+	{
+		margin-top: @HeaderHeight;
+		margin-bottom: @HeaderHeight;
+	}
+	&> nav.Sidebar
+	{
+		top: @HeaderHeight;
+	}
 }
