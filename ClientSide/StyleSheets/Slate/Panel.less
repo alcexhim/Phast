@@ -4,7 +4,7 @@ div.Panel
 	border: solid 1px #DDDDDD;
 	margin: 0px 0px 20px;
 	
-	&> div.Header, &> div.Footer, &> div.Content
+	&> div.Footer, &> div.Content
 	{
 		padding: 20px;
 	}
@@ -14,48 +14,60 @@ div.Panel
 	}
 	&> div.Header
 	{
-		border-bottom: solid 1px #DDDDDD;	
+		border-bottom: solid 1px #DDDDDD;
+		font-size: 18px;
+		padding: 10px;
 	}
 	&> div.Footer
 	{
 		border-top: solid 1px #DDDDDD;	
 	}
 	
+	.PanelColor(@color)
+	{
+		border-top: solid 2px @color;
+		&> div.Header
+		{
+			background-color: @color;
+			color: #FFFFFF;
+		}
+	}
+	
 	&.Danger
 	{
-		border-top: solid 2px @ThemeColorDanger;
+		.PanelColor(@ThemeColorDanger);
 	}
 	&.Primary
 	{
-		border-top: solid 2px @ThemeColorPrimary;
+		.PanelColor(@ThemeColorPrimary);
 	}
 	&.Success
 	{
-		border-top: solid 2px @ThemeColorSuccess;
+		.PanelColor(@ThemeColorSuccess);
 	}
 	&.Info
 	{
-		border-top: solid 2px @ThemeColorInfo;
+		.PanelColor(@ThemeColorInfo);
 	}
 	&.Warning
 	{
-		border-top: solid 2px @ThemeColorWarning;
+		.PanelColor(@ThemeColorWarning);
 	}
 	
 	&.color-Brown
 	{
-		border-top: solid 2px @ThemeColorBrown;
+		.PanelColor(@ThemeColorBrown);
 	}
 	&.color-Green
 	{
-		border-top: solid 2px @ThemeColorGreen;
+		.PanelColor(@ThemeColorGreen);
 	}
 	&.color-Orange
 	{
-		border-top: solid 2px @ThemeColorOrange;
+		.PanelColor(@ThemeColorOrange);
 	}
 	&.color-Purple
 	{
-		border-top: solid 2px @ThemeColorPurple;
+		.PanelColor(@ThemeColorPurple);
 	}
 }

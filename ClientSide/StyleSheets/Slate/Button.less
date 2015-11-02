@@ -1,0 +1,36 @@
+.ButtonColor(@background, @foreground)
+{
+	background-color: @background;
+	border: solid 1px darken(spin(@background, -5), 5%);
+	
+	&:hover
+	{
+		background-color: lighten(spin(@background, 5), 10%);
+	}
+	&:active
+	{
+		background-color: darken(spin(@background, -5), 10%);
+	}
+	color: @foreground;
+}
+
+input[type=submit], input[type=reset], input[type=button], button, a.pwt-Button
+{
+	padding: 7px 15px;
+	
+	&:active
+	{
+		box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+	}
+	
+	.ButtonColor(#CBCED0, #333333);
+	
+	&.Primary
+	{
+		.ButtonColor(@ThemeColorPrimary, #FFFFFF);
+	}
+	&.Success
+	{
+		.ButtonColor(@ThemeColorSuccess, #FFFFFF);
+	}
+}
