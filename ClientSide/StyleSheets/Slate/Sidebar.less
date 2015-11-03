@@ -1,0 +1,52 @@
+nav.Sidebar
+{
+	background-color: #E6E7E8;
+	&> ul.Menu
+	{
+		&> li
+		{
+			color: #3F444C;
+			&.Header
+			{
+				color: #AABBCC;
+				letter-spacing: 4px;
+				font-size: 12px;
+				text-transform: uppercase;
+				padding: 10px;
+			}
+			&> a
+			{
+				color: inherit;
+				padding: 10px;
+				&> i
+				{
+					color: inherit;
+					margin-left: 1px;
+					margin-right: 8px;
+					min-width: 15px;
+					text-align: center;
+					display: inline-block;
+				}
+			}
+			&.Selected > a
+			{
+				background: #595F69;
+				box-shadow: inset -1px 0px 0px 0px rgba(0, 0, 0, 0.1);
+				color: #FFFFFF;
+				&::after
+				{
+					width: 0px;
+					height: 0px;
+					border-style: solid;
+					border-width: 9px 9px 9px 0;
+					border-color: transparent #F7F8FA transparent transparent;
+					content: "";
+					position: absolute;
+					top: 50%;
+					margin-top: -9px;
+					right: 0px;
+				}
+			}
+		}
+	}
+}
