@@ -412,38 +412,174 @@ window.addEventListener("load", function(e)
 	}
 });
 
+
+//The awesomely cool, really slick jack-of-all-trades ShowDialog function to generate pretty
+//JavaScript asynchronous dialogs =(^.^)=
 /**
- * Dynamically creates and displays a Window with the specified content, title, and buttons. 
- */
-Window.ShowDialog = function(content, title, buttons)
+* Shows a JavaScript dialog with the specified parameters.
+* @param content string The HTML to display in the window's content area.
+* @param title string The HTML to display in the window's title bar.
+* @param buttons array Array of button definitions.
+* 
+* The following properties are currently supported for button definitions:
+* Enabled, Text, ClassName (optional), OnClientClick
+*/
+Window.ShowDialog = function (content, title, buttons, styles, iconName, className)
 {
-	var window = new Window();
-	window.SetTitle(title);
-	window.SetContent(content);
+	if (!buttons || buttons === null) buttons =
+	[
+		{
+			"Enabled": true,
+			"Text": "OK",
+			"ClassName": "Primary",
+			"OnClientClick": function (sender, e)
+			{
+				return true;
+			}
+		}
+	];
+	if (!styles || styles === null) styles = [];
+
+	content = content.replace(/\r\n/g, "<br />");
+	content = content.replace(/\n/g, "<br />");
+	content = content.replace(/\\r\\n/g, "<br />");
+	content = content.replace(/\\n/g, "<br />");
+
+	var divWindow = document.createElement("div");
+
+	System.ClassList.Add(divWindow, "Window");
+	if (className)
+	{
+		System.ClassList.Add(divWindow, className);
+	}
+
+	for (var i = 0; i < styles.length; i++)
+	{
+		divWindow.style.setProperty(styles[i].name, styles[i].value);
+	}
+
+	var divHeader = document.createElement("div");
+	divHeader.className = "Header";
+
+	var spanHeaderTitle = document.createElement("span");
+	spanHeaderTitle.className = "Title";
+	spanHeaderTitle.innerHTML = title;
+	divHeader.appendChild(spanHeaderTitle);
+
+	var divHeaderControlBox = document.createElement("div");
+	divHeaderControlBox.className = "ControlBox";
+	var aButtonClose = document.createElement("a");
+	aButtonClose.className = "Close";
+	aButtonClose.href = "#";
+	aButtonClose.windowElement = divWindow;
+
+	var aButtonCloseText = document.createElement("span");
+	aButtonCloseText.innerHTML = "×";
+	aButtonClose.appendChild(aButtonCloseText);
+	divHeaderControlBox.appendChild(aButtonClose);
+	divHeader.appendChild(divHeaderControlBox);
+
+	divWindow.appendChild(divHeader);
+
+	var divContent = document.createElement("div");
+	divContent.className = "Content";
+
+	var divContentContent = document.createElement("div");
+	divContentContent.className = "Content";
+
+	if (iconName && iconName !== null)
+	{
+		var divIcon = document.createElement("div");
+		divIcon.className = "Icon";
+
+		var divStockIcon = document.createElement("div");
+		divStockIcon.className = "StockIcon si-Large si-" + iconName;
+
+		divIcon.appendChild(divStockIcon);
+
+		divContentContent.appendChild(divIcon);
+	}
 	
+	divContentContent.innerHTML = content;
+
+	divContent.appendChild(divContentContent);
+
+	var divLoading = document.createElement("div");
+	divLoading.className = "Loading";
+
+	var divLoadingStatus = document.createElement("div");
+	divLoadingStatus.className = "LoadingStatus";
+
+	var divLoadingStatusThrobber = document.createElement("div");
+	divLoadingStatusThrobber.className = "Throbber";
+	divLoadingStatusThrobber.innerHTML = "&nbsp;";
+	divLoadingStatus.appendChild(divLoadingStatusThrobber);
+
+	var pLoadingStatusText = document.createElement("p");
+	pLoadingStatusText.className = "LoadingStatusText";
+	divLoadingStatus.appendChild(pLoadingStatusText);
+
+	divLoading.appendChild(divLoadingStatus);
+
+	divContent.appendChild(divLoading);
+
+	divWindow.appendChild(divContent);
+
+	var divFooter = document.createElement("div");
+	divFooter.className = "Footer";
 	for (var i = 0; i < buttons.length; i++)
 	{
-		var button = buttons[i];
 		var aButton = document.createElement("a");
-		aButton.className = "Button";
-		if (button.ClassName) aButton.className += " " + button.ClassName;
-		aButton.innerHTML = button.Text;
-		aButton.NativeButton = button;
-		aButton.NativeObject = window;
-		
-		aButton.addEventListener("click", function(e)
+		aButton.className = "pwt-Button";
+		if (buttons[i].ClassName) aButton.className += " " + buttons[i].ClassName;
+		if ((typeof (buttons[i].Enabled) !== 'undefined') && !buttons[i].Enabled)
 		{
-			if (this.NativeButton.OnClientClick())
-			{
-				this.NativeObject.Hide();
-			}
-			e.preventDefault();
-			e.stopPropagation();
-			return false;
-		});
-		window.GetFooterElement().appendChild(aButton);
-	}
-	if (buttons.length > 0) window.GetFooterElement().style.display = "block";
+			aButton.setAttribute("disabled", "disabled");
+		}
+		aButton.innerHTML = buttons[i].Text;
+		aButton.NativeObject = buttons[i];
+		aButton.ParentWindowElement = divWindow;
+		if (buttons[i].TargetURL)
+		{
+			aButton.href = System.ExpandRelativePath(buttons[i].TargetURL);
+		}
+		else
+		{
+			aButton.href = "#";
+		}
+		if (buttons[i].TargetFrame)
+		{
+			aButton.setAttribute("target", buttons[i].TargetFrame);
+		}
 
-	window.ShowDialog();
+		if (buttons[i].OnClientClick)
+		{
+			aButton.addEventListener("click", function (e)
+			{
+				if (this.NativeObject.OnClientClick(this, { "NativeObject": this.NativeObject, "ParentWindow": this.ParentWindowElement }))
+				{
+					// close the dialog
+					this.ParentWindowElement.NativeObject.Hide();
+				}
+				e.preventDefault();
+				e.stopPropagation();
+				return false;
+			});
+		}
+		divFooter.appendChild(aButton);
+	}
+	divWindow.appendChild(divFooter);
+
+	// Append the newly-created element to the DOM
+	document.body.appendChild(divWindow);
+
+	divWindow.NativeObject = new Window(divWindow);
+	aButtonClose.NativeObject = divWindow.NativeObject;
+
+	window.setTimeout(function()
+	{
+		// Show the newly-created window AFTER we append it to the DOM, otherwise CSS transitions don't
+		// happen
+		divWindow.NativeObject.ShowDialog();
+	}, 100);
 };
