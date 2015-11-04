@@ -26,4 +26,17 @@ div.Panel
 			}
 		}
 	}
+	
+	&.Collapsible
+	{
+		&:not(.Expanded)
+		{
+			&> div.Content
+			{
+				height: 0;
+				overflow: hidden;
+				padding: 0;
+			}
+		}
+	}
 }

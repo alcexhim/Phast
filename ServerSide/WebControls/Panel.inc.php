@@ -16,6 +16,9 @@
 		public $ContentControls;
 		public $FooterControls;
 		
+		public $Collapsible;
+		public $Expanded;
+		
 		public function GetAllControls()
 		{
 			$ary = array();
@@ -46,10 +49,21 @@
 			
 			$this->TagName = "div";
 			$this->ClassList[] = "Panel";
+			
+			$this->Collapsible = false;
+			$this->Expanded = true;
 		}
 		
 		protected function RenderBeginTag()
 		{
+			if ($this->Collapsible === true || $this->Collapsible === "true")
+			{
+				$this->ClassList[] = "Collapsible";
+				if ($this->Expanded === true || $this->Expanded === "true")
+				{
+					$this->ClassList[] = "Expanded";
+				}
+			}
 			switch ($this->HorizontalAlignment)
 			{
 				case "Center":
