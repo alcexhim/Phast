@@ -18,19 +18,6 @@ table.ListView tr td
 div.ListView
 {
 	position: relative;
-	a
-	{
-		cursor: default;
-		&:hover
-		{
-			background-color: #EEEEEE;
-		}
-	}
-	a.Selected, span.Selected
-	{
-		background-color: Highlight;
-		color: HighlightText;
-	}
 	&> div.ListViewColumnHeaders
 	{
 		&> div.ListViewColumnHeader
@@ -38,6 +25,7 @@ div.ListView
 			vertical-align: top;
 			&> a
 			{
+				cursor: default;
 				display: block;
 			}
 			&> div.ItemTemplate
