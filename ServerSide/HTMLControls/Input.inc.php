@@ -39,6 +39,11 @@
 		 */
 		const RadioButton = 4;
 		/**
+		 * Number
+		 * @var int 5
+		 */
+		const Number = 5;
+		/**
 		 * Hidden
 		 * @var int 9
 		 */
@@ -90,6 +95,12 @@
 				case InputType::RadioButton:
 				{
 					$this->Attributes[] = new WebControlAttribute("type", "radio");
+					break;
+				}
+				case "Number":
+				case InputType::Number:
+				{
+					$this->Attributes[] = new WebControlAttribute("type", "number");
 					break;
 				}
 				case "Hidden":

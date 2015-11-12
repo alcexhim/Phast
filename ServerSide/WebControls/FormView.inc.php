@@ -13,7 +13,7 @@
 	use Phast\WebControlAttribute;
 	use Phast\Enumeration;
 	use Phast\System;
-		
+	
 	class FormViewLabelStyle extends Enumeration
 	{
 		/**
@@ -306,6 +306,34 @@
 		public function __construct($id = null, $name = null, $title = null, $defaultValue = null)
 		{
 			parent::__construct($id, $name, $title, $defaultValue);
+		}
+		
+		protected function CreateControlInternal()
+		{
+			$elem = new Input();
+			$elem->ID = $this->ID;
+			$elem->Type = InputType::Number;
+			$elem->Name = $this->Name;
+			if ($this->MaximumValue != null)
+			{
+				$elem->Attributes[] = new WebControlAttribute("max", $this->MaximumValue);
+			}
+			if ($this->MinimumValue != null)
+			{
+				$elem->Attributes[] = new WebControlAttribute("min", $this->MinimumValue);
+			}
+			$elem->Value = System::ExpandRelativePath($this->DefaultValue);
+			if (isset($this->Value)) $elem->Value = System::ExpandRelativePath($this->Value);
+			
+			if (isset($this->PlaceholderText))
+			{
+				$elem->PlaceholderText = $this->PlaceholderText;
+			}
+			if ($this->OnClientValueChanged != null)
+			{
+				$elem->Attributes[] = new WebControlAttribute("onchange", $this->OnClientValueChanged);
+			}
+			return $elem;
 		}
 	}
 	class FormViewItemBoolean extends FormViewItem
