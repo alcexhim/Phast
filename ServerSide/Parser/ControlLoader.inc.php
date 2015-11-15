@@ -94,7 +94,13 @@
 						
 						ControlLoader::LoadAttributes($elem2, $obj1);
 	
-						if ($obj1->ParseChildElements)
+						$parseChildElements = false;
+						if (isset($obj1->ParseChildElements))
+						{
+							$parseChildElements = $obj1->ParseChildElements;
+						}
+						
+						if ($parseChildElements)
 						{
 							ControlLoader::ParseChildren($elem2, $obj1);
 						}
@@ -214,13 +220,19 @@
 						}
 					}
 
-					if ($obj->VirtualTagPath == null)
+					$loadedFromVTP = false;
+					if (isset($obj->VirtualTagPath))
+					{
+						if ($obj->VirtualTagPath != null)
+						{
+							$attrs = ControlLoader::GetPHPXAttributes($elem);
+							$loadedFromVTP = true;
+						}
+					}
+					
+					if (!$loadedFromVTP)
 					{
 						ControlLoader::LoadAttributes($elem, $obj);
-					}
-					else
-					{
-						$attrs = ControlLoader::GetPHPXAttributes($elem);
 					}
 					
 					if (is_subclass_of($obj, "Phast\\WebControl") && $obj->ParseChildElements)
@@ -238,9 +250,12 @@
 						}
 					}
 					
-					if ($obj->VirtualTagPath != null)
+					if (isset($obj->VirtualTagPath))
 					{
-						ControlLoader::LoadPHPXControlAttributes($attrs, $obj);
+						if ($obj->VirtualTagPath != null)
+						{
+							ControlLoader::LoadPHPXControlAttributes($attrs, $obj);
+						}
 					}
 						
 					$obj->ParentObject = $parent;
