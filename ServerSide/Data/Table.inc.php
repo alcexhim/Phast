@@ -6,7 +6,7 @@
 	
 	use Phast\Conditionals\ConditionalComparison;
 	use Phast\StringMethods;
-			
+	
 	/**
 	 * Represents a table on the database.
 	 * @author Michael Becker
@@ -459,7 +459,7 @@
 					$name = ":" . $column->Name;
 					if ($column->Value === null || $column->Value === ColumnValue::Undefined)
 					{
-						$values[$name] = "NULL";
+						$values[$name] = null;
 					}
 					else if ($column->Value === ColumnValue::Now)
 					{
