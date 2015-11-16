@@ -341,7 +341,7 @@ function TextBox(parentElement)
 		"Open": function()
 		{
 			var popup = uxparent.DropDownElement;
-			popup.style.width = uxparent.ParentElement.offsetWidth + "px";
+			popup.style.minWidth = uxparent.ParentElement.offsetWidth + "px";
 			System.ClassList.Add(popup, "Visible");
 		},
 		"Close": function()
