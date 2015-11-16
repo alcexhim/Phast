@@ -43,6 +43,7 @@
 		public $Items;
 		
 		public $InnerStyle;
+		public $MultiSelect;
 		
 		public $RequireSelectionFromChoices;
 		public $EnableMultipleSelection;
@@ -64,6 +65,7 @@
 			$this->ClassList[] = "TextBox";
 			
 			$this->OpenWhenFocused = true;
+			$this->MultiSelect = false;
 		}
 		
 		protected function OnInitialize()
@@ -83,6 +85,10 @@
 			if ($this->ClearOnFocus)
 			{
 				$this->ClassList[] = "ClearOnFocus";
+			}
+			if ($this->MultiSelect)
+			{
+				$this->ClassList[] = "MultiSelect";
 			}
 			$this->Attributes[] = new WebControlAttribute("data-suggestion-url", System::ExpandRelativePath($this->SuggestionURL));
 			if ($this->OpenWhenFocused)
