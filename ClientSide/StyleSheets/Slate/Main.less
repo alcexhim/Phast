@@ -4,6 +4,7 @@
 @import "Alert.less";
 @import "Button.less";
 @import "FormView.less";
+@import "Header.less";
 @import "HTMLHeading.less";
 @import "ListView.less";
 @import "LoginPage.less";
@@ -21,4 +22,15 @@ body
 	font-size: 14px;
 	line-height: 1.428571429;
 	color: #4D4D4D;
+}
+body.EnableHeader
+{
+	&> div.Content
+	{
+		margin-top: @HeaderHeight;
+	}
+	&> nav.Sidebar
+	{
+		top: @HeaderHeight; 
+	}
 }
