@@ -246,7 +246,7 @@
 				// new ConfigurationProperty("Application.DefaultTenant", "default"),
 				// new ConfigurationSpacer(),
 				new ConfigurationComment("The location of static Phast-related files (scripts, stylesheets, etc.)"),
-				new ConfigurationProperty("System.StaticPath", "http://static.alcehosting.net/dropins/Phast")
+				new ConfigurationProperty("System.StaticPath", "//static.alcehosting.net/dropins/Phast")
 			);
 			
 			$hasExtraProperties = false;
