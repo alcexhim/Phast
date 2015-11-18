@@ -35,15 +35,26 @@ div.ListView
 			background-color: #017EBC;
 			color: #FFFFFF;
 		}
-		&> div.ListViewItems > div.ListViewItem.Selected > div.ListViewItemColumn
+		&> div.ListViewItems > div.ListViewItem.Selected
 		{
-			background-color: #08C;
-			color: #FFFFFF;
-		}
-		&> div.ListViewItems > div.ListViewItem.Selected:hover > div.ListViewItemColumn
-		{
-			background-color: #0075B0;
-			color: #FFFFFF;
+			&> div.ListViewItemColumn
+			{
+				background-color: #08C;
+				color: #FFFFFF;
+				&> a, &> div.AdditionalDetailWidget > a
+				{
+					color: #EEEEEE;
+					&:hover
+					{
+						color: #FFFFFF;
+					}
+				}
+			}
+			&:hover > div.ListViewItemColumn
+			{
+				background-color: #0075B0;
+				color: #FFFFFF;
+			}
 		}
 	}
 }
