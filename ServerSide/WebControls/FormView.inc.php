@@ -407,7 +407,7 @@
 		public $Value;
 		public $Selected;
 		
-		public function __construct($title, $value = null, $selected = false)
+		public function __construct($title = null, $value = null, $selected = false)
 		{
 			$this->Title = $title;
 			$this->Value = $value;
