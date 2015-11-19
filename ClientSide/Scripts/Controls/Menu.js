@@ -55,6 +55,7 @@ function ContextMenu()
 	this.ParentElement = null;
 	this.Show = function(x, y, parent)
 	{
+		ContextMenu.HideAll();
 		if (this.ParentElement == null)
 		{
 			var elem = document.createElement("ul");
@@ -121,6 +122,19 @@ function ContextMenu()
 		this.ParentElement.className = "Menu Popup";
 	};
 }
+
+ContextMenu.HideAll = function()
+{
+	var items = document.getElementsByClassName("Menu");
+	for (var i = 0; i < items.length; i++)
+	{
+		if (System.ClassList.Contains(items[i], "Popup"))
+		{
+			System.ClassList.Remove(items[i], "Visible");
+		}
+	}
+};
+
 function MenuItemHeader(id, title)
 {
 	this.ClassName = "MenuItemHeader";
@@ -147,3 +161,8 @@ function MenuItemCommand(id, title, onclick)
 		if (this.OnClientClick != null) this.OnClientClick();
 	};
 }
+
+window.addEventListener("contextmenu", function()
+{
+	ContextMenu.HideAll();
+});
