@@ -188,7 +188,13 @@
 		{
 			return ($this->GetAttribute($name) != null);
 		}
-		
+
+		/**
+		 * Gets a MarkupElement with the specified name.
+		 * @param string $name The name of the element to retrieve.
+		 * @param number $index The index of the element to retrieve if there is more than one element with the specified name.
+		 * @return MarkupTagElement|MarkupLiteralElement|MarkupElement|null
+		 */
 		public function GetElement($name, $index = 0)
 		{
 			$i = 0;
@@ -216,6 +222,12 @@
 	{
 		public $Elements;
 		
+		/**
+		 * Gets a MarkupElement with the specified name.
+		 * @param string $name The name of the element to retrieve.
+		 * @param number $index The index of the element to retrieve if there is more than one element with the specified name.
+		 * @return MarkupTagElement|MarkupLiteralElement|MarkupElement
+		 */
 		public function GetElement($name, $index = 0)
 		{
 			$i = 0;
@@ -276,6 +288,11 @@
 			$this->RemoveWhitespace = true;
 		}
 		
+		/**
+		 * Loads an XML file and returns the MarkupObjectModel.
+		 * @param string $filename
+		 * @return MarkupObjectModel
+		 */
 		public function LoadFile($filename)
 		{
 			$file = fopen($filename, "r");
