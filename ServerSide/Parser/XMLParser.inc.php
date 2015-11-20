@@ -201,6 +201,12 @@
 			$last = null;
 			foreach ($this->Elements as $element)
 			{
+				if (is_numeric($name))
+				{
+					if ($i == $name) return $element;
+					continue;
+				}
+				
 				if (get_class($element) == "UniversalEditor\\ObjectModels\\Markup\\MarkupLiteralElement") continue;
 				
 				if ($element->Name == $name)
