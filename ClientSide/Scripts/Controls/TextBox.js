@@ -59,6 +59,8 @@ function TextBox(parentElement)
 	
 	this.EventHandlers =
 	{
+		"DropDownOpening": new System.EventHandler(),
+		"DropDownOpened": new System.EventHandler(),
 		"SelectionChanged": new System.EventHandler()
 	};
 	
@@ -330,26 +332,71 @@ function TextBox(parentElement)
 		return "</div>";
 	};
 	
-	var uxparent = this;
 	this.DropDown = 
 	{
+		"NativeObject": null,
 		"SetInnerHTML": function(html)
 		{
-			var popup = uxparent.DropDownElement;
+			var popup = this.NativeObject.DropDownElement;
 			popup.innerHTML = html;
 		},
 		"Open": function()
 		{
-			var popup = uxparent.DropDownElement;
-			popup.style.minWidth = uxparent.ParentElement.offsetWidth + "px";
+			var ee = new CancelEventArgs();
+			this.NativeObject.EventHandlers.DropDownOpening.Execute(this.NativeObject, ee);
+			
+			if (ee.Cancel) return;
+			
+			var popup = this.NativeObject.DropDownElement;
+			popup.style.minWidth = this.NativeObject.ParentElement.offsetWidth + "px";
 			System.ClassList.Add(popup, "Visible");
+			
+			this.NativeObject.EventHandlers.DropDownOpened.Execute(this.NativeObject, EventArgs.Empty);
 		},
 		"Close": function()
 		{
-			var popup = uxparent.DropDownElement;
+			var popup = this.NativeObject.DropDownElement;
 			System.ClassList.Remove(popup, "Visible");
 		}
 	};
+	this.DropDown.NativeObject = this;
+	
+	this.Items =
+	{
+		"NativeObject": null,
+		"_items": new Array(),
+		"Add": function(item)
+		{
+			this._items.push(item);
+			
+			var li = document.createElement("li");
+			System.ClassList.Add(li, "MenuItem");
+			System.ClassList.Add(li, "Visible");
+			
+			li._item = item;
+			
+			var a = document.createElement("a");
+			var iCheckmark = document.createElement("i");
+			System.ClassList.Add(iCheckmark, "fa");
+			System.ClassList.Add(iCheckmark, "fa-check");
+			System.ClassList.Add(iCheckmark, "Checkmark");
+			a.appendChild(iCheckmark);
+			
+			var spanText = document.createElement("span");
+			spanText.innerHTML = item.Title;
+			a.appendChild(spanText);
+			li.appendChild(a);
+			
+			this.NativeObject.DropDownElement.appendChild(li);
+		},
+		"Clear": function()
+		{
+			this._items = new Array();
+			this.NativeObject.DropDownElement.innerHTML = "";
+		}
+	};
+	this.Items.NativeObject = this;
+	
 	/*
 	
 	this.Suggest = function(filter)
