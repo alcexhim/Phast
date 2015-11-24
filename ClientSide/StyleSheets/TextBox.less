@@ -5,6 +5,7 @@ input, textarea
 
 div.TextBox
 {
+	display: inline-block;
 	&:not(.RequireSelection)
 	{
 		cursor: text;
@@ -39,6 +40,10 @@ div.TextBox
 		}
 		&> ul.SuggestionList
 		{
+			overflow: scroll;
+			overflow-x: hidden;
+			max-height: 150px;
+			
 			&> li
 			{
 				&> a
