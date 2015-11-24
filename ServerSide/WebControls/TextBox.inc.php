@@ -90,7 +90,10 @@
 			{
 				$this->ClassList[] = "MultiSelect";
 			}
-			$this->Attributes[] = new WebControlAttribute("data-suggestion-url", System::ExpandRelativePath($this->SuggestionURL));
+			if ($this->SuggestionURL != null)
+			{
+				$this->Attributes[] = new WebControlAttribute("data-suggestion-url", System::ExpandRelativePath($this->SuggestionURL));
+			}
 			if ($this->OpenWhenFocused)
 			{
 				$this->Attributes[] = new WebControlAttribute("data-auto-open", "true");
