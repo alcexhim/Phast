@@ -46,6 +46,19 @@ String.prototype.pad = function(length, value)
 }
 
 /**
+ * Event arguments for an event that can be canceled.
+ */
+function CancelEventArgs()
+{
+	this.Cancel = false;
+}
+
+function EventArgs()
+{
+}
+EventArgs.Empty = new EventArgs();
+
+/**
  * Enumeration for mouse button values
  */
 function MouseButtons()
