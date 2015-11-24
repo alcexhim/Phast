@@ -12,6 +12,13 @@ div.TextBox
 	}
 	position: relative;
 	
+	&> ul.SuggestionList
+	{
+		overflow: scroll;
+		overflow-x: hidden;
+		max-height: 150px;
+	}
+	
 	&.RequireSelection
 	{
 		&::after
@@ -40,10 +47,6 @@ div.TextBox
 		}
 		&> ul.SuggestionList
 		{
-			overflow: scroll;
-			overflow-x: hidden;
-			max-height: 150px;
-			
 			&> li
 			{
 				&> a
