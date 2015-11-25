@@ -144,8 +144,10 @@
 			
 			$this->Controls[] = $divTextboxContent;
 			
+			$divSuggestionList = new HTMLControl("div");
+			$divSuggestionList->ClassList[] = "SuggestionList";
+			
 			$ulSuggestionList = new HTMLControl("ul");
-			$ulSuggestionList->ClassList[] = "SuggestionList";
 			$ulSuggestionList->ClassList[] = "Menu";
 			$ulSuggestionList->ClassList[] = "Popup";
 			foreach ($this->Items as $item)
@@ -169,7 +171,13 @@
 				$li->Controls[] = $aSuggestionListItem;
 				$ulSuggestionList->Controls[] = $li;
 			}
-			$this->Controls[] = $ulSuggestionList;
+			$divSuggestionList->Controls[] = $ulSuggestionList;
+			
+			$divSuggestionListThrobber = new HTMLControl("div");
+			$divSuggestionListThrobber->ClassList[] = "Throbber";
+			$divSuggestionList->Controls[] = $divSuggestionListThrobber;
+			
+			$this->Controls[] = $divSuggestionList;
 			
 			$selectSuggestionList = new HTMLControl("select");
 			$selectSuggestionList->ClassList[] = "SuggestionList";

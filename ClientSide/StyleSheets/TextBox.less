@@ -12,11 +12,49 @@ div.TextBox
 	}
 	position: relative;
 	
-	&> ul.SuggestionList
+	&> div.SuggestionList
 	{
-		overflow: scroll;
-		overflow-x: hidden;
-		max-height: 150px;
+		position: absolute;
+		z-index: 8;
+		
+		&> ul
+		{
+			overflow: scroll;
+			overflow-x: hidden;
+			max-height: 150px;
+			
+			position: relative;
+			
+			&> li
+			{
+				&> a
+				{
+					&> i.fa
+					{
+						display: inline;
+					}
+				}
+			}
+		}
+		&> div.Throbber
+		{
+			display: none;
+		}
+	}
+	
+	&.Loading
+	{
+		&> div.SuggestionList
+		{
+			&> ul
+			{
+				display: none;
+			}
+			&> div.Throbber
+			{
+				display: block;
+			}
+		}
 	}
 	
 	&.RequireSelection

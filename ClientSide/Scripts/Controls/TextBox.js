@@ -53,15 +53,28 @@ function TextBoxItem(parent, value, title)
 function TextBox(parentElement)
 {
 	this.ParentElement = parentElement;
-	this.TextBoxElement = parentElement.childNodes[0].childNodes[1];
-	this.DropDownElement = parentElement.childNodes[1];
-	this.SelectElement = parentElement.childNodes[2];
+	this.TextBoxElement = parentElement.children[0].children[1];
+	this.PopupElement = parentElement.children[1];
+	this.DropDownElement = this.PopupElement.children[0];
+	this.SelectElement = parentElement.children[2];
 	
 	this.EventHandlers =
 	{
 		"DropDownOpening": new System.EventHandler(),
 		"DropDownOpened": new System.EventHandler(),
 		"SelectionChanged": new System.EventHandler()
+	};
+	
+	this.SetLoading = function(value)
+	{
+		if (value)
+		{
+			System.ClassList.Add(this.ParentElement, "Loading");
+		}
+		else
+		{
+			System.ClassList.Remove(this.ParentElement, "Loading");
+		}
 	};
 	
 	this.ShouldClearOnFocus = function()
@@ -284,10 +297,10 @@ function TextBox(parentElement)
 		else
 		{
 			// console.error("TextBox: no data retrieval functionality (SuggestionURL/Suggest) has been implemented");
-			var ul = this.ParentElement.childNodes[1];
-			for (var i = 0; i < ul.childNodes.length; i++)
+			var ul = this.DropDownElement;
+			for (var i = 0; i < ul.children.length; i++)
 			{
-				var spanText = ul.childNodes[i].childNodes[0].childNodes[1];
+				var spanText = ul.children[i].children[0].children[1];
 				if (spanText.innerHTML.toLowerCase().contains(this.GetText().toLowerCase()))
 				{
 					System.ClassList.Add(ul.childNodes[i], "Visible");
@@ -347,9 +360,12 @@ function TextBox(parentElement)
 			
 			if (ee.Cancel) return;
 			
-			var popup = this.NativeObject.DropDownElement;
+			var dropdown = this.NativeObject.DropDownElement;
+			var popup = this.NativeObject.PopupElement;
+			dropdown.style.minWidth = this.NativeObject.ParentElement.offsetWidth + "px";
 			popup.style.minWidth = this.NativeObject.ParentElement.offsetWidth + "px";
-			System.ClassList.Add(popup, "Visible");
+			
+			System.ClassList.Add(dropdown, "Visible");
 			
 			this.NativeObject.EventHandlers.DropDownOpened.Execute(this.NativeObject, EventArgs.Empty);
 		},

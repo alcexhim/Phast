@@ -17,3 +17,25 @@ input, textarea
 		border-color: #4D4D4D;
 	}
 }
+div.TextBox
+{
+	&> div.SuggestionList
+	{
+		background-color: rgba(255, 255, 255, 0.98);
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+		border: solid 1px #D2D3D6;
+		
+		&> ul.Menu
+		{
+			background-color: transparent;
+			box-shadow: none;
+			border: none;
+		}
+		&> div.Throbber
+		{
+			margin: 16px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+}
