@@ -380,6 +380,7 @@
 					{
 						// literal $
 						$ret .= "$";
+						continue;
 					}
 					else if ($i < $retval_len - 2)
 					{
@@ -451,6 +452,10 @@
 					{
 						$ret .= $c;
 					}
+				}
+				else if ($c == "\\")
+				{
+					continue;
 				}
 				else
 				{
