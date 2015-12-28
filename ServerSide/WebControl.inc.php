@@ -554,28 +554,28 @@
         	$this->CreateControl();
         	
             $this->BeginContent();
-			if (count($this->Controls) > 0)
-			{
-				foreach ($this->Controls as $control)
+            if (is_callable($this->Content))
+            {
+            	call_user_func($this->Content, $this);
+            }
+            else if (is_string($this->Content))
+            {
+            	echo($this->Content);
+            }
+            else
+            {
+				if (count($this->Controls) > 0)
 				{
-					$control->Render();
-				}
-			}
-			else
-			{
-				if (is_callable($this->Content))
-				{
-					call_user_func($this->Content, $this);
-				}
-				else if (is_string($this->Content))
-				{
-					echo($this->Content);
+					foreach ($this->Controls as $control)
+					{
+						$control->Render();
+					}
 				}
 				else
 				{
 					$this->RenderContent();
 				}
-			}
+            }
             $this->EndContent();
         }
         
