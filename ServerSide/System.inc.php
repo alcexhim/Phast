@@ -138,6 +138,21 @@
 		 * @var string
 		 */
 		public static $TenantName;
+		
+		public static function GetTenantName()
+		{
+			if (System::$EnableTenantedHosting)
+			{
+				$path = System::GetVirtualPath(false);
+				if (count($path) == 0 || !isset($path[0]))
+				{
+					return System::GetConfigurationValue("Application.DefaultTenant");
+				}
+				return $path[0];
+			}
+			return "";
+		}
+		
 		/**
 		 * Error handler raised when the tenant name is unspecified in a multiple-tenant application.
 		 * @var callable
@@ -344,19 +359,15 @@
 		public static function ExpandRelativePath($path, $includeServerInfo = false)
 		{
 			$torepl = System::GetConfigurationValue("Application.BasePath");
-			if (System::$EnableTenantedHosting)
+			$torepl_nontenanted = $torepl;
+			$tenantName = System::GetTenantName();
+			if ($tenantName != "")
 			{
-				if (System::$TenantName != "")
-				{
-					$torepl .= "/" . System::$TenantName;
-				}
-				else
-				{
-					$torepl .= "/" . System::GetConfigurationValue("Application.DefaultTenant");
-				}
+				$torepl .= "/" . $tenantName;
 			}
 			
-			$retval = str_replace("~", $torepl, $path);
+			$retval = str_replace("~~", $torepl_nontenanted, $path);
+			$retval = str_replace("~", $torepl, $retval);
 			if ($includeServerInfo)
 			{
 				// from http://stackoverflow.com/questions/6768793/php-get-the-full-url
@@ -489,10 +500,15 @@
 				if ($_GET["virtualpath"] != null)
 				{
 					$array = explode("/", $_GET["virtualpath"]);
-					if (System::$EnableTenantedHosting && $supportTenantedHosting)
+					
+					if ($supportTenantedHosting)
 					{
-						System::$TenantName = $array[0];
-						array_shift($array);
+						$tenantName = System::GetTenantName();
+						if ($tenantName != "")
+						{
+							System::$TenantName = $array[0];
+							array_shift($array);
+						}
 					}
 					return $array;
 				}
@@ -638,6 +654,12 @@
 			System::Initialize();
 			
 			$path = System::GetVirtualPath();
+			if (is_callable(System::$BeforeLaunchEventHandler))
+			{
+				$retval = call_user_func(System::$BeforeLaunchEventHandler, $path);
+				if (!$retval) return false;
+			}
+			$path = System::GetVirtualPath();
 			
 			// strip path extension if there is one
 			$pathLast = $path[count($path) - 1];
@@ -679,27 +701,6 @@
 						}
 					}
 				}
-			}
-			
-			if (System::$EnableTenantedHosting && System::$TenantName == "")
-			{
-				$DefaultTenant = System::GetConfigurationValue("Application.DefaultTenant");
-				if ($DefaultTenant == "")
-				{
-					$retval = call_user_func(System::$UnspecifiedTenantErrorHandler);
-					return false;
-				}
-				else
-				{
-					System::$TenantName = $DefaultTenant;
-					System::Redirect("~/");
-				}
-			}
-			
-			if (is_callable(System::$BeforeLaunchEventHandler))
-			{
-				$retval = call_user_func(System::$BeforeLaunchEventHandler, $path);
-				if (!$retval) return false;
 			}
 			
 			$success = false;
@@ -773,7 +774,7 @@
 			
 			if (!$success)
 			{
-				$retval = call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("The specified resource is not available on this server."));
+				$retval = call_user_func(System::$ErrorEventHandler, new ErrorEventArgs("The specified resource is not available on this server. (" . (System::$EnableTenantedHosting ? ("Tenanted - " . System::GetTenantName()) : "Non-Tenanted") . ")"));
 				return false;
 			}
 			return true;
