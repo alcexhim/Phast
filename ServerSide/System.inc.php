@@ -366,8 +366,18 @@
 				$torepl .= "/" . $tenantName;
 			}
 			
-			$retval = str_replace("~~", $torepl_nontenanted, $path);
-			$retval = str_replace("~", $torepl, $retval);
+			$retval_nontenanted = str_replace("~", $torepl_nontenanted, $path);
+			$physicalFilePath = System::GetApplicationPath() . $retval_nontenanted;
+			
+			if (file_exists($physicalFilePath))
+			{
+				$retval = $retval_nontenanted;
+			}
+			else
+			{
+				$retval = str_replace("~~", $torepl_nontenanted, $path);
+				$retval = str_replace("~", $torepl, $retval);
+			}
 			if ($includeServerInfo)
 			{
 				// from http://stackoverflow.com/questions/6768793/php-get-the-full-url

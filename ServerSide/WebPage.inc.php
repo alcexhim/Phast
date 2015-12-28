@@ -1019,7 +1019,8 @@
 				$items = array();
 				
 				// Bring in Phast first
-				$items[] = new WebScript("$(Configuration:System.StaticPath)/Scripts/System.js.php", "text/javascript");
+				$items[] = WebScript::FromFile("$(Configuration:System.StaticPath)/Scripts/System.js.php", "text/javascript");
+				$items[] = WebScript::FromContent("System.IsTenantedHostingEnabled = function() { return " . (System::$EnableTenantedHosting ? "true" : "false") . "; }; System.GetTenantName = function() { return \"" . System::GetTenantName() . "\"; };", "text/javascript");
 				
 				$filename = System::$CurrentPage->PhysicalFileName . ".js";
 				if (file_exists($filename))

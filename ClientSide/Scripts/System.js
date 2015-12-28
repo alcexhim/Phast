@@ -272,7 +272,12 @@ System.Redirect = function(path)
  */
 System.ExpandRelativePath = function(path)
 {
-	return path.replace(/~\//, System.BasePath + "/");
+	var replpath = System.BasePath;
+	if (System.IsTenantedHostingEnabled())
+	{
+		replpath = replpath + "/" + System.GetTenantName();
+	}
+	return path.replace(/~\//, replpath + "/");
 };
 /**
  * Raises a custom DOM event on the given element.
