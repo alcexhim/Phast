@@ -47,6 +47,7 @@ use Phast\Phast;
 		{
 			parent::__construct();
 			
+			$this->Items = array();
 			$this->ParseChildElements = true;
 			
 			$this->TagName = "ul";

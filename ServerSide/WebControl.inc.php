@@ -48,6 +48,9 @@
 		public $Width;
 		public $Height;
 		
+		public $MinimumWidth;
+		public $MinimumHeight;
+		
 		public $MaximumWidth;
 		public $MaximumHeight;
 		
@@ -422,6 +425,14 @@
 				if ($this->Height != null)
 				{
 					$styleRules[] = new WebStyleSheetRule("height", $this->Height);
+				}
+				if ($this->MinimumWidth != null)
+				{
+					$styleRules[] = new WebStyleSheetRule("min-width", $this->MinimumWidth);
+				}
+				if ($this->MinimumHeight != null)
+				{
+					$styleRules[] = new WebStyleSheetRule("min-height", $this->MinimumHeight);
 				}
 				if ($this->MaximumWidth != null)
 				{
