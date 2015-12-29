@@ -178,8 +178,36 @@
 					{
 						$query .= $fk->ID . " ";
 					}
-					$query .= "(" . $this->ColumnPrefix . $fk->ColumnName . ")";
-					$query .= " REFERENCES " . System::GetConfigurationValue("Database.TablePrefix") . $fk->ForeignColumnReference->Table->Name . " (" . $fk->ForeignColumnReference->Table->ColumnPrefix . $fk->ForeignColumnReference->Column->Name . ")";
+					$query .= "(";
+					if (is_array($fk->ColumnName))
+					{
+						$columnNameCount = count($fk->ColumnName);
+						for ($j = 0; $j < $columnNameCount; $j++)
+						{
+							$query .= $fk->ColumnName[$j];
+							if ($j < $columnNameCount - 1) $query .= ", ";
+						}
+					}
+					else
+					{
+						$query .= $this->ColumnPrefix . $fk->ColumnName;
+					}
+					$query .= ")";
+					$query .= " REFERENCES " . System::GetConfigurationValue("Database.TablePrefix") . $fk->ForeignColumnReference->Table->Name . " (";
+					if (is_array($fk->ForeignColumnReference->Column))
+					{
+						$foreignColumnReferenceCount = count($fk->ForeignColumnReference->Column);
+						for ($j = 0; $j < $foreignColumnReferenceCount; $j++)
+						{
+							$query .= $fk->ForeignColumnReference->Table->ColumnPrefix . $fk->ForeignColumnReference->Column[$j]->Name;
+							if ($j < $foreignColumnReferenceCount - 1) $query .= ", ";
+						}
+					}
+					else
+					{
+						$query .= $fk->ForeignColumnReference->Table->ColumnPrefix . $fk->ForeignColumnReference->Column->Name;
+					}
+					$query .= ")";
 					
 					$query .= " ON DELETE ";
 					switch ($fk->DeleteAction)

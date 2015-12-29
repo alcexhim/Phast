@@ -29,7 +29,7 @@
 		public $ColumnName;
 		/**
 		 * The reference(s) to the foreign column(s) in the foreign table(s).
-		 * @var TableForeignKeyColumn[]
+		 * @var TableForeignKeyColumn
 		 */
 		public $ForeignColumnReference;
 		
@@ -43,7 +43,14 @@
 		 * @var TableForeignKeyReferenceOption
 		 */
 		public $UpdateAction;
-		
+		/**
+		 * 
+		 * @param unknown $columnName
+		 * @param TableForeignKeyColumn[] $foreignColumnReference The column(s) included in this foreign key.
+		 * @param string $deleteAction
+		 * @param string $updateAction
+		 * @param string $id
+		 */
 		public function __construct($columnName, $foreignColumnReference, $deleteAction = null, $updateAction = null, $id = null)
 		{
 			$this->ID = $id;
@@ -64,8 +71,8 @@
 		 */
 		public $Table;
 		/**
-		 * A reference to the foreign column, or the name of the foreign column.
-		 * @var string|Column
+		 * A reference to the foreign column(s), or the name of the foreign column(s).
+		 * @var string|Column|string[]|Column[]
 		 */
 		public $Column;
 		
