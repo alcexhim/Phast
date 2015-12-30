@@ -99,6 +99,7 @@ use Phast\Phast;
 			if (get_class($menuItem) == "Phast\\WebControls\\MenuItemCommand")
 			{
 				$li = new HTMLControl();
+				$li->Attributes = $menuItem->Attributes;
 				$li->TagName = "li";
 				
 				if ($menuItem->Visible)
@@ -169,6 +170,7 @@ use Phast\Phast;
 			else if (get_class($menuItem) == "Phast\\WebControls\\MenuItemHeader")
 			{
 				$li = new HTMLControl();
+				$li->Attributes = $menuItem->Attributes;
 				$li->TagName = "li";
 				if ($menuItem->Visible)
 				{
@@ -187,6 +189,7 @@ use Phast\Phast;
 			else if (get_class($menuItem) == "Phast\\WebControls\\MenuItemSeparator")
 			{
 				$hr = new HTMLControl();
+				$hr->Attributes = $menuItem->Attributes;
 				if ($menuItem->Visible)
 				{
 					$hr->ClassList[] = "Visible";
