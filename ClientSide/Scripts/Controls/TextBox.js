@@ -46,7 +46,7 @@ function TextBoxItem(parent, value, title)
 		
 		if (changed)
 		{
-			this.NativeObject.EventHandlers.SelectionChanged.Execute();
+			this.NativeObject.EventHandlers.SelectionChanged.Execute(this.NativeObject, null);
 		}
 	};
 }
