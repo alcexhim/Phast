@@ -63,6 +63,7 @@
 			foreach ($this->Items as $item)
 			{
 				$div = new HTMLControl("div");
+				$div->ID = "FormView_" . $this->ID . "_" . $item->ID;
 				$div->ClassList[] = "Field";
 				if ($item->Required) $div->ClassList[] = "Required";
 				
