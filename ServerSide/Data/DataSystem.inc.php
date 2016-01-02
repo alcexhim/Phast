@@ -25,8 +25,6 @@
 	require_once("TableKey.inc.php");
 	require_once("TableSelectCriteria.inc.php");
 	
-	require_once("Traits/DataObject.inc.php");
-	
 	class DataSystem
 	{
 		/**

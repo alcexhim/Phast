@@ -270,10 +270,11 @@
 			
 			if ($result === false)
 			{
-				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				$ei = $statement->errorInfo();
+				trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 				trigger_error("DataSystem query: " . $query);
 				DataSystem::$Errors->Clear();
-				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+				DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 				return false;
 			}
 			
@@ -297,10 +298,11 @@
 				$result = $statement->execute();
 				if ($result === false)
 				{
-					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					$ei = $statement->errorInfo();
+					trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 					trigger_error("DataSystem query: " . $query);
 					DataSystem::$Errors->Clear();
-					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+					DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 					return false;
 				}
 			}
@@ -323,10 +325,11 @@
 				$result = $statement->execute();
 				if ($result === false)
 				{
-					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					$ei = $statement->errorInfo();
+					trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 					trigger_error("DataSystem query: " . $query);
 					DataSystem::$Errors->Clear();
-					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+					DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 					return false;
 				}
 			}
@@ -406,10 +409,11 @@
 			$result = $statement->execute($conditionalStatementCriteria);
 			if ($result === false)
 			{
-				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				$ei = $statement->errorInfo();
+				trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 				trigger_error("DataSystem query: " . $query);
 				DataSystem::$Errors->Clear();
-				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+				DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 				return false;
 			}
 			
@@ -526,10 +530,11 @@
 				
 				if ($result === false)
 				{
-					trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+					$ei = $statement->errorInfo();
+					trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 					trigger_error("DataSystem query: " . $query);
 					DataSystem::$Errors->Clear();
-					DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+					DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 					if ($stopOnError) return null;
 				}
 				else
@@ -553,10 +558,11 @@
 			$result = $statement->execute();
 			if ($result === false)
 			{
-				trigger_error("DataSystem error: (" . $statement->errorInfo()[1] . ") " . $statement->errorInfo()[2]);
+				$ei = $statement->errorInfo();
+				trigger_error("DataSystem error: (" . $ei[1] . ") " . $ei[2]);
 				trigger_error("DataSystem query: " . $query);
 				DataSystem::$Errors->Clear();
-				DataSystem::$Errors->Add(new DataError($statement->errorInfo()[1], $statement->errorInfo()[2], $query));
+				DataSystem::$Errors->Add(new DataError($ei[1], $ei[2], $query));
 				return false;
 			}
 			return true;

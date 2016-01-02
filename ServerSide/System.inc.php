@@ -808,9 +808,9 @@
 	require_once("CancelEventArgs.inc.php");
 	require_once("RenderEventArgs.inc.php");
 	
-	require_once("Enum.inc.php");
+	// require_once("Enum.inc.php");
 	require_once("StringMethods.inc.php");
-	require_once("JH.Utilities.inc.php");
+	// require_once("JH.Utilities.inc.php");
 
 	require_once("Configuration/Property.inc.php");
 	require_once("Configuration/Group.inc.php");
