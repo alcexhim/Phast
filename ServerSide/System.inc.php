@@ -974,5 +974,7 @@
 		require_once($filename);
 	}
 	
+	\date_default_timezone_set(System::GetConfigurationValue("System.DefaultTimezone", date_default_timezone_get()));
+	
 	session_start();
 ?>
