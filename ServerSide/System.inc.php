@@ -421,10 +421,11 @@
 							$variable = substr($varString, $posCategoryValueSeparator + 1);
 						}
 						
-						$posValueDefaultSeparator = stripos($varString, "|");
+						$posValueDefaultSeparator = stripos($variable, "|");
 						if ($posValueDefaultSeparator !== false)
 						{
-							$defaultValue = substr($varString, $posValueDefaultSeparator + 1);
+							$defaultValue = substr($variable, $posValueDefaultSeparator + 1);
+							$variable = substr($variable, 0, $posValueDefaultSeparator);
 						}
 						
 						$handled = false;
