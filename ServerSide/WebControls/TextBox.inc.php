@@ -54,6 +54,8 @@
 		
 		public $SuggestionURL;
 		
+		public $Text;
+		
 		public function __construct()
 		{
 			parent::__construct();
@@ -134,6 +136,7 @@
 			$inputText->Attributes[] = new WebControlAttribute("autocomplete", "off"); 
 			$inputText->Name = $this->Name;
 			$inputText->PlaceholderText = $this->PlaceholderText;
+			$inputText->Value = $this->Text;
 			$inputText->Width = $this->Width;
 			
 			if ($this->InnerStyle != null)
