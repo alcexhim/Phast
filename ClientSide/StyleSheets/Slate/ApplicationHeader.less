@@ -1,0 +1,35 @@
+body
+{
+	&> nav.Top
+	{
+		color: @SidebarForegroundNormalColor;
+		
+		div.ApplicationButton
+		{
+			&> a.pwt-Button
+			{
+				background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+				border: inherit;
+				color: inherit;
+				font-size: 24px;
+				padding: 15px 24px;
+				&:hover
+				{
+					color: @SidebarForegroundHoverColor;
+				}
+			}
+		}
+		&> div.TextBox
+		{
+			border-radius: 4px;
+			top: -6px;
+			&> div.TextBoxContent
+			{
+				&> input
+				{
+					border-radius: 4px;
+				}
+			}
+		}
+	}
+}
