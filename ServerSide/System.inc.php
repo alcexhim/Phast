@@ -878,6 +878,8 @@
 	require("Conditionals/ConditionalComparison.inc.php");
 	require("Conditionals/ConditionalStatement.inc.php");
 	
+	require_once("Utilities/Stopwatch.inc.php");
+	
 	require_once("Compilers/StyleSheet/Internal/LessStyleSheetCompiler.inc.php");
 	
 	require("WebApplication.inc.php");
