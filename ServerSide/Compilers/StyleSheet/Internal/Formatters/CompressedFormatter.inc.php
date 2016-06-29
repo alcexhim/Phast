@@ -1,6 +1,8 @@
 <?php
 	namespace Phast\Compilers\StyleSheet\Internal\Formatters;
 	
+	require_once ("ClassicFormatter.inc.php");
+	
 	class CompressedFormatter extends ClassicFormatter
 	{
 		public $disableSingle = true;
