@@ -1,9 +1,12 @@
 <?php
-require("lessc.inc.php");
+
+require_once ("Phast/Compilers/StyleSheet/Internal/LessStyleSheetCompiler.inc.php");
+require_once ("Phast/Compilers/StyleSheet/Internal/Formatters/CompressedFormatter.inc.php");
+
+use Phast\Compilers\StyleSheet\Internal\LessStyleSheetCompiler;
+use Phast\Compilers\StyleSheet\Internal\Formatters\CompressedFormatter;
 
 header("Content-Type: text/css");
-
-echo ($_GET["filename"]); die();
 
 $filename = "StyleSheets/" . $_GET["filename"];
 
@@ -15,8 +18,9 @@ else
 {
 	try
 	{
-		$less = new lessc();
-		$less->formatterName = "compressed";
+		$less = new LessStyleSheetCompiler();
+		$less->formatter = new CompressedFormatter();
+		
 		$v = $less->compileFile($filename . ".less");
 		
 		echo("/* compiled with lessphp v0.4.0 - GPLv3/MIT - http://leafo.net/lessphp */\n");
