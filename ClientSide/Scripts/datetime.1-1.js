@@ -80,7 +80,7 @@ DateTime.prototype = {
 			while(num2 < month){
 				num += numArray[num2++];
 			}
-			return ((((((day - 1) + num) + (365 * (year - 1))) + ((year -1 ) / 4)) - (( year - 1) / 100)) + ((year - 1) / 400));s
+			return ((((((day - 1) + num) + (365 * (year - 1))) + ((year -1 ) / 4)) - (( year - 1) / 100)) + ((year - 1) / 400));
 		},
 		
 		add : function(timespan){
