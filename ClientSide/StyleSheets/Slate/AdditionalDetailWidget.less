@@ -56,3 +56,31 @@ div.AdditionalDetailWidget
 		}
 	}
 }
+
+/* hack for when we don't have FontAwesome on our server... */
+div.AdditionalDetailWidget > a.AdditionalDetailButton
+{
+	border: solid 1px #aaccff;
+	padding: 0px 2px 0px 6px;
+	border-radius: 4px;
+	margin-left: 8px;
+	background-color: #ffffff;
+	width: inherit;
+	color: #08c !important;
+	&:hover
+	{
+		background-color: #08c;
+		color: #FFFFFF !important;
+	}
+}
+div.AdditionalDetailWidget > a.AdditionalDetailButton::before
+{
+	content: "...";
+	font-family: inherit;
+	font-weight: bold;
+}
+div.AdditionalDetailWidget.Visible > a.AdditionalDetailButton
+{
+	background-color: #fa0;
+	color: #FFFFFF !important;
+}
