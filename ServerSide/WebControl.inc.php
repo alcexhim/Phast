@@ -556,7 +556,7 @@
             $this->BeginContent();
             if (is_callable($this->Content))
             {
-            	call_user_func($this->Content, $this);
+            	call_user_func($this->Content, $this, $this->ExtraData);
             }
             else if (is_string($this->Content))
             {
