@@ -22,6 +22,7 @@
 		public $Text;
 		
 		public $ShowText; /* bool */
+		public $ShowURL; /* bool */
 		
 		public $TargetFrame;
 		public $TargetURL;
@@ -42,6 +43,7 @@
 			$this->MenuItemHeaderText = "Available Actions";
 			$this->MenuItems = array();
 			$this->ShowText = true;
+			$this->ShowURL = true;
 		}
 		
 		private function RenderMenuItem($mi)
@@ -102,26 +104,33 @@
 		
 		protected function BeforeContent()
 		{
-			echo("<a class=\"AdditionalDetailText\" href=\"");
-			if ($this->TargetURL != "")
+			if ($this->ShowURL)
 			{
-				echo(System::ExpandRelativePath($this->TargetURL));
+				echo("<a class=\"AdditionalDetailText\" href=\"");
+				if ($this->TargetURL != "")
+				{
+					echo(System::ExpandRelativePath($this->TargetURL));
+				}
+				else
+				{
+					echo("#");
+				}
+				echo("\"");
+				
+				if ($this->TargetFrame != "")
+				{
+					echo(" target=\"" . $this->TargetFrame . "\"");
+				}
+	
+				echo(">");
+				echo($this->Text);
+				echo("</a>");
 			}
 			else
 			{
-				echo("#");
+				echo ("<span class=\"AdditionalDetailText\">" . $this->Text . "</span>");
 			}
-			echo("\"");
 			
-			if ($this->TargetFrame != "")
-			{
-				echo(" target=\"" . $this->TargetFrame . "\"");
-			}
-
-			echo(">");
-			echo($this->Text);
-			echo("</a>");
-
 			echo("<a class=\"AdditionalDetailButton\">&nbsp;</a>");
 
 			echo("<div class=\"Content\">");
