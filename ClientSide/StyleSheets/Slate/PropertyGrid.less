@@ -1,0 +1,23 @@
+div.PropertyGrid
+{
+	display: table;
+	&> div.Property
+	{
+		display: table-row;
+		
+		&> div.PropertyName, &> div.PropertyValue
+		{
+			display: table-cell;
+			padding: 8px;
+		}
+		
+		&> div.PropertyName
+		{
+			font-weight: bold;
+		}
+		&> div.PropertyValue
+		{
+			
+		}
+	}
+}
