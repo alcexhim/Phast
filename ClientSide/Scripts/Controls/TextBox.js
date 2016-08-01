@@ -401,6 +401,11 @@ function TextBox(parentElement)
 			var spanText = document.createElement("span");
 			spanText.innerHTML = item.Title;
 			a.appendChild(spanText);
+			
+			if (typeof(item.TargetURL) === "string")
+			{
+				a.href = item.TargetURL;
+			}
 			li.appendChild(a);
 			
 			this.NativeObject.DropDownElement.appendChild(li);
