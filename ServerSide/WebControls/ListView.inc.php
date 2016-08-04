@@ -163,7 +163,7 @@
 
 			$this->ShowBorder = true;
 			$this->ShowGridLines = true;
-			$this->HighlightAlternateRows = false;
+			$this->HighlightAlternateRows = true;
 			$this->EnableAddRemoveRows = false;
 			$this->EnableHotTracking = true;
 			$this->EnableMultipleSelection = false;
