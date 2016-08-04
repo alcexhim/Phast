@@ -176,6 +176,84 @@ function TextBox(parentElement)
 			this.value = this.placeholder;
 		}
 	});
+	this.TextBoxElement.addEventListener("keydown", function(e)
+	{
+		var no = this.NativeObject;
+		if (e.keyCode == KeyboardKeys.ArrowDown || e.keyCode == KeyboardKeys.ArrowUp)
+		{
+			if (no.DropDownElement.children.length > 0)
+			{
+				var found = false;
+				var firstI = -1;
+				for (var i = 0; i < no.DropDownElement.children.length; i++)
+				{
+					if (!System.ClassList.Contains(no.DropDownElement.children[i], "Visible"))
+						continue;
+					
+					if (firstI == -1)
+						firstI = i;
+					
+					if (System.ClassList.Contains(no.DropDownElement.children[i], "Hover"))
+					{
+						System.ClassList.Remove(no.DropDownElement.children[i], "Hover");
+						if (e.keyCode == KeyboardKeys.ArrowDown)
+						{
+							if (i < no.DropDownElement.children.length - 1)
+							{
+								System.ClassList.Add(no.DropDownElement.children[i + 1], "Hover");
+								found = true;
+							}
+						}
+						else if (e.keyCode == KeyboardKeys.ArrowUp)
+						{
+							if (i > 0)
+							{
+								System.ClassList.Add(no.DropDownElement.children[i - 1], "Hover");
+								found = true;
+							}
+						}
+						break;
+					}
+				}
+				if (!found)
+				{
+					if (e.keyCode == KeyboardKeys.ArrowDown)
+					{
+						System.ClassList.Add(no.DropDownElement.children[firstI], "Hover");
+					}
+					else if (e.keyCode == KeyboardKeys.ArrowUp)
+					{
+						System.ClassList.Add(no.DropDownElement.children[no.DropDownElement.children.length - (firstI + 1)], "Hover");
+					}
+				}
+			}
+		}
+		else if (e.keyCode == KeyboardKeys.Enter)
+		{
+			// activate the selected menu item
+			for (var i = 0; i < no.DropDownElement.children.length; i++)
+			{
+				if (!System.ClassList.Contains(no.DropDownElement.children[i], "Visible"))
+					continue;
+				
+				if (System.ClassList.Contains(no.DropDownElement.children[i], "Hover"))
+				{
+					System.ClassList.Remove(no.DropDownElement.children[i], "Hover");
+					
+					var a = no.DropDownElement.children[i].children[0];
+					if (e.ctrlKey)
+					{
+						window.open(a.href);
+					}
+					else
+					{
+						window.location.href = a.href;
+					}
+					break;2
+				}
+			}
+		}
+	});
 	
 	this.RefreshTimeout = null;
 	
@@ -387,6 +465,7 @@ function TextBox(parentElement)
 			
 			var li = document.createElement("li");
 			System.ClassList.Add(li, "MenuItem");
+			System.ClassList.Add(li, "Command");
 			System.ClassList.Add(li, "Visible");
 			
 			li._item = item;

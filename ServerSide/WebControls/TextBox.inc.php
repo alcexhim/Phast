@@ -157,6 +157,7 @@
 			{
 				$li = new HTMLControl("li");
 				$li->ClassList[] = "MenuItem";
+				$li->ClassList[] = "Command";
 				$li->ClassList[] = "Visible";
 				$aSuggestionListItem = new Anchor();
 				

@@ -158,6 +158,17 @@ KeyboardKeys.Escape = 27;
  */
 KeyboardKeys.F1 = 112;
 
+KeyboardKeys.Control = 17;
+KeyboardKeys.Alt = 18;
+
+KeyboardKeys.ArrowLeft = 37;
+KeyboardKeys.ArrowUp = 38;
+KeyboardKeys.ArrowRight = 39;
+KeyboardKeys.ArrowDown = 40;
+
+KeyboardKeys.Meta = 91;
+KeyboardKeys.ContextMenu = 93;
+
 /**
  * Enumeration for horizontal alignment values
  */

@@ -101,6 +101,7 @@ use Phast\Phast;
 				$li = new HTMLControl();
 				$li->Attributes = $menuItem->Attributes;
 				$li->TagName = "li";
+				$li->ClassList[] = "Command";
 				
 				if ($menuItem->Visible)
 				{

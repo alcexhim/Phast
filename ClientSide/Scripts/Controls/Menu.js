@@ -70,6 +70,7 @@ function ContextMenu()
 			for (var i = 0; i < this.Items.length; i++)
 			{
 				var li = document.createElement("li");
+				System.ClassList.Add(li, "MenuItem");
 				if (this.Items[i].Visible)
 				{
 					System.ClassList.Add(li, "Visible");
@@ -91,8 +92,9 @@ function ContextMenu()
 					elem1.innerHTML = this.Items[i].Title;
 					elem1.NativeObject = this;
 					elem1.MenuItem = this.Items[i];
-					
 					li.appendChild(elem1);
+					
+					System.ClassList.Add(li, "Command");
 				}
 				else if (this.Items[i].ClassName == "MenuItemSeparator")
 				{

@@ -2,21 +2,22 @@ ul.Menu
 {
 	&> li
 	{
+		color: #4D4D4D;
 		&> a
 		{
-			color: #4D4D4D;
+			color: inherit;
 			padding: 5px 15px;
-			&:hover
-			{
-				background-color: #D2D3D6;
-				color: #000000;
-			}
 		}
 		&.Separator
 		{
 			border-top: 1px solid #E6E7E8;
 			margin: 4px;
 			margin-top: 5px;
+		}
+		&.Command:hover, &.Command.Hover
+		{
+			background-color: #D2D3D6;
+			color: #000000;
 		}
 	}
 }
