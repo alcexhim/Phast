@@ -14,19 +14,45 @@ div.ListView
 		{
 			padding: 10px;
 		}
+		
+		&> div.ListViewColumnHeaders
+		{
+			background-color: #FFFFFF;
+			&> div.ListViewColumnHeader
+			{
+				&> a
+				{
+					color: rgb(77, 77, 77);
+					font-weight: 700;
+					font-size: 14px;
+				}
+			}
+		}
+		
 		&.GridLines
 		{
 			&> div.ListViewColumnHeaders > div.ListViewColumnHeader,
 			&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
 			{
 				border: solid 1px #E6E7E8;
-			}		
+			}
 		}
 		&.HotTracking
 		{
 			&> div.ListViewItems > div.ListViewItem:hover > div.ListViewItemColumn
 			{
-				background-color: #F7F8FA;
+				background-color: rgb(237, 238, 240);
+			}
+		}
+		&.AlternateRowHighlight
+		{
+			&> div.ListViewItems > div.ListViewItem:nth-child(2n+1)
+			{
+				background-color: rgb(247, 248, 250);
+			}
+			&> div.ListViewItems > div.ListViewItem:nth-child(2n)
+			{
+				background-color: #ffffff;
 			}
 		}
 		
