@@ -18,6 +18,8 @@ div.ListView
 		&> div.ListViewColumnHeaders
 		{
 			background-color: #FFFFFF;
+			border-bottom: solid 2px #E6E7E8;
+			
 			&> div.ListViewColumnHeader
 			{
 				&> a
@@ -35,6 +37,7 @@ div.ListView
 			&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
 			{
 				border: solid 1px #E6E7E8;
+				border-right: none;
 			}
 		}
 		&.HotTracking
@@ -63,7 +66,7 @@ div.ListView
 		}
 		&> div.ListViewItems > div.ListViewItem.Selected
 		{
-			&> div.ListViewItemColumn
+			&> div.ListViewItemColumn, &> div.ColumnResizer
 			{
 				background-color: #08C;
 				color: #FFFFFF;
@@ -76,10 +79,13 @@ div.ListView
 					}
 				}
 			}
-			&:hover > div.ListViewItemColumn
+			&:hover
 			{
-				background-color: #0075B0;
-				color: #FFFFFF;
+				&> div.ListViewItemColumn, &> div.ColumnResizer
+				{
+					background-color: #0075B0;
+					color: #FFFFFF;
+				}
 			}
 		}
 	}

@@ -10,6 +10,44 @@ function ListViewItemActivationMode(value)
 ListViewItemActivationMode.SingleClick = new ListViewItemActivationMode(1);
 ListViewItemActivationMode.DoubleClick = new ListViewItemActivationMode(2);
 
+function ListViewColumnResizer(parentElement)
+{
+	this.ParentElement = parentElement;
+
+	for (var i = 0; i < this.ParentElement.parentNode.children.length; i++)
+	{
+		if (this.ParentElement.parentNode.children[i] == this.ParentElement)
+		{
+			this.ParentElement.parentNode.children[i].index = i;
+			break;
+		}
+	}
+	
+	this.ParentElement.addEventListener("mousedown", function(e)
+	{
+		ListViewColumnResizer._moving = true;
+		this._prevX = e.clientX;
+		this._prevWidth = this.parentNode.children[this.index - 1].clientWidth;
+		ListViewColumnResizer._current = this;
+	});
+}
+ListViewColumnResizer._moving = false;
+ListViewColumnResizer._current = null;
+
+window.addEventListener("mousemove", function(e)
+{
+	if (ListViewColumnResizer._moving)
+	{
+		var lvcr = ListViewColumnResizer._current;
+		var w = lvcr._prevWidth + (e.clientX - lvcr._prevX);
+		lvcr.parentNode.children[lvcr.index - 1].style.width = w.toString() + "px";
+	}
+});
+window.addEventListener("mouseup", function(e)
+{
+	ListViewColumnResizer._moving = false;
+});
+
 function ListViewItemColumn(parentItem)
 {
 	this.mvarParentItem = parentItem;
@@ -124,6 +162,14 @@ function ListView(parentElement)
 		else
 		{
 			System.ClassList.Add(this.ParentElement, "Empty");
+		}
+		
+		for (var i = 0; i < this.ColumnHeaderElement.children.length; i++)
+		{
+			if (this.ColumnHeaderElement.children[i].className == "ColumnResizer")
+			{
+				this.ColumnHeaderElement.children[i].NativeObject = new ListViewColumnResizer(this.ColumnHeaderElement.children[i]);
+			}
 		}
 		
 		for (var i = 0; i < this.ItemsElement.children.length; i++)

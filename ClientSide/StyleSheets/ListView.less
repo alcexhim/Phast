@@ -18,10 +18,21 @@ table.ListView tr td
 div.ListView
 {
 	position: relative;
+	width: 100%;
+	
+	&> div.ListViewColumnHeaders > div.ColumnResizer, &> div.ListViewItems > div.ListViewItem > div.ColumnResizer
+	{
+		border-left: 0px transparent !important;
+		display: table-cell;
+		width: 4px !important;
+		padding: 0px !important;
+	}
 	&> div.ListViewColumnHeaders
 	{
 		&> div.ListViewColumnHeader
 		{
+			-moz-user-select: none;
+			
 			vertical-align: top;
 			&> a
 			{
@@ -32,6 +43,10 @@ div.ListView
 			{
 				display: none;
 			}
+		}
+		&> div.ColumnResizer
+		{
+			cursor: ew-resize;
 		}
 	}
 	&> div.ListViewEmptyMessage

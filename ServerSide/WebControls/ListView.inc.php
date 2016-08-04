@@ -241,8 +241,10 @@
 			$divColumnHeaders->Controls[] = $divItemColumn;
 			$lvcCount++;
 			
-			foreach ($this->Columns as $column)
+			$count = count($this->Columns);
+			for ($i = 0; $i < $count; $i++)
 			{
+				$column = $this->Columns[$i];
 				$divColumnHeader = new HTMLControl("div");
 				$divColumnHeader->Attributes[] = new WebControlAttribute("data-id", $column->ID);
 				$divColumnHeader->ClassList[] = "ListViewColumnHeader";
@@ -298,6 +300,13 @@
 				$divColumnHeader->Controls[] = $divItemTemplate;
 				
 				$divColumnHeaders->Controls[] = $divColumnHeader;
+				
+				if ($i < $count - 1)
+				{
+					$divColumnResizer = new HTMLControl("div");
+					$divColumnResizer->ClassList[] = "ColumnResizer";
+					$divColumnHeaders->Controls[] = $divColumnResizer;
+				}
 			}
 			
 			$div->Controls[] = $divColumnHeaders;
@@ -370,6 +379,13 @@
 						$divItemColumn->Content = $col->Content;
 					}
 					$divItem->Controls[] = $divItemColumn;
+					
+					if ($i < $count - 1)
+					{
+						$divColumnResizer = new HTMLControl("div");
+						$divColumnResizer->ClassList[] = "ColumnResizer";
+						$divItem->Controls[] = $divColumnResizer;
+					}
 				}
 				
 				$divItems->Controls[] = $divItem;
