@@ -279,6 +279,13 @@
 							ControlLoader::LoadControl($elem1, $ctl);
 						}
 					}
+					else
+					{
+						if ($ctl->TagName != "script")
+						{
+							$ctl->HasContent = false;
+						}
+					}
 					$ctl->ParentObject = $parent;
 					$parent->Controls[] = $ctl;
 				}
