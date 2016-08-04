@@ -1,0 +1,138 @@
+@ThemeColorPrimary: #3980B5;
+@ThemeColorDarker: #0B62A4;
+@ThemeColorLighter: #679DC6;
+@ThemeColorGray: #7A92A3;
+
+div.pwt-Graph
+{
+	&> div.pwt-Graph-Popup
+	{
+		padding: 6px;
+		color: rgb(102, 102, 102);
+		background: rgba(255, 255, 255, 0.8) none repeat scroll 0% 0%;
+		border: 2px solid rgba(230, 230, 230, 0.8);
+		font-size: 12px;
+		text-align: center;
+	}
+	svg
+	{
+		g.pwt-Graph-Slice
+		{
+			path.Slice, rect.Slice
+			{
+				fill: @ThemeColorPrimary;
+			}
+			path.Curve
+			{
+				stroke: @ThemeColorPrimary;
+			}
+			
+			&:hover
+			{
+				path.Slice, rect.Slice
+				{
+					fill: lighten(@ThemeColorPrimary, 5%);
+				}
+			}
+			&.Lighter
+			{
+				path.Slice, rect.Slice
+				{
+					fill: @ThemeColorLighter;
+				}
+				path.Curve
+				{
+					stroke: @ThemeColorLighter;
+				}
+				
+				&:hover
+				{
+					path.Slice, rect.Slice
+					{
+						fill: lighten(@ThemeColorLighter, 5%);
+					}
+					path.Curve
+					{
+						stroke: lighten(@ThemeColorLighter, 5%);
+					}
+				}
+			}
+			&.Darker
+			{
+				path.Slice, rect.Slice
+				{
+					fill: @ThemeColorDarker;
+				}
+				path.Curve
+				{
+					stroke: @ThemeColorDarker;
+				}
+				&:hover
+				{
+					path.Slice, rect.Slice
+					{
+						fill: lighten(@ThemeColorDarker, 5%);
+					}
+					path.Curve
+					{
+						stroke: lighten(@ThemeColorDarker, 5%);
+					}
+				}
+			}
+		}
+	}
+}
+
+div.pwt-Graph.pwt-Graph-Bar
+{
+	svg
+	{
+		g.pwt-Graph-Slice
+		{
+			rect
+			{
+				&:nth-child(1)
+				{
+					fill: @ThemeColorDarker;
+				}
+				&:nth-child(2)
+				{
+					fill: @ThemeColorGray;
+				}
+			}
+			&:hover rect
+			{
+				&:nth-child(1)
+				{
+					fill: lighten(@ThemeColorDarker, 5%);
+				}
+				&:nth-child(2)
+				{
+					fill: lighten(@ThemeColorGray, 5%);
+				}
+			}
+		}
+	}
+}
+
+div.pwt-Graph.pwt-Graph-Donut
+{
+	svg
+	{
+		text
+		{
+			fill: #000000;
+			stroke: none;
+			text-anchor: middle;
+		}
+		text.Title
+		{
+			font-size: 18pt;
+			font-weight: bold;
+		}
+		text.Value
+		{
+			font-size: 18pt;
+		}
+	}
+}

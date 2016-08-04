@@ -1,0 +1,37 @@
+div.pwt-Graph
+{
+	position: relative;
+	&> div.pwt-Graph-Popup
+	{
+		position: absolute;
+		z-index: 1000;
+		
+		&> div.Title
+		{
+			font-weight: bold;
+			margin: 0.25em 0px;
+		}
+		&> div.Value
+		{
+			white-space: nowrap;
+			margin: 0.1em 0px;
+		}
+	}
+	svg
+	{
+		g.pwt-Graph-Slice
+		{
+			path.Curve
+			{
+				opacity: 0;
+			}
+			&:hover
+			{
+				path.Curve
+				{
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
