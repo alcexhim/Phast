@@ -83,30 +83,27 @@ div.TextBox
 				}
 			}
 		}
-		&> ul.SuggestionList
+	}
+	&> div.SuggestionList > ul.Menu > li
+	{
+		&> a
 		{
-			&> li
+			&> i.fa
 			{
-				&> a
+				width: 16px;
+				padding-right: 8px;
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
+		&.Selected
+		{
+			&> a
+			{
+				&> i.fa
 				{
-					&> i.Checkmark
-					{
-						width: 16px;
-						padding-right: 8px;
-						opacity: 0;
-						visibility: hidden;
-					}
-				}
-				&.Selected
-				{
-					&> a
-					{
-						&> i.Checkmark
-						{
-							opacity: 1;
-							visibility: visible;
-						}
-					}
+					opacity: 1;
+					visibility: visible;
 				}
 			}
 		}
