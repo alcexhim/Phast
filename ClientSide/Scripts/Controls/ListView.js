@@ -30,7 +30,7 @@ function ListViewColumnResizer(parentElement)
 		this._prevWidth = this.parentNode.children[this.index - 1].clientWidth;
 		ListViewColumnResizer._current = this;
 		
-		document.body.style.cursor = "ew-resize";
+		// document.body.style.cursor = "ew-resize";
 		e.preventDefault();
 	});
 }
