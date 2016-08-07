@@ -28,6 +28,48 @@ div.ListView
 					font-weight: 700;
 					font-size: 14px;
 				}
+				&.AddRemoveRowColumnHeader
+				{
+					width: 75px;
+					&> a
+					{
+						display: inline-block;
+						
+						&.Add::before
+						{
+							font-family: "FontAwesome";
+							content: "\f067";
+						}
+						&.Remove::before
+						{
+							font-family: "FontAwesome";
+							content: "\f068";
+						}
+					}
+				}
+			}
+		}
+		
+		&> div.ListViewItems > div.ListViewItem > div.ListViewItemColumn
+		{
+			&.AddRemoveRowItemColumn
+			{
+				&> a
+				{
+					display: inline-block;
+					margin-right: 16px;
+					
+					&.Add::before
+					{
+						font-family: "FontAwesome";
+						content: "\f067";
+					}
+					&.Remove::before
+					{
+						font-family: "FontAwesome";
+						content: "\f068";
+					}
+				}
 			}
 		}
 		
