@@ -1,7 +1,7 @@
-@ThemeColorPrimary: #3980B5;
-@ThemeColorDarker: #0B62A4;
-@ThemeColorLighter: #679DC6;
-@ThemeColorGray: #7A92A3;
+@GraphColorPrimary: #3980B5;
+@GraphColorDarker: #0B62A4;
+@GraphColorLighter: #679DC6;
+@GraphColorGray: #7A92A3;
 
 div.pwt-Graph
 {
@@ -20,40 +20,40 @@ div.pwt-Graph
 		{
 			path.Slice, rect.Slice
 			{
-				fill: @ThemeColorPrimary;
+				fill: @GraphColorPrimary;
 			}
 			path.Curve
 			{
-				stroke: @ThemeColorPrimary;
+				stroke: @GraphColorPrimary;
 			}
 			
 			&:hover
 			{
 				path.Slice, rect.Slice
 				{
-					fill: lighten(@ThemeColorPrimary, 5%);
+					fill: lighten(@GraphColorPrimary, 5%);
 				}
 			}
 			&.Lighter
 			{
 				path.Slice, rect.Slice
 				{
-					fill: @ThemeColorLighter;
+					fill: @GraphColorLighter;
 				}
 				path.Curve
 				{
-					stroke: @ThemeColorLighter;
+					stroke: @GraphColorLighter;
 				}
 				
 				&:hover
 				{
 					path.Slice, rect.Slice
 					{
-						fill: lighten(@ThemeColorLighter, 5%);
+						fill: lighten(@GraphColorLighter, 5%);
 					}
 					path.Curve
 					{
-						stroke: lighten(@ThemeColorLighter, 5%);
+						stroke: lighten(@GraphColorLighter, 5%);
 					}
 				}
 			}
@@ -61,21 +61,21 @@ div.pwt-Graph
 			{
 				path.Slice, rect.Slice
 				{
-					fill: @ThemeColorDarker;
+					fill: @GraphColorDarker;
 				}
 				path.Curve
 				{
-					stroke: @ThemeColorDarker;
+					stroke: @GraphColorDarker;
 				}
 				&:hover
 				{
 					path.Slice, rect.Slice
 					{
-						fill: lighten(@ThemeColorDarker, 5%);
+						fill: lighten(@GraphColorDarker, 5%);
 					}
 					path.Curve
 					{
-						stroke: lighten(@ThemeColorDarker, 5%);
+						stroke: lighten(@GraphColorDarker, 5%);
 					}
 				}
 			}
@@ -93,22 +93,22 @@ div.pwt-Graph.pwt-Graph-Bar
 			{
 				&:nth-child(1)
 				{
-					fill: @ThemeColorDarker;
+					fill: @GraphColorDarker;
 				}
 				&:nth-child(2)
 				{
-					fill: @ThemeColorGray;
+					fill: @GraphColorGray;
 				}
 			}
 			&:hover rect
 			{
 				&:nth-child(1)
 				{
-					fill: lighten(@ThemeColorDarker, 5%);
+					fill: lighten(@GraphColorDarker, 5%);
 				}
 				&:nth-child(2)
 				{
-					fill: lighten(@ThemeColorGray, 5%);
+					fill: lighten(@GraphColorGray, 5%);
 				}
 			}
 		}
