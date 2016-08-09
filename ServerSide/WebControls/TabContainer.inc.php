@@ -181,7 +181,7 @@
 			foreach ($this->TabPages as $tabPage)
 			{
 				$liTab = new HTMLControl("li");
-				if ($tabPage->Visible)
+				if ((is_bool($tabPage->Visible) && $tabPage->Visible) || (is_string($tabPage->Visible) && $tabPage->Visible != "false"))
 				{
 					$liTab->ClassList[] = "Visible";
 				}
