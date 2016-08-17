@@ -255,7 +255,7 @@
 				new ConfigurationProperty("Setup.Enabled", "true"),
 				new ConfigurationSpacer(),
 				new ConfigurationComment("The base path of the Web site"),
-				new ConfigurationProperty("Application.BasePath", ""),
+				new ConfigurationProperty("Application.BasePath", System::GetConfigurationValue("Application.BasePath")),
 				new ConfigurationSpacer(),
 				// new ConfigurationComment("The default tenant for the Web site"),
 				// new ConfigurationProperty("Application.DefaultTenant", "default"),
