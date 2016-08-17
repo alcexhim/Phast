@@ -264,6 +264,13 @@ Page.Cookies.Set = function(name, value, expires)
 	document.cookie = cookie;
 };
 
+Page.Path = new Object();
+Page.Path.GetParts = function()
+{
+	var p = window.location.href.substring(System.ExpandRelativePath("~/").length + 5);
+	return p.split('/');
+};
+
 /**
  * The Phast static members
  */
