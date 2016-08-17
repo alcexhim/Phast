@@ -184,6 +184,15 @@
 			$div->ClassList[] = "ListView";
 			if (count($this->Items) <= 0) $div->ClassList[] = "Empty";
 			
+			foreach ($this->ClassList as $str)
+			{
+				$div->ClassList[] = $str;
+			}
+			foreach ($this->Attributes as $att)
+			{
+				$div->Attributes[] = $att;
+			}
+			
 			$div->ID = $this->ID;
 			
 			// set up CSS classes for properties
