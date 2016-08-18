@@ -41,15 +41,12 @@ window.addEventListener("mousedown", function(e)
 	
 	while (sender != null)
 	{
-		if (sender.classList)
+		if (System.ClassList.Contains(sender, "Popup"))
 		{
-			if (sender.classList.contains("Popup"))
-			{
-				// do not close the popup when we click inside itself
-				e.preventDefault();
-				e.stopPropagation();
-				return;
-			}
+			// do not close the popup when we click inside itself
+			e.preventDefault();
+			e.stopPropagation();
+			return;
 		}
 		sender = sender.parentNode;
 		if (sender == null) break;

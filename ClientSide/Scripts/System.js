@@ -402,7 +402,7 @@ System.TerminateIfSenderIs = function(sender, compareTo)
 		{
 			for (var i = 0; i < compareTo.length; i++)
 			{
-				if (sender.classList.contains(compareTo[i]))
+				if (System.ClassList.Contains(sender, compareTo[i]))
 				{
 					// do not close the popup when we click inside itself
 					// e.preventDefault();

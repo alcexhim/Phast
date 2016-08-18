@@ -57,7 +57,7 @@
 		var tabs = tabContentContainer.getElementsByClassName("RibbonTabContent");
 		for (var i = 0; i < tabs.length; i++)
 		{
-			if (tabs[i].classList.contains("Selected"))
+			if (System.ClassList.Contains(tabs[i], "Selected"))
 			{
 				return tabs[i];
 			}
@@ -294,7 +294,7 @@ function TerminateIfSenderIs(sender, compareTo)
 		{
 			for (var i = 0; i < compareTo.length; i++)
 			{
-				if (sender.classList.contains(compareTo[i]))
+				if (System.ClassList.Contains(sender, compareTo[i]))
 				{
 					// do not close the popup when we click inside itself
 					// e.preventDefault();
@@ -378,8 +378,8 @@ function RibbonButtonCommand(id)
 				var rbc_array = document.getElementsByClassName(this.ID);
 				for (var i = 0; i < rbc_array.length; i++)
 				{
-					if (rbc_array[i].classList.contains("Disabled")) continue;
-					rbc_array[i].className = "RibbonCommand RibbonButtonCommand " + this.ID + " Selected";
+					if (System.ClassList.Contains(rbc_array[i], "Disabled")) continue;
+					System.ClassList.Add(rbc_array[i], "Selected");
 				}
 				break;
 			}
@@ -388,8 +388,8 @@ function RibbonButtonCommand(id)
 				var rbc_array = document.getElementsByClassName(this.ID);
 				for (var i = 0; i < rbc_array.length; i++)
 				{
-					if (rbc_array[i].classList.contains("Disabled")) continue;
-					rbc_array[i].className = "RibbonCommand RibbonButtonCommand " + this.ID;
+					if (System.ClassList.Contains(rbc_array[i], "Disabled")) continue;
+					System.ClassList.Remove(rbc_array[i], "Selected");
 				}
 				break;
 			}
@@ -423,8 +423,8 @@ function RibbonDropDownCommand(id)
 				var rbc_array = document.getElementsByClassName(this.ID);
 				for (var i = 0; i < rbc_array.length; i++)
 				{
-					if (rbc_array[i].classList.contains("Disabled")) continue;
-					rbc_array[i].className = "RibbonCommand RibbonDropDownCommand " + this.ID + " Selected";
+					if (System.ClassList.Contains(rbc_array[i], "Disabled")) continue;
+					System.ClassList.Add(rbc_array[i], "Selected");
 				}
 				break;
 			}
@@ -433,8 +433,8 @@ function RibbonDropDownCommand(id)
 				var rbc_array = document.getElementsByClassName(this.ID);
 				for (var i = 0; i < rbc_array.length; i++)
 				{
-					if (rbc_array[i].classList.contains("Disabled")) continue;
-					rbc_array[i].className = "RibbonCommand RibbonDropDownCommand " + this.ID;
+					if (System.ClassList.Contains(rbc_array[i], "Disabled")) continue;
+					System.ClassList.Remove(rbc_array[i], "Selected");
 				}
 				break;
 			}
