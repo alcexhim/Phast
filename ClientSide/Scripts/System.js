@@ -648,6 +648,18 @@ System.ClassList =
 	}
 };
 
+System.StringMethods =
+{
+	"Contains": function(string, value)
+	{
+		if (string.includes) return string.includes(value);
+		if (string.contains) return string.contains(value);
+		
+		console.error("Neither String.includes nor String.contains were found");
+		return false;
+	}
+};
+
 var WebPage =
 {
 	"Postback": function(url)

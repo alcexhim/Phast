@@ -379,7 +379,7 @@ function TextBox(parentElement)
 			for (var i = 0; i < ul.children.length; i++)
 			{
 				var spanText = ul.children[i].children[0].children[1];
-				if (spanText.innerHTML.toLowerCase().contains(this.GetText().toLowerCase()))
+				if (System.StringMethods.Contains(spanText.innerHTML.toLowerCase(), this.GetText().toLowerCase()))
 				{
 					System.ClassList.Add(ul.childNodes[i], "Visible");
 				}
