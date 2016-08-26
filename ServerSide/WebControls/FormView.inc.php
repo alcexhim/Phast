@@ -124,6 +124,7 @@
 		public $IconName;
 		
 		public $GenerateLabel;
+		public $ReadOnly;
 		
 		public function GetInputElementID()
 		{
@@ -151,6 +152,7 @@
 			
 			$this->ParseChildElements = false;
 			$this->GenerateLabel = true;
+			$this->ReadOnly = false;
 		}
 		
 		public function CreateControl()
