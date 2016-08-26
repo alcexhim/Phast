@@ -1,0 +1,52 @@
+@keyframes wfx-ProgressBar-Animated
+{
+	0%
+	{
+		background-position: 40px 0px;
+	}
+	100%
+	{
+		background-position: 0px 0px;
+	}
+}
+
+div.ProgressBar
+{
+	background-color: rgb(237, 238, 240);
+	padding: 0px;
+	
+	&> div.ProgressValueFill
+	{
+		background-color: @ThemeColorPrimary;
+	}
+	&.Info > div.ProgressValueFill
+	{
+		background-color: @ThemeColorInfo;
+	}
+	&.Success > div.ProgressValueFill
+	{
+		background-color: @ThemeColorSuccess;
+	}
+	&.Warning > div.ProgressValueFill
+	{
+		background-color: @ThemeColorWarning;
+	}
+	&.Danger > div.ProgressValueFill
+	{
+		background-color: @ThemeColorDanger;
+	}
+	&.Inverse > div.ProgressValueFill
+	{
+		background-color: @ThemeColorInverse;
+	}
+	
+	&.Animated > div.ProgressValueFill
+	{
+		animation: 2s linear 0s normal none infinite running wfx-ProgressBar-Animated;
+	}
+	&.Striped > div.ProgressValueFill
+	{
+		background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.35) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.35) 75%, transparent 75%, transparent);
+		background-size: 40px 40px;
+	}
+}
