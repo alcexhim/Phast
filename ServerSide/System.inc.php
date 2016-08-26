@@ -406,7 +406,11 @@
 					else if ($i < $retval_len - 2)
 					{
 						$x = stripos($retval, ")", $i + 1);
-						if ($x === false) $x = strlen($retval);
+						if ($x === false)
+						{
+							$ret .= $c;
+							continue;
+						}
 						
 						$varString = substr($retval, $i + 2, $x - ($i + 2));
 						
