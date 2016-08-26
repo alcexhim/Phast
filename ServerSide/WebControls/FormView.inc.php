@@ -201,7 +201,13 @@
 			$elem->ID = $this->ID;
 			$elem->Name = $this->Name;
 			$elem->InnerHTML = $this->DefaultValue;
-			if (isset($this->Value)) $elem->InnerHTML = System::ExpandRelativePath($this->Value);
+			if (isset($this->Value))
+			{
+				if (is_string($this->Value))
+				{
+					$elem->InnerHTML = System::ExpandRelativePath($this->Value);
+				}
+			}
 			
 			return $elem;
 		}
