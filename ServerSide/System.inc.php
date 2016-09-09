@@ -492,21 +492,36 @@
 		}
 		public static function RedirectToLoginPage()
 		{
-			$_SESSION["System.LastRedirectURL"] = $_SERVER["REQUEST_URI"];
+			if (System::$EnableTenantedHosting)
+			{
+				$_SESSION[System::$TenantName . ".System.LastRedirectURL"] = $_SERVER["REQUEST_URI"];
+			}
+			else
+			{
+				$_SESSION["System.LastRedirectURL"] = $_SERVER["REQUEST_URI"];
+			}
 			System::Redirect("~/account/login");
 			return;
 		}
 		public static function RedirectFromLoginPage()
 		{
-			if ($_SESSION["System.LastRedirectURL"] != null)
+			$url = null;
+			if (System::$EnableTenantedHosting)
 			{
-				System::Redirect($_SESSION["System.LastRedirectURL"]);
+				if ($_SESSION[System::$TenantName . ".System.LastRedirectURL"] != null)
+				{
+					$url = $_SESSION[System::$TenantName . ".System.LastRedirectURL"];
+				}
 			}
 			else
 			{
-				$url = System::GetConfigurationValue("Application.DefaultURL", "~/");
-				System::Redirect($url);
+				if ($_SESSION["System.LastRedirectURL"] != null)
+				{
+					$url = $_SESSION["System.LastRedirectURL"];
+				}
 			}
+			if ($url == null) $url = System::GetConfigurationValue("Application.DefaultURL", "~/");
+			System::Redirect($url);
 		}
 		public static function GetVirtualPath($supportTenantedHosting = true)
 		{
