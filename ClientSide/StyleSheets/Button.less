@@ -9,7 +9,7 @@ div.pwt-Button
 		{
 			padding-right: 28px;
 		}
-		&::before
+		&::after
 		{
 			position: absolute;
 			top: 6px;
@@ -24,6 +24,7 @@ div.pwt-Button
 	&> div.pwt-DropDownContent
 	{
 		position: fixed;
+		z-index: 1000;
 	}
 	
 	&.pwt-DropDownRequired > a.pwt-DropDownButton
@@ -33,7 +34,7 @@ div.pwt-Button
 	
 	&.pwt-DropDownButton.pwt-DropDownRequired, &:not(.pwt-DropDownRequired) > a.pwt-DropDownButton
 	{
-		&::before
+		&::after
 		{
 			content: "";
 			font-family: FontAwesome;
