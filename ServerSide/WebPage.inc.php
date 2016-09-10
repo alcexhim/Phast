@@ -1193,6 +1193,8 @@
         				{
         					$pageCtl = clone $pageControl;
         					if (get_class($pageCtl) != "Phast\\WebControls\\Section") continue;
+        					
+        					if ($pageCtl->PlaceholderID != $ctl->ID) continue;
         					$newControls[] = $pageCtl;
         				}
         			}
