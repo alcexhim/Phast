@@ -132,7 +132,10 @@ ContextMenu.HideAll = function()
 	{
 		if (System.ClassList.Contains(items[i], "Popup"))
 		{
-			System.ClassList.Remove(items[i], "Visible");
+			if (!System.ClassList.Contains(items[i], "Visible-Always"))
+			{
+				System.ClassList.Remove(items[i], "Visible");
+			}
 		}
 	}
 };

@@ -19,7 +19,10 @@ Popup.HideAll = function()
 	var elems = document.getElementsByClassName("Popup");
 	for (var i = 0; i < elems.length; i++)
 	{
-		elems[i].classList.remove("Visible");
+		if (!System.ClassList.Contains(elems[i], "Visible-Always"))
+		{
+			System.ClassList.Remove(elems[i], "Visible");
+		}
 	}
 };
 
