@@ -184,7 +184,7 @@
 						$columnNameCount = count($fk->ColumnName);
 						for ($j = 0; $j < $columnNameCount; $j++)
 						{
-							$query .= $fk->ColumnName[$j];
+							$query .= $this->ColumnPrefix . $fk->ColumnName[$j];
 							if ($j < $columnNameCount - 1) $query .= ", ";
 						}
 					}
@@ -199,7 +199,15 @@
 						$foreignColumnReferenceCount = count($fk->ForeignColumnReference->Column);
 						for ($j = 0; $j < $foreignColumnReferenceCount; $j++)
 						{
-							$query .= $fk->ForeignColumnReference->Table->ColumnPrefix . $fk->ForeignColumnReference->Column[$j]->Name;
+							$query .= $fk->ForeignColumnReference->Table->ColumnPrefix;
+							if (is_string($fk->ForeignColumnReference->Column[$j]))
+							{
+								$query .= $fk->ForeignColumnReference->Column[$j];
+							}
+							else
+							{
+								$query .= $fk->ForeignColumnReference->Column[$j]->Name;
+							}
 							if ($j < $foreignColumnReferenceCount - 1) $query .= ", ";
 						}
 					}
