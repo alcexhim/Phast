@@ -14,6 +14,7 @@
 	class Button extends WebControl
 	{
 		public $DropDownControls;
+		public $DropDownDirection;
 		public $DropDownRequired;
 		
 		public $IconName;
@@ -108,6 +109,10 @@
 			if ($this->DropDownRequired)
 			{
 				$this->ClassList[] = "pwt-DropDownRequired";
+			}
+			if ($this->DropDownDirection != null)
+			{
+				$this->Attributes[] = new WebControlAttribute("data-pwt-dropdown-direction", $this->DropDownDirection);
 			}
 			
 			$aDropDown = new Anchor();

@@ -19,6 +19,10 @@ function Button(parentElement)
 		if (value)
 		{
 			System.ClassList.Add(this.DropDownContentElement, "Visible");
+			if (this.ParentElement.getAttribute("data-pwt-dropdown-direction") == "right")
+			{
+				this.DropDownContentElement.style.left = (this.ParentElement.offsetLeft - this.ParentElement.offsetWidth) + "px";
+			}
 		}
 		else
 		{
