@@ -15,6 +15,7 @@
 @import "LoginPage.less";
 @import "Menu.less";
 @import "NotificationTray.less";
+@import "PageHeader.less";
 @import "PageFooter.less";
 @import "Panel.less";
 @import "ProgressBar.less";
@@ -45,4 +46,8 @@ body.EnableHeader
 	{
 		top: @HeaderHeight; 
 	}
+}
+body > div.Content > div.PageHeader, body > div.Content > div.PageContent
+{
+	padding: 32px;
 }
