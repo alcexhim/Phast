@@ -493,16 +493,24 @@
 				if ($this->ToolTipTitle != null) echo(" data-tooltip-title=\"" . $this->ToolTipTitle . "\"");
 				if ($this->ToolTipText != null) echo(" data-tooltip-content=\"" . $this->ToolTipText . "\"");
 				
-				if (!$this->HasContent) echo(" /");
+				if (!$this->DoesHaveContent()) echo(" /");
 				echo(">");
 			}
 		}
+
+		private static $tagNamesThatMustHaveContent= array("script", "div", "i");
+		private function DoesHaveContent()
+		{
+			$mustHaveContent = in_array(strtolower($this->TagName), WebControl::$tagNamesThatMustHaveContent);
+			return $this->HasContent || $mustHaveContent;
+		}
+		
 		/**
 		 * Renders the ending tag of this WebControl.
 		 */
 		protected function RenderEndTag()
 		{
-			if ($this->TagName != "" && $this->HasContent)
+			if ($this->TagName != "" && $this->DoesHaveContent())
 			{
 				echo("</" . $this->TagName . ">");
 			}
