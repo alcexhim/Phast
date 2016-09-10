@@ -1,0 +1,33 @@
+body > nav.Top > div.NotificationTray
+{
+	&> div.UserImage
+	{
+		position: relative;
+		top: -14px;
+	}
+	&> div#cmdUserMenu
+	{
+		margin-top: 4px;
+		&> a
+		{
+			&::before
+			{
+				background-image: url('/objectify/Images/Avatar_Default.png');
+				background-repeat: no-repeat;
+				border: solid 1px #aaaaaa;
+			}
+			border: none;
+			background: none;
+			color: rgba(255, 255, 255, 0.5);
+			
+			&:hover
+			{
+				color: rgb(255, 255, 255);
+				&::before
+				{
+					border-color: #FFFFFF;
+				}
+			}
+		}
+	}
+}

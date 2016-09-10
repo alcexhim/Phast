@@ -1,0 +1,32 @@
+@media (max-width: 800px)
+{
+	body > nav.Top > div.NotificationTray
+	{
+		&> div#cmdUserMenu
+		{
+			&.pwt-DropDownButton.pwt-DropDownRequired, &:not(.pwt-DropDownRequired) > a.pwt-DropDownButton
+			{
+				&::after
+				{
+					display: none;
+				}
+			}
+			margin-top: 4px;
+			&> a
+			{
+				&::before
+				{
+					left: -8px;
+				}
+				&::after
+				{
+					display: none;
+				}
+				&> span.Text
+				{
+					display: none;
+				}
+			}
+		}
+	}
+}
