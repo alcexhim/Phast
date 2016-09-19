@@ -25,6 +25,15 @@ div.ColumnContainer
 		/* Display inline-block, and absolutely NO FLOATS! */
 		display: inline-block;
 		margin-bottom: 20px;
-		width: 100%;
+		vertical-align: top;
+		margin: 16px;
+	}
+	&.TwoColumn, &.ThreeColumn
+	{
+		&> div.Column
+		{
+			margin: 0px;
+			width: 100%;
+		}
 	}
 }
