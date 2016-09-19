@@ -1166,13 +1166,23 @@
 			$tagHTML->Render();
 
 			$this->OnRendered(new RenderedEventArgs(RenderMode::Any));
+			$renderedEventArgs = null;
 			if ($this->IsPartial)
 			{
-				$this->OnRendered(new RenderedEventArgs(RenderMode::Partial));
+				$renderedEventArgs = new RenderedEventArgs(RenderMode::Partial);
 			}
 			else
 			{
-				$this->OnRendered(new RenderedEventArgs(RenderMode::Complete));
+				$renderedEventArgs = new RenderedEventArgs(RenderMode::Complete);
+			}
+			$this->OnRendered($renderedEventArgs);
+			
+			if ($this->ClassReference != null)
+			{
+				if (method_exists($this->ClassReference, "OnRendered"))
+				{
+					$this->ClassReference->OnRendered($renderedEventArgs);
+				}
 			}
         }
         

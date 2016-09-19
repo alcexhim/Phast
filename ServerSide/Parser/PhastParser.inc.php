@@ -54,6 +54,40 @@
 		public function OnClassLoaded(EventArgs $e)
 		{
 		}
+
+		/**
+		 * The function called before the page constructor is called.
+		 * @param CancelEventArgs $e The arguments for this event handler.
+		 */
+		public function OnCreating(CancelEventArgs $e)
+		{
+		
+		}
+		/**
+		 * The function called after the page constructor has completed.
+		 * @param EventArgs $e The arguments for this event handler.
+		 */
+		public function OnCreated(EventArgs $e)
+		{
+		
+		}
+		
+		/**
+		 * The function called before the page has started rendering.
+		 * @param RenderedEventArgs $e The arguments for this event handler.
+		 */
+		public function OnRendering(\Phast\RenderingEventArgs $e)
+		{
+		
+		}
+		/**
+		 * The function called after the page has completely rendered.
+		 * @param RenderedEventArgs $e The arguments for this event handler.
+		 */
+		public function OnRendered(\Phast\RenderedEventArgs $e)
+		{
+		
+		}
 	}
 	
 	class PhastParser
