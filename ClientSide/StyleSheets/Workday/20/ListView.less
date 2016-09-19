@@ -85,8 +85,6 @@ div.ListView:not(.Borderless)
 			border-bottom: solid 1px #B7BABC;
 		}
 		
-		padding: 4px;
-		
 		vertical-align: top;
 		transition: background-color 0.3s;
 		
@@ -110,6 +108,11 @@ div.ListView:not(.Borderless)
 		&:active, &:focus, &.Selected
 		{
 			background-color: @ListView_Item_BackgroundColor_Primary_Selected;
+		}
+		
+		&> div.ListViewItemColumn
+		{
+			padding: 4px;
 		}
 	
 		&.Secondary
