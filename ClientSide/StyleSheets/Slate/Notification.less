@@ -1,0 +1,25 @@
+div.Notification
+{
+	position: absolute;
+	right: 64px;
+	top: 64px;
+	padding: 16px;
+	
+	&> div.Title, &> div.Content
+	{
+		padding: 8px;
+	}
+	&> div.Title
+	{
+		font-size: 18px;
+		font-weight: bold;
+	}
+	&.Danger
+	{
+		background-color: #FDF2F2;
+		border: solid 1px #F29797;
+		color: #A81515;
+		
+		box-shadow: 0px 0px 16px #F29797;
+	}
+}
